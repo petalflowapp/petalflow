@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PetalFlow 🌸</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #fff7fb;
+        color: #4b3945;
+        min-height: 100vh;
+    }
+
+    header {
+        background: linear-gradient(135deg, #f7c8dc, #d9c7f7);
+        padding: 24px;
+        text-align: center;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+    }
+
+    header h1 {
+        font-size: 32px;
+        color: #633f55;
+        margin-bottom: 5px;
+    }
+
+    header p {
+        color: #76596d;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 25px;
+    }
+
+    .currency-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+
+    select,
+    input,
+    button {
+        font: inherit;
+    }
+
+    select {
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid #e4c9d8;
+        background: white;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(130, 80, 110, 0.08);
+    }
+
+    .card h3 {
+        font-size: 14px;
+        color: #987287;
+        margin-bottom: 10px;
+    }
+
+    .amount {
+        font-size: 25px;
+        font-weight: bold;
+        color: #633f55;
+    }
+
+    .positive {
+        color: #6d9b7b;
+    }
+
+    .negative {
+        color: #c87992;
+    }
+
+    .section {
+        background: white;
+        padding: 25px;
+        border-radius: 22px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 20px rgba(130, 80, 110, 0.07);
+    }
+
+    .section h2 {
+        margin-bottom: 18px;
+        color: #633f55;
+    }
+
+    .flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .flow-box {
+        flex: 1;
+        min-width: 140px;
+        text-align: center;
+        padding: 20px;
+        border-radius: 18px;
+        background: #fff1f7;
+    }
+
+    .arrow {
+        font-size: 25px;
+        color: #c28ba8;
+    }
+
+    .progress-container {
+        background: #f1e6ed;
+        height: 18px;
+        border-radius: 20px;
+        overflow: hidden;
+        margin: 15px 0;
+    }
+
+    .progress {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #e99abd, #b99ae5);
+        border-radius: 20px;
+        transition: width 0.4s ease;
+    }
+
+    .goal-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .form {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr auto;
+        gap: 10px;
+    }
+
+    input,
+    .form select {
+        padding: 12px;
+        border: 1px solid #e6cfdb;
+        border-radius: 12px;
+        outline: none;
+        background: #fffafd;
+    }
+
+    button {
+        border: none;
+        padding: 12px 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        background: #d889aa;
+        color: white;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #c67598;
+    }
+
+    .transactions {
+        margin-top: 20px;
+    }
+
+    .transaction {
+        display: flex;
+        justify-content: space-between;
+        padding: 13px 0;
+        border-bottom: 1px solid #f1e5eb;
+    }
+
+    .transaction:last-child {
+        border-bottom: none;
+    }
+
+    .category {
+        font-size: 13px;
+        color: #987287;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 20px;
+        color: #aa91a0;
+    }
+
+    .tip {
+        text-align: center;
+        background: #fdf0f7;
+        padding: 15px;
+        border-radius: 15px;
+        margin-top: 15px;
+        color: #76596d;
+    }
+
+    footer {
+        text-align: center;
+        padding: 25px;
+        color: #a58c9a;
+        font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .form {
+            grid-template-columns: 1fr;
+        }
+
+        .flow {
+            flex-direction: column;
+        }
+
+        .arrow {
+            transform: rotate(90deg);
+        }
+
+        .flow-box {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .container {
+            padding: 15px;
+        }
+
+        .cards {
+            grid-template-columns: 1fr;
+        }
+
+        header h1 {
+            font-size: 27px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌸 PetalFlow</h1>
+    <p>Grow your money, one petal at a time.</p>
+</header>
+
+<div class="container">
+
+    <div class="currency-row">
+        <select id="currency" onchange="updateDashboard()">
+            <option value="₱">🇵🇭 PHP ₱</option>
+            <option value="$">🇺🇸 USD $</option>
+            <option value="NZ$">🇳🇿 NZD NZ$</option>
+        </select>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>💰 Total Income</h3>
+            <div class="amount positive" id="income">₱0</div>
+        </div>
+
+        <div class="card">
+            <h3>💸 Total Expenses</h3>
+            <div class="amount negative" id="expenses">₱0</div>
+        </div>
+
+        <div class="card">
+            <h3>🐷 Total Savings</h3>
+            <div class="amount" id="savings">₱0</div>
+        </div>
+
+        <div class="card">
+            <h3>🌷 Available</h3>
+            <div class="amount" id="available">₱0</div>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <h2>🌸 Your Money Flow</h2>
+
+        <div class="flow">
+
+            <div class="flow-box">
+                <div>💰</div>
+                <strong>Income</strong>
+                <p id="flowIncome">₱0</p>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-box">
+                <div>💸</div>
+                <strong>Expenses</strong>
+                <p id="flowExpenses">₱0</p>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-box">
+                <div>🐷</div>
+                <strong>Savings</strong>
+                <p id="flowSavings">₱0</p>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-box">
+                <div>🌷</div>
+                <strong>Remaining</strong>
+                <p id="flowRemaining">₱0</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🎯 NZ Savings Goal</h2>
+
+        <div class="goal-info">
+            <span id="goalCurrent">₱0 saved</span>
+            <strong>₱105,000</strong>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <p id="goalPercent">0% complete</p>
+
+        <div class="tip">
+            🌱 Every little amount helps your goal grow.
+        </div>
+    </div>
+
+    <div class="section">
+
+        <h2>➕ Add Transaction</h2>
+
+        <div class="form">
+
+            <input
+                type="text"
+                id="description"
+                placeholder="What was it?"
+            >
+
+            <input
+                type="number"
+                id="amount"
+                placeholder="Amount"
+                min="0"
+            >
+
+            <select id="type">
+                <option value="income">💰 Income</option>
+                <option value="expense">💸 Expense</option>
+                <option value="saving">🐷 Saving</option>
+            </select>
+
+            <button onclick="addTransaction()">
+                Add
+            </button>
+
+        </div>
+
+        <div class="transactions" id="transactions">
+            <div class="empty">
+                No transactions yet 🌸
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    🌸 PetalFlow — Your money, your growth.
+</footer>
+
+<script>
+
+let transactions =
+    JSON.parse(localStorage.getItem("petalflowTransactions")) || [];
+
+function formatMoney(amount) {
+
+    const currency =
+        document.getElementById("currency").value;
+
+    return currency +
+        Number(amount).toLocaleString(
+            undefined,
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
+}
+
+function addTransaction() {
+
+    const description =
+        document.getElementById("description").value.trim();
+
+    const amount =
+        parseFloat(document.getElementById("amount").value);
+
+    const type =
+        document.getElementById("type").value;
+
+    if (!description || !amount || amount <= 0) {
+
+        alert("Please enter a description and a valid amount 🌸");
+
+        return;
+    }
+
+    transactions.push({
+
+        id: Date.now(),
+
+        description: description,
+
+        amount: amount,
+
+        type: type
+
+    });
+
+    localStorage.setItem(
+        "petalflowTransactions",
+        JSON.stringify(transactions)
+    );
+
+    document.getElementById("description").value = "";
+
+    document.getElementById("amount").value = "";
+
+    updateDashboard();
+
+}
+
+function deleteTransaction(id) {
+
+    transactions =
+        transactions.filter(
+            transaction => transaction.id !== id
+        );
+
+    localStorage.setItem(
+        "petalflowTransactions",
+        JSON.stringify(transactions)
+    );
+
+    updateDashboard();
+
+}
+
+function updateDashboard() {
+
+    let income = 0;
+
+    let expenses = 0;
+
+    let savings = 0;
+
+    transactions.forEach(transaction => {
+
+        if (transaction.type === "income") {
+
+            income += transaction.amount;
+
+        }
+
+        if (transaction.type === "expense") {
+
+            expenses += transaction.amount;
+
+        }
+
+        if (transaction.type === "saving") {
+
+            savings += transaction.amount;
+
+        }
+
+    });
+
+    const available =
+        income - expenses - savings;
+
+    document.getElementById("income").textContent =
+        formatMoney(income);
+
+    document.getElementById("expenses").textContent =
+        formatMoney(expenses);
+
+    document.getElementById("savings").textContent =
+        formatMoney(savings);
+
+    document.getElementById("available").textContent =
+        formatMoney(available);
+
+    document.getElementById("flowIncome").textContent =
+        formatMoney(income);
+
+    document.getElementById("flowExpenses").textContent =
+        formatMoney(expenses);
+
+    document.getElementById("flowSavings").textContent =
+        formatMoney(savings);
+
+    document.getElementById("flowRemaining").textContent =
+        formatMoney(available);
+
+    const goal = 105000;
+
+    const percentage =
+        Math.min((savings / goal) * 100, 100);
+
+    document.getElementById("progress").style.width =
+        percentage + "%";
+
+    document.getElementById("goalCurrent").textContent =
+        formatMoney(savings) + " saved";
+
+    document.getElementById("goalPercent").textContent =
+        percentage.toFixed(1) + "% complete";
+
+    renderTransactions();
+
+}
+
+function renderTransactions() {
+
+    const container =
+        document.getElementById("transactions");
+
+    if (transactions.length === 0) {
+
+        container.innerHTML =
+            '<div class="empty">No transactions yet 🌸</div>';
+
+        return;
+
+    }
+
+    container.innerHTML = "";
+
+    [...transactions]
+        .reverse()
+        .forEach(transaction => {
+
+            const row =
+                document.createElement("div");
+
+            row.className = "transaction";
+
+            let icon = "💰";
+
+            if (transaction.type === "expense")
+                icon = "💸";
+
+            if (transaction.type === "saving")
+                icon = "🐷";
+
+            const sign =
+                transaction.type === "income"
+                    ? "+"
+                    : "-";
+
+            row.innerHTML = `
+
+                <div>
+
+                    <strong>
+                        ${icon} ${transaction.description}
+                    </strong>
+
+                    <div class="category">
+                        ${transaction.type}
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        ${sign}${formatMoney(transaction.amount)}
+                    </strong>
+
+                    <button
+                        onclick="deleteTransaction(${transaction.id})"
+                        style="
+                            margin-left:8px;
+                            padding:5px 8px;
+                            background:#edd3df;
+                            color:#633f55;
+                        "
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            `;
+
+            container.appendChild(row);
+
+        });
+
+}
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
