@@ -963,7 +963,11 @@ body.midnight-mode .header select {
 
         <div class="header-actions">
 
-            <button class="theme-button" onclick="openThemeModal()">
+    <button class="theme-button" onclick="openProfileModal()">
+        👤 Profile
+    </button>
+
+    <button class="theme-button" onclick="openThemeModal()">
                 🎨 Theme
             </button>
 
@@ -1374,6 +1378,98 @@ body.midnight-mode .header select {
 </div>
 
 
+    <!-- =========================
+     PROFILE MODAL
+========================= -->
+
+<div class="modal" id="profileModal">
+
+    <div class="modal-card">
+
+        <h3>🌸 My Profile</h3>
+
+        <div style="text-align:center;margin-bottom:18px;">
+
+            <img
+                id="profilePicturePreview"
+                src=""
+                alt="Profile picture"
+                style="
+                    width:110px;
+                    height:110px;
+                    border-radius:50%;
+                    object-fit:cover;
+                    border:4px solid var(--pink-light);
+                    display:none;
+                    margin:0 auto 12px;
+                "
+            >
+
+            <div
+                id="profilePicturePlaceholder"
+                style="
+                    width:110px;
+                    height:110px;
+                    border-radius:50%;
+                    background:var(--pink-light);
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:45px;
+                    margin:0 auto 12px;
+                "
+            >
+                🌸
+            </div>
+
+            <input
+                id="profilePictureInput"
+                type="file"
+                accept="image/*"
+                onchange="uploadProfilePicture()"
+            >
+
+            <div
+                style="
+                    color:var(--muted);
+                    font-size:11px;
+                    margin-top:7px;
+                "
+            >
+                Choose a profile picture
+            </div>
+
+        </div>
+
+        <input
+            id="profileDisplayName"
+            type="text"
+            placeholder="Your display name"
+        >
+
+        <div class="modal-actions">
+
+            <button
+                class="secondary-button"
+                onclick="closeProfileModal()"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="primary-button"
+                onclick="saveProfile()"
+            >
+                Save Profile
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+    
 <!-- =========================
      THEME MODAL
 ========================= -->
@@ -2503,6 +2599,366 @@ async function getProfileName(){
 }
 
 
+/* =====================================================
+   PROFILE MODAL
+===================================================== */
+
+function openProfileModal(){
+
+    document
+        .getElementById("profileModal")
+        .classList.add("show");
+
+    loadProfile();
+
+}
+
+
+function closeProfileModal(){
+
+    document
+        .getElementById("profileModal")
+        .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   LOAD PROFILE
+===================================================== */
+
+async function loadProfile(){
+
+    if(!currentUser)
+        return;
+
+    const {
+        data,
+        error
+    } =
+        await db
+            .from("profiles")
+            .select("display_name,picture")
+            .eq("id",currentUser.id)
+            .maybeSingle();
+
+    if(error){
+
+        console.error(
+            "Unable to load profile:",
+            error
+        );
+
+        return;
+
+    }
+
+    document
+        .getElementById("profileDisplayName")
+        .value =
+            data?.display_name ||
+            currentUser.user_metadata?.display_name ||
+            "";
+
+    const image =
+        document.getElementById(
+            "profilePicturePreview"
+        );
+
+    const placeholder =
+        document.getElementById(
+            "profilePicturePlaceholder"
+        );
+
+    if(data?.picture){
+
+        image.src =
+            data.picture;
+
+        image.style.display =
+            "block";
+
+        placeholder.style.display =
+            "none";
+
+    }
+    else{
+
+        image.style.display =
+            "none";
+
+        placeholder.style.display =
+            "flex";
+
+    }
+
+}
+
+
+/* =====================================================
+   UPLOAD PROFILE PICTURE
+===================================================== */
+
+async function uploadProfilePicture(){
+
+    if(!currentUser)
+        return;
+
+    const input =
+        document.getElementById(
+            "profilePictureInput"
+        );
+
+    const file =
+        input.files?.[0];
+
+    if(!file)
+        return;
+
+
+    if(!file.type.startsWith("image/")){
+
+        alert(
+            "Please choose an image file."
+        );
+
+        input.value = "";
+
+        return;
+
+    }
+
+
+    /*
+       Limit image size to 5 MB.
+    */
+
+    if(file.size > 5 * 1024 * 1024){
+
+        alert(
+            "Please choose an image smaller than 5 MB."
+        );
+
+        input.value = "";
+
+        return;
+
+    }
+
+
+    const extension =
+        file.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    const filePath =
+        `${currentUser.id}/profile.${extension}`;
+
+
+    const {
+        error:uploadError
+    } =
+        await db.storage
+            .from("avatars")
+            .upload(
+                filePath,
+                file,
+                {
+                    upsert:true,
+                    contentType:file.type
+                }
+            );
+
+
+    if(uploadError){
+
+        console.error(
+            "Profile picture upload error:",
+            uploadError
+        );
+
+        alert(
+            "Unable to upload your profile picture.\n\n" +
+            safeError(uploadError)
+        );
+
+        return;
+
+    }
+
+
+    const {
+        data
+    } =
+        db.storage
+            .from("avatars")
+            .getPublicUrl(
+                filePath
+            );
+
+
+    const pictureUrl =
+        data.publicUrl;
+
+
+    const {
+        error:updateError
+    } =
+        await db
+            .from("profiles")
+            .update({
+                picture:pictureUrl
+            })
+            .eq(
+                "id",
+                currentUser.id
+            );
+
+
+    if(updateError){
+
+        console.error(
+            "Profile picture database error:",
+            updateError
+        );
+
+        alert(
+            "The picture uploaded, but we couldn't save the profile picture information.\n\n" +
+            safeError(updateError)
+        );
+
+        return;
+
+    }
+
+
+    const image =
+        document.getElementById(
+            "profilePicturePreview"
+        );
+
+    const placeholder =
+        document.getElementById(
+            "profilePicturePlaceholder"
+        );
+
+
+    image.src =
+        pictureUrl;
+
+    image.style.display =
+        "block";
+
+    placeholder.style.display =
+        "none";
+
+
+    alert(
+        "Profile picture updated! 🌸"
+    );
+
+}
+
+
+/* =====================================================
+   SAVE PROFILE
+===================================================== */
+
+async function saveProfile(){
+
+    if(!currentUser)
+        return;
+
+
+    const displayName =
+        document
+            .getElementById(
+                "profileDisplayName"
+            )
+            .value.trim();
+
+
+    if(!displayName){
+
+        alert(
+            "Please enter a display name."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await db
+            .from("profiles")
+            .update({
+
+                display_name:
+                    displayName
+
+            })
+            .eq(
+                "id",
+                currentUser.id
+            );
+
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to save your profile.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "greetingTitle"
+        )
+        .textContent =
+            `Good day, ${displayName} 🌷`;
+
+
+    closeProfileModal();
+
+}
+
+
+/* =====================================================
+   PROFILE MODAL CLICK OUTSIDE
+===================================================== */
+
+document
+    .getElementById(
+        "profileModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
+            ){
+
+                closeProfileModal();
+
+            }
+
+        }
+    );
+
+    
 /* =====================================================
    LOAD USER DATA
 ===================================================== */
@@ -5373,6 +5829,7 @@ document.addEventListener(
         closeAccountModal();
         closeGoalModal();
         closeThemeModal();
+        closeProfileModal();
 
     }
 );
