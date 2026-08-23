@@ -9,558 +9,1585 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+:root {
+    --pink:#e89ab9;
+    --pink-dark:#c87599;
+    --pink-light:#fff0f6;
+    --lavender:#b9a3df;
+    --lavender-light:#f4effc;
+    --cream:#fffafd;
+    --text:#4d3947;
+    --muted:#9b8291;
+    --border:#eedce6;
+    --green:#72a883;
+    --red:#c97891;
+    --page:#fff7fb;
+    --card:#ffffff;
+    --input:#fffafd;
+    --shadow:0 8px 30px rgba(120,70,100,.08);
+}
+
 * {
-    box-sizing: border-box;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #fff0f6, #f8f0ff);
-    color: #4a3b45;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    background:linear-gradient(180deg,var(--page),var(--lavender-light));
+    color:var(--text);
+    min-height:100vh;
+    transition:background .25s ease,color .25s ease;
 }
 
-/* ================================
+button,
+input,
+select {
+    font:inherit;
+}
+
+button {
+    cursor:pointer;
+}
+
+.hidden {
+    display:none !important;
+}
+
+/* =========================
+   AUTH
+========================= */
+
+.auth-screen {
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+.auth-card {
+    width:100%;
+    max-width:430px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:30px;
+    padding:35px;
+    box-shadow:var(--shadow);
+}
+
+.auth-logo {
+    text-align:center;
+    margin-bottom:28px;
+}
+
+.auth-logo .flower {
+    font-size:48px;
+    margin-bottom:8px;
+}
+
+.auth-logo h1 {
+    color:var(--pink-dark);
+    font-size:32px;
+}
+
+.auth-logo p {
+    color:var(--muted);
+    margin-top:7px;
+    line-height:1.5;
+}
+
+.auth-card h2 {
+    color:var(--pink-dark);
+    margin-bottom:18px;
+    font-size:21px;
+}
+
+.auth-field {
+    margin-bottom:13px;
+}
+
+.auth-field label {
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:6px;
+}
+
+.auth-message {
+    background:var(--pink-light);
+    color:var(--text);
+    border-radius:13px;
+    padding:11px;
+    font-size:13px;
+    margin-bottom:13px;
+    line-height:1.5;
+}
+
+.auth-error {
+    background:#fff0f2;
+    color:#a85d72;
+}
+
+.auth-success {
+    background:#f0f8f2;
+    color:#62876d;
+}
+
+.auth-switch {
+    text-align:center;
+    margin-top:18px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.link-button {
+    border:none;
+    background:none;
+    color:var(--pink-dark);
+    font-weight:700;
+    padding:0;
+}
+
+/* =========================
    HEADER
-================================ */
+========================= */
 
-header {
-    background: rgba(255,255,255,0.9);
-    padding: 18px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+.header {
+    background:linear-gradient(135deg,#f8c9dc,#ddd0f5);
+    padding:28px 20px 35px;
+    border-radius:0 0 35px 35px;
 }
 
-.logo {
-    font-size: 25px;
-    font-weight: bold;
-    color: #d86b9b;
+.header-inner {
+    max-width:1150px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
 }
 
-nav button {
-    border: none;
-    background: #f7d8e7;
-    color: #8d4d6b;
-    padding: 9px 15px;
-    border-radius: 20px;
-    margin-left: 6px;
-    cursor: pointer;
+.logo h1 {
+    font-size:34px;
+    color:#623f54;
 }
 
-nav button:hover {
-    background: #edbfd5;
+.logo p {
+    color:#76596b;
+    margin-top:5px;
 }
 
-/* ================================
-   MAIN
-================================ */
-
-main {
-    max-width: 1100px;
-    margin: auto;
-    padding: 30px 20px 60px;
+.header-actions {
+    display:flex;
+    gap:8px;
+    align-items:center;
 }
 
-.page {
-    display: none;
+.header select,
+.theme-button,
+.logout-button {
+    padding:11px 14px;
+    border:1px solid rgba(255,255,255,.7);
+    border-radius:14px;
+    background:rgba(255,255,255,.75);
+    color:#76596b;
 }
 
-.page.active {
-    display: block;
+.theme-button,
+.logout-button {
+    border:none;
+    font-weight:650;
 }
 
-h1, h2, h3 {
-    color: #8d4d6b;
+.theme-button:hover,
+.logout-button:hover,
+.header select:hover {
+    background:white;
 }
 
-/* ================================
-   HOME
-================================ */
+/* =========================
+   GENERAL
+========================= */
 
-.hero {
-    text-align: center;
-    padding: 50px 20px;
+.container {
+    max-width:1150px;
+    margin:auto;
+    padding:28px 20px 50px;
 }
 
-.hero h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
+.greeting {
+    margin-bottom:20px;
 }
 
-.hero p {
-    font-size: 18px;
-    color: #806f79;
+.greeting h2 {
+    color:var(--pink-dark);
 }
 
-/* ================================
-   CARDS
-================================ */
+.greeting p {
+    color:var(--muted);
+    margin-top:4px;
+}
+
+.cards {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.card,
+.section {
+    background:var(--card);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+}
 
 .card {
-    background: rgba(255,255,255,0.9);
-    padding: 22px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    border-radius:22px;
+    padding:21px;
+}
+
+.card-label {
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:9px;
+}
+
+.card-value {
+    font-size:25px;
+    font-weight:750;
+    color:var(--pink-dark);
+}
+
+.card-sub {
+    color:var(--muted);
+    font-size:12px;
+    margin-top:6px;
+}
+
+.positive {
+    color:var(--green)!important;
+}
+
+.negative {
+    color:var(--red)!important;
+}
+
+.section {
+    border-radius:24px;
+    padding:24px;
+    margin-bottom:20px;
+}
+
+.section-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.section h3 {
+    color:var(--pink-dark);
+    font-size:19px;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
 }
 
-/* ================================
-   BUTTONS
-================================ */
+/* =========================
+   BUTTONS / INPUTS
+========================= */
 
-.primary-btn {
-    border: none;
-    background: #d86b9b;
-    color: white;
-    padding: 11px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 15px;
+.small-button {
+    border:none;
+    background:var(--pink-light);
+    color:var(--pink-dark);
+    padding:8px 12px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:700;
 }
 
-.primary-btn:hover {
-    background: #c65386;
+.action-button {
+    border:none;
+    background:var(--pink-light);
+    color:var(--pink-dark);
+    border-radius:8px;
+    padding:5px 8px;
+    font-size:11px;
 }
 
-.delete-btn {
-    border: none;
-    background: #f2b8c8;
-    color: #7c4055;
-    padding: 7px 12px;
-    border-radius: 15px;
-    cursor: pointer;
+.primary-button {
+    width:100%;
+    padding:12px 18px;
+    border:none;
+    border-radius:13px;
+    background:linear-gradient(135deg,var(--pink),var(--lavender));
+    color:white;
+    font-weight:750;
 }
 
-/* ================================
-   PROFILE
-================================ */
-
-.profile-container {
-    text-align: center;
+.secondary-button {
+    border:none;
+    padding:12px;
+    border-radius:12px;
+    background:var(--pink-light);
+    color:var(--pink-dark);
 }
-
-.profile-picture {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: #f4d9e6;
-    display: block;
-    margin: 15px auto;
-    border: 5px solid white;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.profile-placeholder {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    background: #f4d9e6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 15px auto;
-    font-size: 45px;
-}
-
-/* ================================
-   INPUTS
-================================ */
 
 input,
-textarea,
 select {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #e4cbd7;
-    border-radius: 12px;
-    margin: 7px 0 15px;
-    font-family: inherit;
-    background: #fffafd;
+    width:100%;
+    padding:12px 13px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:var(--input);
+    color:var(--text);
+    outline:none;
 }
 
-textarea {
-    min-height: 100px;
-    resize: vertical;
+input:focus,
+select:focus {
+    border-color:var(--pink);
+    box-shadow:0 0 0 3px rgba(232,154,185,.12);
 }
 
-label {
-    font-weight: bold;
-    color: #8d4d6b;
+.form-grid {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:10px;
 }
 
-/* ================================
-   NOTES
-================================ */
-
-.note {
-    background: #fff9c9;
-    padding: 18px;
-    border-radius: 12px;
-    min-height: 150px;
-    position: relative;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+.form-note {
+    color:var(--muted);
+    font-size:12px;
+    margin-top:8px;
 }
 
-.note h3 {
-    margin-top: 0;
-    color: #765f35;
+/* =========================
+   ACCOUNTS
+========================= */
+
+.accounts {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
 }
 
-.note p {
-    white-space: pre-wrap;
+.account {
+    background:linear-gradient(145deg,var(--pink-light),var(--lavender-light));
+    border-radius:18px;
+    padding:17px;
 }
 
-.note .delete-btn {
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
+.account-icon {
+    font-size:27px;
+    margin-bottom:8px;
 }
 
-/* ================================
-   STICKERS
-================================ */
-
-.sticker {
-    background: white;
-    padding: 20px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+.account-name {
+    font-weight:700;
 }
 
-.sticker-emoji {
-    font-size: 55px;
+.account-type {
+    font-size:11px;
+    color:var(--muted);
+    margin-top:2px;
 }
 
-.sticker-name {
-    font-weight: bold;
-    margin: 8px 0;
+.account-balance {
+    font-size:21px;
+    font-weight:750;
+    color:var(--pink-dark);
+    margin-top:12px;
 }
 
-/* ================================
-   DASHBOARD
-================================ */
-
-.stat {
-    text-align: center;
-    padding: 25px;
+.account-actions {
+    display:flex;
+    gap:5px;
+    margin-top:10px;
 }
 
-.stat-number {
-    font-size: 35px;
-    font-weight: bold;
-    color: #d86b9b;
+/* =========================
+   DAILY / BUDGET
+========================= */
+
+.daily-summary,
+.budget-box {
+    background:linear-gradient(145deg,var(--pink-light),var(--lavender-light));
+    border-radius:18px;
+    padding:18px;
 }
 
-/* ================================
-   STATUS
-================================ */
-
-#statusMessage {
-    text-align: center;
-    margin-top: 10px;
-    color: #8d4d6b;
-    font-size: 14px;
+.daily-summary {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-/* ================================
-   FOOTER
-================================ */
-
-footer {
-    text-align: center;
-    padding: 25px;
-    color: #9b8490;
+.daily-number {
+    font-size:26px;
+    font-weight:750;
+    color:var(--pink-dark);
 }
 
-/* ================================
-   MOBILE
-================================ */
+.budget-top {
+    display:flex;
+    justify-content:space-between;
+}
 
-@media (max-width: 600px) {
+.budget-label {
+    font-size:12px;
+    color:var(--muted);
+}
 
-    header {
-        padding: 15px;
-        flex-direction: column;
-        gap: 12px;
+.budget-amount {
+    font-size:21px;
+    font-weight:750;
+    color:var(--pink-dark);
+    margin-top:3px;
+}
+
+.budget-form {
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.budget-form input {
+    flex:1;
+}
+
+.progress-track {
+    width:100%;
+    height:11px;
+    background:var(--border);
+    border-radius:20px;
+    overflow:hidden;
+    margin:10px 0;
+}
+
+.progress-bar {
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--pink),var(--lavender));
+    border-radius:20px;
+    transition:width .3s ease;
+}
+
+/* =========================
+   GOALS
+========================= */
+
+.goal {
+    padding:15px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.goal:last-child {
+    border-bottom:none;
+}
+
+.goal-top {
+    display:flex;
+    justify-content:space-between;
+}
+
+.goal-name {
+    font-weight:700;
+}
+
+.goal-percent {
+    color:var(--pink-dark);
+    font-size:13px;
+    font-weight:700;
+}
+
+.goal-amount {
+    color:var(--muted);
+    font-size:12px;
+    margin-top:3px;
+}
+
+/* =========================
+   TRANSACTIONS
+========================= */
+
+.transaction {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:14px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.transaction:last-child {
+    border-bottom:none;
+}
+
+.transaction-left {
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.transaction-icon {
+    width:42px;
+    height:42px;
+    display:grid;
+    place-items:center;
+    border-radius:13px;
+    background:var(--pink-light);
+}
+
+.transaction-title {
+    font-weight:650;
+    font-size:14px;
+}
+
+.transaction-meta {
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+
+.transaction-right {
+    text-align:right;
+}
+
+.transaction-amount {
+    font-weight:750;
+}
+
+.transaction-actions {
+    display:flex;
+    justify-content:flex-end;
+    gap:5px;
+    margin-top:5px;
+}
+
+/* =========================
+   CATEGORY / FLOW
+========================= */
+
+.category-row {
+    margin-bottom:15px;
+}
+
+.category-top {
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.category-name {
+    font-weight:600;
+}
+
+.category-value {
+    color:var(--muted);
+}
+
+.category-track {
+    height:9px;
+    background:var(--border);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.category-fill {
+    height:100%;
+    background:linear-gradient(90deg,var(--pink),var(--lavender));
+    border-radius:20px;
+}
+
+/* =========================
+   MODALS
+========================= */
+
+.modal {
+    position:fixed;
+    inset:0;
+    background:rgba(70,40,60,.35);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:100;
+}
+
+.modal.show {
+    display:flex;
+}
+
+.modal-card {
+    width:100%;
+    max-width:450px;
+    background:var(--card);
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 20px 60px rgba(60,30,50,.2);
+}
+
+.modal-card h3 {
+    color:var(--pink-dark);
+    margin-bottom:17px;
+}
+
+.modal-card input,
+.modal-card select {
+    margin-bottom:10px;
+}
+
+.modal-actions {
+    display:flex;
+    gap:8px;
+}
+
+.modal-actions button {
+    flex:1;
+}
+
+/* =========================
+   THEMES
+========================= */
+
+.theme-options {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.theme-option {
+    border:1px solid var(--border);
+    background:var(--pink-light);
+    border-radius:16px;
+    padding:15px 8px;
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+}
+
+.theme-option:hover {
+    transform:translateY(-2px);
+}
+
+.theme-option span {
+    font-size:12px;
+    font-weight:650;
+}
+
+/* =========================
+   MISC
+========================= */
+
+.empty {
+    text-align:center;
+    color:var(--muted);
+    padding:25px 10px;
+}
+
+.footer {
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    padding:10px 20px 30px;
+}
+
+.loading {
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+}
+
+/* =========================
+   MIDNIGHT
+========================= */
+
+body.midnight-mode {
+    --page:#121016;
+    --card:#19171d;
+    --input:#211e25;
+    background:linear-gradient(180deg,#121016,#1c1822);
+}
+
+body.midnight-mode .header {
+    background:linear-gradient(135deg,#302430,#29243a);
+}
+
+body.midnight-mode .logo h1,
+body.midnight-mode .logo p {
+    color:#eee8ed;
+}
+
+body.midnight-mode .theme-button,
+body.midnight-mode .logout-button,
+body.midnight-mode .header select {
+    background:rgba(30,25,34,.75);
+    color:#eee8ed;
+    border-color:#4a3f4d;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px) {
+
+    .cards {
+        grid-template-columns:repeat(2,1fr);
     }
 
-    nav button {
-        margin: 3px;
+    .accounts {
+        grid-template-columns:1fr 1fr;
     }
 
-    .hero h1 {
-        font-size: 36px;
+    .grid {
+        grid-template-columns:1fr;
+    }
+
+    .form-grid {
+        grid-template-columns:1fr 1fr;
     }
 }
+
+@media(max-width:600px) {
+
+    .header-inner {
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .header-actions {
+        width:100%;
+        flex-direction:column;
+    }
+
+    .header select,
+    .theme-button,
+    .logout-button {
+        width:100%;
+    }
+
+    .container {
+        padding:22px 14px 40px;
+    }
+
+    .cards {
+        grid-template-columns:1fr 1fr;
+    }
+
+    .accounts {
+        grid-template-columns:1fr;
+    }
+
+    .form-grid {
+        grid-template-columns:1fr;
+    }
+
+    .transaction {
+        align-items:flex-start;
+    }
+
+    .transaction-right {
+        min-width:90px;
+    }
+}
+
+@media(max-width:420px) {
+
+    .cards {
+        grid-template-columns:1fr;
+    }
+
+    .logo h1 {
+        font-size:29px;
+    }
+
+    .auth-card {
+        padding:25px 20px;
+    }
+
+    .theme-options {
+        grid-template-columns:1fr 1fr;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
+<!-- =========================
+     AUTHENTICATION
+========================= -->
 
-    <div class="logo">
-        🌸 PetalFlow
+<div id="authScreen" class="auth-screen">
+
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            <div class="flower">🌸</div>
+            <h1>PetalFlow</h1>
+            <p>Grow your money, one petal at a time.</p>
+        </div>
+
+        <div id="loginView">
+
+            <h2>Welcome back 🌷</h2>
+
+            <div id="loginMessage" class="auth-message hidden"></div>
+
+            <div class="auth-field">
+                <label>Email</label>
+                <input id="loginEmail"
+                       type="email"
+                       placeholder="you@example.com"
+                       autocomplete="email">
+            </div>
+
+            <div class="auth-field">
+                <label>Password</label>
+                <input id="loginPassword"
+                       type="password"
+                       placeholder="Your password"
+                       autocomplete="current-password">
+            </div>
+
+            <button class="primary-button" onclick="login()">
+                Log In
+            </button>
+
+            <div class="auth-switch">
+                Don't have an account?
+                <button class="link-button" onclick="showSignup()">
+                    Create one 🌸
+                </button>
+            </div>
+
+        </div>
+
+        <div id="signupView" class="hidden">
+
+            <h2>Create your PetalFlow 🌸</h2>
+
+            <div id="signupMessage" class="auth-message hidden"></div>
+
+            <div class="auth-field">
+                <label>Your name</label>
+                <input id="signupName"
+                       type="text"
+                       placeholder="Your name"
+                       autocomplete="name">
+            </div>
+
+            <div class="auth-field">
+                <label>Email</label>
+                <input id="signupEmail"
+                       type="email"
+                       placeholder="you@example.com"
+                       autocomplete="email">
+            </div>
+
+            <div class="auth-field">
+                <label>Password</label>
+                <input id="signupPassword"
+                       type="password"
+                       placeholder="At least 6 characters"
+                       autocomplete="new-password">
+            </div>
+
+            <div class="auth-field">
+                <label>Confirm password</label>
+                <input id="signupConfirm"
+                       type="password"
+                       placeholder="Repeat your password"
+                       autocomplete="new-password">
+            </div>
+
+            <button class="primary-button" onclick="signup()">
+                Create Account
+            </button>
+
+            <div class="auth-switch">
+                Already have an account?
+                <button class="link-button" onclick="showLogin()">
+                    Log in
+                </button>
+            </div>
+
+        </div>
+
     </div>
 
-    <nav>
-        <button onclick="showPage('home')">Home</button>
-        <button onclick="showPage('profile')">Profile</button>
-        <button onclick="showPage('notes')">Notes</button>
-        <button onclick="showPage('stickers')">Stickers</button>
-    </nav>
+</div>
+
+
+<!-- =========================
+     LOADING
+========================= -->
+
+<div id="loadingScreen" class="loading hidden">
+    🌸 Loading your financial garden...
+</div>
+
+
+<!-- =========================
+     APPLICATION
+========================= -->
+
+<div id="app" class="hidden">
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <div class="logo">
+            <h1>🌸 PetalFlow</h1>
+            <p>Grow your money, one petal at a time.</p>
+        </div>
+
+        <div class="header-actions">
+
+            <button class="theme-button" onclick="openThemeModal()">
+                🎨 Theme
+            </button>
+
+            <select id="displayCurrency"
+                    onchange="changeCurrency()">
+
+                <option value="PHP">🇵🇭 PHP — Philippine Peso</option>
+                <option value="USD">🇺🇸 USD — US Dollar</option>
+                <option value="NZD">🇳🇿 NZD — New Zealand Dollar</option>
+                <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+                <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+                <option value="GBP">🇬🇧 GBP — British Pound</option>
+                <option value="EUR">🇪🇺 EUR — Euro</option>
+                <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+                <option value="KRW">🇰🇷 KRW — South Korean Won</option>
+                <option value="SGD">🇸🇬 SGD — Singapore Dollar</option>
+                <option value="HKD">🇭🇰 HKD — Hong Kong Dollar</option>
+                <option value="CNY">🇨🇳 CNY — Chinese Yuan</option>
+                <option value="THB">🇹🇭 THB — Thai Baht</option>
+                <option value="MYR">🇲🇾 MYR — Malaysian Ringgit</option>
+                <option value="INR">🇮🇳 INR — Indian Rupee</option>
+                <option value="IDR">🇮🇩 IDR — Indonesian Rupiah</option>
+                <option value="AED">🇦🇪 AED — UAE Dirham</option>
+                <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
+
+            </select>
+
+            <button class="logout-button" onclick="logout()">
+                Log out
+            </button>
+
+        </div>
+
+    </div>
 
 </header>
 
 
-<main>
+<main class="container">
 
-<!-- ================================
-     HOME
-================================ -->
+    <div class="greeting">
 
-<section id="home" class="page active">
-
-    <div class="hero">
-
-        <h1>Welcome to PetalFlow 🌸</h1>
+        <h2 id="greetingTitle">
+            Welcome 🌷
+        </h2>
 
         <p>
-            A little space for your thoughts, memories,
-            notes, and favorite stickers.
+            Here's a little look at your financial garden.
         </p>
 
     </div>
 
+
+    <!-- SUMMARY -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="card-label">💰 Total Money</div>
+
+            <div class="card-value" id="totalMoney">
+                ₱0.00
+            </div>
+
+            <div class="card-sub">
+                Across all accounts
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">💵 This Month's Income</div>
+
+            <div class="card-value positive" id="totalIncome">
+                ₱0.00
+            </div>
+
+            <div class="card-sub">
+                Money coming in
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">💸 This Month's Expenses</div>
+
+            <div class="card-value negative" id="totalExpenses">
+                ₱0.00
+            </div>
+
+            <div class="card-sub">
+                Money going out
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">🐷 This Month's Savings</div>
+
+            <div class="card-value" id="totalSavings">
+                ₱0.00
+            </div>
+
+            <div class="card-sub">
+                Money you're keeping
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACCOUNTS -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h3>🏦 My Accounts</h3>
+
+            <button class="small-button"
+                    onclick="openAccountModal()">
+                + Add Account
+            </button>
+
+        </div>
+
+        <div class="accounts" id="accountsList"></div>
+
+    </div>
+
+
+    <!-- DAILY + BUDGET -->
+
     <div class="grid">
 
-        <div class="card stat">
+        <div class="section">
 
-            <div class="stat-number" id="noteCount">
-                0
+            <div class="section-header">
+                <h3>🧾 Today's Spending</h3>
             </div>
 
-            <div>
-                Notes
+            <div class="daily-summary">
+
+                <div>
+
+                    <div class="budget-label">
+                        Spent today
+                    </div>
+
+                    <div class="daily-number"
+                         id="todaySpending">
+                        ₱0.00
+                    </div>
+
+                </div>
+
+                <div style="font-size:32px;">
+                    🌷
+                </div>
+
             </div>
 
         </div>
 
 
-        <div class="card stat">
+        <div class="section">
 
-            <div class="stat-number" id="stickerCount">
-                0
+            <div class="section-header">
+                <h3>💗 Monthly Budget</h3>
             </div>
 
-            <div>
-                Stickers
-            </div>
+            <div class="budget-box">
 
-        </div>
+                <div class="budget-top">
+
+                    <div>
+
+                        <div class="budget-label">
+                            Budget
+                        </div>
+
+                        <div class="budget-amount"
+                             id="budgetAmount">
+                            ₱0.00
+                        </div>
+
+                    </div>
+
+                    <div style="text-align:right;">
+
+                        <div class="budget-label">
+                            Spent
+                        </div>
+
+                        <div class="budget-amount"
+                             id="budgetSpent">
+                            ₱0.00
+                        </div>
+
+                    </div>
+
+                </div>
 
 
-        <div class="card stat">
+                <div class="progress-track">
 
-            <div class="stat-number" id="profileStatus">
-                🌸
-            </div>
+                    <div class="progress-bar"
+                         id="budgetProgress">
+                    </div>
 
-            <div>
-                Profile
+                </div>
+
+
+                <div class="budget-label"
+                     id="budgetMessage">
+                    Set a monthly budget to begin 🌸
+                </div>
+
+
+                <div class="budget-form">
+
+                    <input id="budgetInput"
+                           type="number"
+                           min="0"
+                           step="0.01"
+                           placeholder="Monthly budget">
+
+                    <button class="primary-button"
+                            onclick="saveBudget()">
+                        Save
+                    </button>
+
+                </div>
+
             </div>
 
         </div>
 
     </div>
 
-</section>
 
+    <!-- GOALS -->
 
-<!-- ================================
-     PROFILE
-================================ -->
+    <div class="section">
 
-<section id="profile" class="page">
+        <div class="section-header">
 
-    <div class="card profile-container">
+            <h3>🎯 Savings Goals</h3>
 
-        <h2>My Profile 🌷</h2>
+            <button class="small-button"
+                    onclick="openGoalModal()">
+                + Add Goal
+            </button>
 
-        <div id="profileImageContainer">
-            <div class="profile-placeholder">
-                🌸
-            </div>
         </div>
 
-        <label for="usernameInput">
-            Username
-        </label>
-
-        <input
-            type="text"
-            id="usernameInput"
-            placeholder="Enter your username"
-        >
-
-        <label for="pictureInput">
-            Profile Picture
-        </label>
-
-        <input
-            type="file"
-            id="pictureInput"
-            accept="image/*"
-        >
-
-        <button
-            class="primary-btn"
-            onclick="saveProfile()"
-        >
-            Save Profile
-        </button>
-
-        <p id="profileMessage"></p>
-
-    </div>
-
-</section>
-
-
-<!-- ================================
-     NOTES
-================================ -->
-
-<section id="notes" class="page">
-
-    <div class="card">
-
-        <h2>My Notes 📝</h2>
-
-        <label for="noteTitle">
-            Title
-        </label>
-
-        <input
-            type="text"
-            id="noteTitle"
-            placeholder="Note title"
-        >
-
-        <label for="noteContent">
-            Note
-        </label>
-
-        <textarea
-            id="noteContent"
-            placeholder="Write something..."
-        ></textarea>
-
-        <button
-            class="primary-btn"
-            onclick="addNote()"
-        >
-            Add Note
-        </button>
+        <div id="goalsList"></div>
 
     </div>
 
 
-    <div
-        id="notesContainer"
-        class="grid"
-    ></div>
+    <!-- ADD TRANSACTION -->
 
-</section>
+    <div class="section">
 
+        <div class="section-header">
 
-<!-- ================================
-     STICKERS
-================================ -->
+            <h3>➕ Add Transaction</h3>
 
-<section id="stickers" class="page">
+        </div>
 
-    <div class="card">
+        <div class="form-grid">
 
-        <h2>My Stickers 🌸</h2>
+            <input id="description"
+                   placeholder="Description">
 
-        <label for="stickerEmoji">
-            Sticker
-        </label>
+            <input id="amount"
+                   type="number"
+                   min="0"
+                   step="0.01"
+                   placeholder="Amount">
 
-        <select id="stickerEmoji">
+            <select id="transactionType"
+                    onchange="updateCategories()">
 
-            <option value="🌸">🌸 Flower</option>
-            <option value="🌷">🌷 Tulip</option>
-            <option value="🌹">🌹 Rose</option>
-            <option value="🌻">🌻 Sunflower</option>
-            <option value="🌼">🌼 Blossom</option>
-            <option value="🦋">🦋 Butterfly</option>
-            <option value="🐰">🐰 Bunny</option>
-            <option value="🐻">🐻 Bear</option>
-            <option value="🐱">🐱 Cat</option>
-            <option value="🐶">🐶 Dog</option>
-            <option value="💗">💗 Pink Heart</option>
-            <option value="💜">💜 Purple Heart</option>
-            <option value="✨">✨ Sparkles</option>
-            <option value="🌙">🌙 Moon</option>
-            <option value="☁️">☁️ Cloud</option>
+                <option value="income">
+                    💰 Income
+                </option>
 
-        </select>
+                <option value="expense">
+                    💸 Expense
+                </option>
 
+                <option value="saving">
+                    🐷 Saving
+                </option>
 
-        <label for="stickerName">
-            Sticker Name
-        </label>
+                <option value="transfer">
+                    🔄 Transfer
+                </option>
 
-        <input
-            type="text"
-            id="stickerName"
-            placeholder="Give your sticker a name"
-        >
+            </select>
+
+            <input id="transactionDate"
+                   type="date">
+
+        </div>
 
 
-        <button
-            class="primary-btn"
-            onclick="addSticker()"
-        >
-            Add Sticker
-        </button>
+        <div class="form-grid">
+
+            <select id="category"></select>
+
+            <select id="account"></select>
+
+            <select id="transactionCurrency">
+
+                <option value="PHP">PHP</option>
+                <option value="USD">USD</option>
+                <option value="NZD">NZD</option>
+                <option value="AUD">AUD</option>
+                <option value="CAD">CAD</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
+                <option value="KRW">KRW</option>
+                <option value="SGD">SGD</option>
+                <option value="HKD">HKD</option>
+                <option value="CNY">CNY</option>
+                <option value="THB">THB</option>
+                <option value="MYR">MYR</option>
+                <option value="INR">INR</option>
+                <option value="IDR">IDR</option>
+                <option value="AED">AED</option>
+                <option value="CHF">CHF</option>
+
+            </select>
+
+            <button class="primary-button"
+                    onclick="addTransaction()">
+                Add Transaction
+            </button>
+
+        </div>
+
+        <div class="form-note">
+            ☁️ Your information is saved securely to your PetalFlow account.
+        </div>
 
     </div>
 
 
-    <div
-        id="stickersContainer"
-        class="grid"
-    ></div>
+    <!-- TRANSACTIONS -->
 
-</section>
+    <div class="section">
 
+        <div class="section-header">
+            <h3>📜 Recent Transactions</h3>
+        </div>
+
+        <div id="transactionsList"></div>
+
+    </div>
+
+
+    <!-- ANALYTICS -->
+
+    <div class="grid">
+
+        <div class="section">
+
+            <div class="section-header">
+                <h3>📊 Spending by Category</h3>
+            </div>
+
+            <div id="categoryBreakdown"></div>
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="section-header">
+                <h3>🌸 Money Flow</h3>
+            </div>
+
+            <div id="moneyFlow"></div>
+
+        </div>
+
+    </div>
 
 </main>
 
 
-<footer>
+<div class="footer">
+    🌸 PetalFlow — Your money, your growth.
+</div>
 
-    Made with 🌸 for PetalFlow
+</div>
 
-    <div id="statusMessage"></div>
 
-</footer>
+<!-- =========================
+     THEME MODAL
+========================= -->
+
+<div class="modal" id="themeModal">
+
+    <div class="modal-card">
+
+        <h3>🎨 Choose your theme</h3>
+
+        <p style="color:var(--muted);font-size:13px;margin-bottom:15px;">
+            Choose a gentle color palette for your PetalFlow.
+        </p>
+
+        <div class="theme-options">
+
+            <button class="theme-option"
+                    onclick="setTheme('petal')">
+                🌸
+                <span>Petal</span>
+            </button>
+
+            <button class="theme-option"
+                    onclick="setTheme('lavender')">
+                💜
+                <span>Lavender</span>
+            </button>
+
+            <button class="theme-option"
+                    onclick="setTheme('sage')">
+                🌿
+                <span>Sage</span>
+            </button>
+
+            <button class="theme-option"
+                    onclick="setTheme('sky')">
+                🩵
+                <span>Sky</span>
+            </button>
+
+            <button class="theme-option"
+                    onclick="setTheme('peach')">
+                🍑
+                <span>Peach</span>
+            </button>
+
+            <button class="theme-option"
+                    onclick="setTheme('midnight')">
+                🌙
+                <span>Midnight</span>
+            </button>
+
+        </div>
+
+        <div class="modal-actions"
+             style="margin-top:15px;">
+
+            <button class="secondary-button"
+                    onclick="closeThemeModal()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ACCOUNT MODAL
+========================= -->
+
+<div class="modal" id="accountModal">
+
+    <div class="modal-card">
+
+        <h3>🏦 Add Account</h3>
+
+        <input id="accountName"
+               placeholder="Account name">
+
+        <select id="accountType">
+
+            <option value="bank">
+                🏦 Bank Account
+            </option>
+
+            <option value="ewallet">
+                💳 E-wallet
+            </option>
+
+            <option value="cash">
+                💵 Cash
+            </option>
+
+            <option value="other">
+                🌸 Other
+            </option>
+
+        </select>
+
+        <input id="accountBalance"
+               type="number"
+               step="0.01"
+               placeholder="Current balance">
+
+        <select id="accountCurrency">
+
+            <option value="PHP">🇵🇭 PHP</option>
+            <option value="USD">🇺🇸 USD</option>
+            <option value="NZD">🇳🇿 NZD</option>
+            <option value="AUD">🇦🇺 AUD</option>
+            <option value="CAD">🇨🇦 CAD</option>
+            <option value="GBP">🇬🇧 GBP</option>
+            <option value="EUR">🇪🇺 EUR</option>
+            <option value="JPY">🇯🇵 JPY</option>
+            <option value="KRW">🇰🇷 KRW</option>
+            <option value="SGD">🇸🇬 SGD</option>
+            <option value="HKD">🇭🇰 HKD</option>
+            <option value="CNY">🇨🇳 CNY</option>
+            <option value="THB">🇹🇭 THB</option>
+            <option value="MYR">🇲🇾 MYR</option>
+            <option value="INR">🇮🇳 INR</option>
+            <option value="IDR">🇮🇩 IDR</option>
+            <option value="AED">🇦🇪 AED</option>
+            <option value="CHF">🇨🇭 CHF</option>
+
+        </select>
+
+        <div class="modal-actions">
+
+            <button class="secondary-button"
+                    onclick="closeAccountModal()">
+                Cancel
+            </button>
+
+            <button class="primary-button"
+                    onclick="addAccount()">
+                Add Account
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     GOAL MODAL
+========================= -->
+
+<div class="modal" id="goalModal">
+
+    <div class="modal-card">
+
+        <h3>🎯 New Savings Goal</h3>
+
+        <input id="goalName"
+               placeholder="Goal name">
+
+        <input id="goalTarget"
+               type="number"
+               min="0"
+               step="0.01"
+               placeholder="Target amount">
+
+        <input id="goalSaved"
+               type="number"
+               min="0"
+               step="0.01"
+               placeholder="Already saved">
+
+        <select id="goalCurrency">
+
+            <option value="PHP">PHP</option>
+            <option value="USD">USD</option>
+            <option value="NZD">NZD</option>
+            <option value="AUD">AUD</option>
+            <option value="CAD">CAD</option>
+            <option value="GBP">GBP</option>
+            <option value="EUR">EUR</option>
+            <option value="JPY">JPY</option>
+            <option value="KRW">KRW</option>
+            <option value="SGD">SGD</option>
+            <option value="HKD">HKD</option>
+            <option value="CNY">CNY</option>
+            <option value="THB">THB</option>
+            <option value="MYR">MYR</option>
+            <option value="INR">INR</option>
+            <option value="IDR">IDR</option>
+            <option value="AED">AED</option>
+            <option value="CHF">CHF</option>
+
+        </select>
+
+        <div class="modal-actions">
+
+            <button class="secondary-button"
+                    onclick="closeGoalModal()">
+                Cancel
+            </button>
+
+            <button class="primary-button"
+                    onclick="addGoal()">
+                Create Goal
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <script>
@@ -569,130 +1596,671 @@ footer {
    SUPABASE
 ===================================================== */
 
-/*
-   IMPORTANT:
-   Replace these two values with your own Supabase
-   project URL and anon/public key.
+const SUPABASE_URL =
+    "https://jxnzoacuvxmqexzshbyo.supabase.co";
 
-   Do NOT put your service_role key here.
-*/
+const SUPABASE_KEY =
+    "sb_publishable__ej33puGxEQ4CY6umeOsUg_fx_i9DYH";
 
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const {
+    createClient
+} = supabase;
 
-let supabaseClient = null;
-
-if (
-    SUPABASE_URL !== "YOUR_SUPABASE_URL" &&
-    SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY"
-) {
-
-    supabaseClient = window.supabase.createClient(
+const db =
+    createClient(
         SUPABASE_URL,
-        SUPABASE_ANON_KEY
+        SUPABASE_KEY
+    );
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let currentUser = null;
+
+let accounts = [];
+let transactions = [];
+let goals = [];
+
+let settings = {
+    currency:"PHP",
+    budget:0,
+    budgetCurrency:"PHP"
+};
+
+
+/* =====================================================
+   CURRENCY SYMBOLS
+===================================================== */
+
+const symbols = {
+
+    PHP:"₱",
+    USD:"$",
+    NZD:"NZ$",
+    AUD:"A$",
+    CAD:"C$",
+    GBP:"£",
+    EUR:"€",
+    JPY:"¥",
+    KRW:"₩",
+    SGD:"S$",
+    HKD:"HK$",
+    CNY:"¥",
+    THB:"฿",
+    MYR:"RM",
+    INR:"₹",
+    IDR:"Rp",
+    AED:"د.إ",
+    CHF:"CHF "
+
+};
+
+
+/* =====================================================
+   APPROXIMATE EXCHANGE RATES
+   PHP BASE
+===================================================== */
+
+const rates = {
+
+    PHP:1,
+    USD:58,
+    NZD:34,
+    AUD:38,
+    CAD:42,
+    GBP:74,
+    EUR:67,
+    JPY:.39,
+    KRW:.042,
+    SGD:45,
+    HKD:7.4,
+    CNY:8,
+    THB:1.7,
+    MYR:13,
+    INR:.69,
+    IDR:.0035,
+    AED:15.8,
+    CHF:71
+
+};
+
+
+/* =====================================================
+   THEMES
+===================================================== */
+
+const themes = {
+
+    petal:{
+        pink:"#e89ab9",
+        pinkDark:"#c87599",
+        pinkLight:"#fff0f6",
+        lavender:"#b9a3df",
+        lavenderLight:"#f4effc",
+        cream:"#fffafd",
+        text:"#4d3947",
+        muted:"#9b8291",
+        border:"#eedce6",
+        green:"#72a883",
+        red:"#c97891",
+        page:"#fff7fb",
+        card:"#ffffff",
+        input:"#fffafd"
+    },
+
+    lavender:{
+        pink:"#b9a3df",
+        pinkDark:"#9277c5",
+        pinkLight:"#f4effc",
+        lavender:"#c7b8e8",
+        lavenderLight:"#f7f3fd",
+        cream:"#fcfaff",
+        text:"#493d57",
+        muted:"#8e829c",
+        border:"#e4dcef",
+        green:"#72a883",
+        red:"#c97891",
+        page:"#faf7ff",
+        card:"#ffffff",
+        input:"#fcfaff"
+    },
+
+    sage:{
+        pink:"#9db9a5",
+        pinkDark:"#718f7a",
+        pinkLight:"#eef6f0",
+        lavender:"#b4c7ba",
+        lavenderLight:"#f3f7f3",
+        cream:"#fbfdfb",
+        text:"#3f5045",
+        muted:"#849288",
+        border:"#dce8df",
+        green:"#679477",
+        red:"#b9787e",
+        page:"#f6faf7",
+        card:"#ffffff",
+        input:"#fbfdfb"
+    },
+
+    sky:{
+        pink:"#9fc9df",
+        pinkDark:"#6d9fb9",
+        pinkLight:"#edf7fb",
+        lavender:"#aec4df",
+        lavenderLight:"#f2f7fc",
+        cream:"#fbfdff",
+        text:"#40515c",
+        muted:"#81919b",
+        border:"#dceaf1",
+        green:"#6e9d82",
+        red:"#b97882",
+        page:"#f5fbfe",
+        card:"#ffffff",
+        input:"#fbfdff"
+    },
+
+    peach:{
+        pink:"#e8ad91",
+        pinkDark:"#c98468",
+        pinkLight:"#fff3ed",
+        lavender:"#e0b6a3",
+        lavenderLight:"#fff6f1",
+        cream:"#fffdfb",
+        text:"#55433d",
+        muted:"#9b8780",
+        border:"#f0dfd7",
+        green:"#739779",
+        red:"#c87d7d",
+        page:"#fffaf7",
+        card:"#ffffff",
+        input:"#fffdfb"
+    },
+
+    midnight:{
+        pink:"#d69ab8",
+        pinkDark:"#b87598",
+        pinkLight:"#3a2934",
+        lavender:"#a995ca",
+        lavenderLight:"#302b3d",
+        cream:"#19171d",
+        text:"#eee8ed",
+        muted:"#aaa0aa",
+        border:"#39323b",
+        green:"#83b58e",
+        red:"#d58b9c",
+        page:"#121016",
+        card:"#19171d",
+        input:"#211e25"
+    }
+
+};
+
+
+/* =====================================================
+   APPLY THEME
+===================================================== */
+
+function applyTheme(themeName){
+
+    const theme =
+        themes[themeName] || themes.petal;
+
+    const root =
+        document.documentElement;
+
+    Object.entries(theme).forEach(
+        ([key,value]) => {
+
+            const variable =
+                "--" +
+                key.replace(
+                    /[A-Z]/g,
+                    match => "-" + match.toLowerCase()
+                );
+
+            root.style.setProperty(
+                variable,
+                value
+            );
+
+        }
+    );
+
+    document.body.classList.toggle(
+        "midnight-mode",
+        themeName === "midnight"
     );
 
 }
 
 
 /* =====================================================
-   PROFILE / NOTES / STICKERS
+   THEME FUNCTIONS
 ===================================================== */
 
-let profileData = {
-    username: "username",
-    picture: ""
-};
+function setTheme(themeName){
 
-let notes = [];
+    if(!themes[themeName])
+        return;
 
-let stickers = [];
+    applyTheme(themeName);
+
+    localStorage.setItem(
+        "petalflowTheme",
+        themeName
+    );
+
+    closeThemeModal();
+
+}
+
+
+function openThemeModal(){
+
+    document
+        .getElementById("themeModal")
+        .classList.add("show");
+
+}
+
+
+function closeThemeModal(){
+
+    document
+        .getElementById("themeModal")
+        .classList.remove("show");
+
+}
+
+
+function loadSavedTheme(){
+
+    const savedTheme =
+        localStorage.getItem(
+            "petalflowTheme"
+        ) || "petal";
+
+    applyTheme(savedTheme);
+
+}
 
 
 /* =====================================================
-   STORAGE KEYS
+   UTILITY
 ===================================================== */
 
-const PROFILE_STORAGE_KEY = "petalflow_profile";
+function convert(amount,from,to){
 
-const NOTES_STORAGE_KEY = "petalflow_notes";
+    amount =
+        Number(amount) || 0;
 
-const STICKERS_STORAGE_KEY = "petalflow_stickers";
+    if(from === to)
+        return amount;
+
+    const fromRate =
+        rates[from] ?? 1;
+
+    const toRate =
+        rates[to] ?? 1;
+
+    const phpAmount =
+        amount * fromRate;
+
+    return phpAmount / toRate;
+
+}
+
+
+function money(
+    amount,
+    currency=settings.currency
+){
+
+    const value =
+        Number(amount) || 0;
+
+    return (
+        symbols[currency] || ""
+    ) +
+    value.toLocaleString(
+        undefined,
+        {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+
+function today(){
+
+    const now =
+        new Date();
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        String(
+            now.getMonth()+1
+        ).padStart(2,"0");
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(2,"0");
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+function currentMonth(){
+
+    return today().slice(0,7);
+
+}
+
+
+function escapeHTML(text){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text ?? "";
+
+    return div.innerHTML;
+
+}
+
+
+function showMessage(
+    elementId,
+    message,
+    type=""
+){
+
+    const element =
+        document.getElementById(
+            elementId
+        );
+
+    element.textContent =
+        message;
+
+    element.className =
+        "auth-message " + type;
+
+    element.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+function hideMessage(elementId){
+
+    document
+        .getElementById(elementId)
+        .classList.add("hidden");
+
+}
+
+
+function safeError(error){
+
+    console.error(error);
+
+    return error?.message ||
+        "Something went wrong. Please try again.";
+
+}
 
 
 /* =====================================================
-   LOAD LOCAL DATA
+   AUTH VIEWS
 ===================================================== */
 
-function loadLocalData() {
+function showSignup(){
 
-    try {
+    document
+        .getElementById("loginView")
+        .classList.add("hidden");
 
-        const savedProfile =
-            localStorage.getItem(PROFILE_STORAGE_KEY);
+    document
+        .getElementById("signupView")
+        .classList.remove("hidden");
 
-        if (savedProfile) {
+    hideMessage("loginMessage");
 
-            const parsedProfile =
-                JSON.parse(savedProfile);
+}
 
-            if (
-                parsedProfile &&
-                typeof parsedProfile === "object"
-            ) {
 
-                profileData = {
-                    username:
-                        parsedProfile.username ||
-                        "username",
+function showLogin(){
 
-                    picture:
-                        parsedProfile.picture ||
-                        ""
-                };
+    document
+        .getElementById("signupView")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loginView")
+        .classList.remove("hidden");
+
+    hideMessage("signupMessage");
+
+}
+
+
+/* =====================================================
+   SIGN UP
+===================================================== */
+
+async function signup(){
+
+    const name =
+        document
+            .getElementById("signupName")
+            .value.trim();
+
+    const email =
+        document
+            .getElementById("signupEmail")
+            .value.trim();
+
+    const password =
+        document
+            .getElementById("signupPassword")
+            .value;
+
+    const confirm =
+        document
+            .getElementById("signupConfirm")
+            .value;
+
+
+    if(!name || !email || !password){
+
+        showMessage(
+            "signupMessage",
+            "Please fill in all the fields 🌷",
+            "auth-error"
+        );
+
+        return;
+
+    }
+
+
+    if(password.length < 6){
+
+        showMessage(
+            "signupMessage",
+            "Your password should have at least 6 characters.",
+            "auth-error"
+        );
+
+        return;
+
+    }
+
+
+    if(password !== confirm){
+
+        showMessage(
+            "signupMessage",
+            "Your passwords don't match.",
+            "auth-error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "signupMessage",
+        "Creating your PetalFlow account..."
+    );
+
+
+    const {
+        data,
+        error
+    } =
+        await db.auth.signUp({
+
+            email,
+            password,
+
+            options:{
+                emailRedirectTo:
+                    window.location.origin +
+                    window.location.pathname,
+
+                data:{
+                    display_name:name
+                }
 
             }
 
-        }
+        });
 
 
-        const savedNotes =
-            localStorage.getItem(NOTES_STORAGE_KEY);
+    if(error){
 
-        if (savedNotes) {
+        showMessage(
+            "signupMessage",
+            safeError(error),
+            "auth-error"
+        );
 
-            const parsedNotes =
-                JSON.parse(savedNotes);
+        return;
 
-            if (Array.isArray(parsedNotes)) {
-
-                notes = parsedNotes;
-
-            }
-
-        }
+    }
 
 
-        const savedStickers =
-            localStorage.getItem(STICKERS_STORAGE_KEY);
+    /*
+       If email confirmation is disabled,
+       Supabase returns a session immediately.
+    */
 
-        if (savedStickers) {
+    if(data.session){
 
-            const parsedStickers =
-                JSON.parse(savedStickers);
+        showMessage(
+            "signupMessage",
+            "Your account is ready 🌸",
+            "auth-success"
+        );
 
-            if (Array.isArray(parsedStickers)) {
+        await ensureProfile(
+            data.user,
+            name
+        );
 
-                stickers = parsedStickers;
+        await startApp(
+            data.user
+        );
 
-            }
+        return;
 
-        }
+    }
 
-    } catch (error) {
+
+    /*
+       If email confirmation is enabled.
+    */
+
+    showMessage(
+        "signupMessage",
+        "Account created! Please check your email to confirm your account, then log in. 🌷",
+        "auth-success"
+    );
+
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+async function ensureProfile(
+    user,
+    displayName
+){
+
+    if(!user)
+        return;
+
+    const {
+        data:existing,
+        error:selectError
+    } =
+        await db
+            .from("profiles")
+            .select("id")
+            .eq("id",user.id)
+            .maybeSingle();
+
+    if(selectError){
 
         console.error(
-            "Error loading local data:",
+            "Profile lookup error:",
+            selectError
+        );
+
+        return;
+
+    }
+
+
+    if(existing)
+        return;
+
+
+    const {
+        error
+    } =
+        await db
+            .from("profiles")
+            .insert({
+
+                id:user.id,
+                display_name:
+                    displayName ||
+                    user.user_metadata?.display_name ||
+                    ""
+
+            });
+
+
+    if(error){
+
+        console.error(
+            "Profile creation error:",
             error
         );
 
@@ -702,460 +2270,746 @@ function loadLocalData() {
 
 
 /* =====================================================
-   SAVE LOCAL DATA
+   LOGIN
 ===================================================== */
 
-function saveLocalProfile() {
+async function login(){
 
-    localStorage.setItem(
-        PROFILE_STORAGE_KEY,
-        JSON.stringify(profileData)
+    const email =
+        document
+            .getElementById("loginEmail")
+            .value.trim();
+
+    const password =
+        document
+            .getElementById("loginPassword")
+            .value;
+
+
+    if(!email || !password){
+
+        showMessage(
+            "loginMessage",
+            "Please enter your email and password.",
+            "auth-error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "loginMessage",
+        "Logging you in..."
     );
 
-}
+
+    const {
+        data,
+        error
+    } =
+        await db.auth.signInWithPassword({
+
+            email,
+            password
+
+        });
 
 
-function saveLocalNotes() {
+    if(error){
 
-    localStorage.setItem(
-        NOTES_STORAGE_KEY,
-        JSON.stringify(notes)
-    );
+        showMessage(
+            "loginMessage",
+            safeError(error),
+            "auth-error"
+        );
 
-}
+        return;
+
+    }
 
 
-function saveLocalStickers() {
-
-    localStorage.setItem(
-        STICKERS_STORAGE_KEY,
-        JSON.stringify(stickers)
+    await startApp(
+        data.user
     );
 
 }
 
 
 /* =====================================================
-   PAGE NAVIGATION
+   LOGOUT
 ===================================================== */
 
-function showPage(pageId) {
+async function logout(){
 
-    const pages =
-        document.querySelectorAll(".page");
+    const {
+        error
+    } =
+        await db.auth.signOut();
 
-    pages.forEach(function(page) {
-
-        page.classList.remove("active");
-
-    });
-
-
-    const selectedPage =
-        document.getElementById(pageId);
-
-    if (selectedPage) {
-
-        selectedPage.classList.add("active");
-
-    }
-
-
-    updateDashboard();
-
-}
-
-
-/* =====================================================
-   PROFILE
-===================================================== */
-
-function renderProfile() {
-
-    const usernameInput =
-        document.getElementById("usernameInput");
-
-    const imageContainer =
-        document.getElementById(
-            "profileImageContainer"
-        );
-
-
-    usernameInput.value =
-        profileData.username ||
-        "username";
-
-
-    if (profileData.picture) {
-
-        imageContainer.innerHTML = `
-            <img
-                src="${profileData.picture}"
-                class="profile-picture"
-                alt="Profile picture"
-            >
-        `;
-
-    } else {
-
-        imageContainer.innerHTML = `
-            <div class="profile-placeholder">
-                🌸
-            </div>
-        `;
-
-    }
-
-}
-
-
-function saveProfile() {
-
-    const usernameInput =
-        document.getElementById("usernameInput");
-
-    const pictureInput =
-        document.getElementById("pictureInput");
-
-    const username =
-        usernameInput.value.trim();
-
-
-    profileData.username =
-        username ||
-        "username";
-
-
-    if (
-        pictureInput.files &&
-        pictureInput.files.length > 0
-    ) {
-
-        const file =
-            pictureInput.files[0];
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload = function(event) {
-
-            profileData.picture =
-                event.target.result;
-
-            saveLocalProfile();
-
-            renderProfile();
-
-            showProfileMessage(
-                "Profile saved 🌸"
-            );
-
-            updateDashboard();
-
-        };
-
-
-        reader.readAsDataURL(file);
-
-    } else {
-
-        saveLocalProfile();
-
-        renderProfile();
-
-        showProfileMessage(
-            "Profile saved 🌸"
-        );
-
-        updateDashboard();
-
-    }
-
-}
-
-
-function showProfileMessage(message) {
-
-    const element =
-        document.getElementById(
-            "profileMessage"
-        );
-
-    element.textContent = message;
-
-    setTimeout(function() {
-
-        element.textContent = "";
-
-    }, 2500);
-
-}
-
-
-/* =====================================================
-   NOTES
-===================================================== */
-
-function addNote() {
-
-    const titleInput =
-        document.getElementById("noteTitle");
-
-    const contentInput =
-        document.getElementById("noteContent");
-
-
-    const title =
-        titleInput.value.trim();
-
-    const content =
-        contentInput.value.trim();
-
-
-    if (!content) {
+    if(error){
 
         alert(
-            "Please write something in your note."
+            "Unable to log out. Please try again."
         );
 
         return;
 
     }
 
+    currentUser = null;
 
-    const newNote = {
+    accounts = [];
+    transactions = [];
+    goals = [];
 
-        id: Date.now(),
+    document
+        .getElementById("app")
+        .classList.add("hidden");
 
-        title:
-            title ||
-            "Untitled Note",
+    document
+        .getElementById("loadingScreen")
+        .classList.add("hidden");
 
-        content:
-            content,
+    document
+        .getElementById("authScreen")
+        .classList.remove("hidden");
 
-        createdAt:
-            new Date().toISOString()
-
-    };
-
-
-    notes.unshift(newNote);
-
-    saveLocalNotes();
-
-    titleInput.value = "";
-
-    contentInput.value = "";
-
-    renderNotes();
-
-    updateDashboard();
-
-}
-
-
-function renderNotes() {
-
-    const container =
-        document.getElementById(
-            "notesContainer"
-        );
-
-
-    container.innerHTML = "";
-
-
-    if (notes.length === 0) {
-
-        container.innerHTML = `
-            <div class="card">
-                <p>
-                    No notes yet 🌸
-                    Create your first note above.
-                </p>
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    notes.forEach(function(note) {
-
-        const noteElement =
-            document.createElement("div");
-
-        noteElement.className =
-            "note";
-
-
-        noteElement.innerHTML = `
-
-            <h3>
-                ${escapeHTML(note.title)}
-            </h3>
-
-            <p>
-                ${escapeHTML(note.content)}
-            </p>
-
-            <button
-                class="delete-btn"
-                onclick="deleteNote(${note.id})"
-            >
-                Delete
-            </button>
-
-        `;
-
-
-        container.appendChild(noteElement);
-
-    });
-
-}
-
-
-function deleteNote(id) {
-
-    const confirmed =
-        confirm(
-            "Delete this note?"
-        );
-
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-    notes =
-        notes.filter(function(note) {
-
-            return note.id !== id;
-
-        });
-
-
-    saveLocalNotes();
-
-    renderNotes();
-
-    updateDashboard();
+    showLogin();
 
 }
 
 
 /* =====================================================
-   STICKERS
+   START APP
 ===================================================== */
 
-function addSticker() {
+async function startApp(user){
 
-    const emoji =
-        document.getElementById(
-            "stickerEmoji"
-        ).value;
+    if(!user)
+        return;
 
-    const nameInput =
-        document.getElementById(
-            "stickerName"
+    /*
+       Prevent duplicate initialization.
+    */
+
+    if(
+        currentUser?.id === user.id &&
+        !document
+            .getElementById("app")
+            .classList.contains("hidden")
+    ){
+
+        return;
+
+    }
+
+
+    currentUser = user;
+
+    document
+        .getElementById("authScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loadingScreen")
+        .classList.remove("hidden");
+
+    try{
+
+        await ensureProfile(user);
+
+        await loadUserData();
+
+        const profile =
+            await getProfileName();
+
+        document
+            .getElementById("greetingTitle")
+            .textContent =
+                profile
+                ? `Good day, ${profile} 🌷`
+                : "Good day 🌷";
+
+        document
+            .getElementById("loadingScreen")
+            .classList.add("hidden");
+
+        document
+            .getElementById("app")
+            .classList.remove("hidden");
+
+        render();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        document
+            .getElementById("loadingScreen")
+            .classList.add("hidden");
+
+        alert(
+            "Something went wrong while loading your PetalFlow data.\n\n" +
+            safeError(error)
         );
 
+    }
+
+}
+
+
+/* =====================================================
+   GET PROFILE NAME
+===================================================== */
+
+async function getProfileName(){
+
+    if(!currentUser)
+        return "";
+
+    const {
+        data,
+        error
+    } =
+        await db
+            .from("profiles")
+            .select("display_name")
+            .eq("id",currentUser.id)
+            .maybeSingle();
+
+    if(error){
+
+        console.error(error);
+
+        return (
+            currentUser
+                .user_metadata
+                ?.display_name || ""
+        );
+
+    }
+
+    return (
+        data?.display_name ||
+        currentUser
+            .user_metadata
+            ?.display_name ||
+        ""
+    );
+
+}
+
+
+/* =====================================================
+   LOAD USER DATA
+===================================================== */
+
+async function loadUserData(){
+
+    if(!currentUser)
+        return;
+
+
+    const [
+        accountsResult,
+        transactionsResult,
+        goalsResult,
+        budgetResult
+    ] =
+        await Promise.all([
+
+            db
+                .from("accounts")
+                .select("*")
+                .eq(
+                    "user_id",
+                    currentUser.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending:true
+                    }
+                ),
+
+            db
+                .from("transactions")
+                .select("*")
+                .eq(
+                    "user_id",
+                    currentUser.id
+                )
+                .order(
+                    "transaction_date",
+                    {
+                        ascending:false
+                    }
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending:false
+                    }
+                ),
+
+            db
+                .from("savings_goals")
+                .select("*")
+                .eq(
+                    "user_id",
+                    currentUser.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending:true
+                    }
+                ),
+
+            db
+                .from("budgets")
+                .select("*")
+                .eq(
+                    "user_id",
+                    currentUser.id
+                )
+                .eq(
+                    "month",
+                    currentMonth()
+                )
+                .maybeSingle()
+
+        ]);
+
+
+    if(accountsResult.error)
+        throw accountsResult.error;
+
+    if(transactionsResult.error)
+        throw transactionsResult.error;
+
+    if(goalsResult.error)
+        throw goalsResult.error;
+
+    if(budgetResult.error)
+        throw budgetResult.error;
+
+
+    accounts =
+        accountsResult.data || [];
+
+    transactions =
+        transactionsResult.data || [];
+
+    goals =
+        goalsResult.data || [];
+
+
+    settings.budget =
+        budgetResult.data
+        ? Number(
+            budgetResult.data.amount
+        )
+        : 0;
+
+    settings.budgetCurrency =
+        budgetResult.data?.currency ||
+        settings.currency;
+
+
+    settings.currency =
+        localStorage.getItem(
+            "petalflowDisplayCurrency"
+        ) || "PHP";
+
+}
+
+
+/* =====================================================
+   CURRENCY
+===================================================== */
+
+function changeCurrency(){
+
+    settings.currency =
+        document
+            .getElementById(
+                "displayCurrency"
+            )
+            .value;
+
+    localStorage.setItem(
+        "petalflowDisplayCurrency",
+        settings.currency
+    );
+
+    render();
+
+}
+
+
+/* =====================================================
+   ACCOUNT MODALS
+===================================================== */
+
+function openAccountModal(){
+
+    document
+        .getElementById("accountModal")
+        .classList.add("show");
+
+}
+
+
+function closeAccountModal(){
+
+    document
+        .getElementById("accountModal")
+        .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   ADD ACCOUNT
+===================================================== */
+
+async function addAccount(){
+
+    if(!currentUser)
+        return;
 
     const name =
-        nameInput.value.trim();
+        document
+            .getElementById("accountName")
+            .value.trim();
 
-
-    const newSticker = {
-
-        id: Date.now(),
-
-        emoji:
-            emoji,
-
-        name:
-            name ||
-            "My Sticker"
-
-    };
-
-
-    stickers.unshift(newSticker);
-
-    saveLocalStickers();
-
-    nameInput.value = "";
-
-    renderStickers();
-
-    updateDashboard();
-
-}
-
-
-function renderStickers() {
-
-    const container =
-        document.getElementById(
-            "stickersContainer"
+    const balance =
+        parseFloat(
+            document
+                .getElementById(
+                    "accountBalance"
+                )
+                .value
         );
 
+    const type =
+        document
+            .getElementById(
+                "accountType"
+            )
+            .value;
 
-    container.innerHTML = "";
+    const currency =
+        document
+            .getElementById(
+                "accountCurrency"
+            )
+            .value;
 
 
-    if (stickers.length === 0) {
+    if(
+        !name ||
+        !Number.isFinite(balance)
+    ){
 
-        container.innerHTML = `
-            <div class="card">
-                <p>
-                    No stickers yet ✨
-                    Add one above!
-                </p>
-            </div>
-        `;
+        alert(
+            "Please enter an account name and balance 🌸"
+        );
 
         return;
 
     }
 
 
-    stickers.forEach(function(sticker) {
+    const {
+        error
+    } =
+        await db
+            .from("accounts")
+            .insert({
 
-        const stickerElement =
-            document.createElement("div");
+                user_id:currentUser.id,
+                name,
+                type,
+                balance,
+                currency
 
-        stickerElement.className =
-            "sticker";
-
-
-        stickerElement.innerHTML = `
-
-            <div class="sticker-emoji">
-                ${escapeHTML(sticker.emoji)}
-            </div>
-
-            <div class="sticker-name">
-                ${escapeHTML(sticker.name)}
-            </div>
-
-            <button
-                class="delete-btn"
-                onclick="deleteSticker(${sticker.id})"
-            >
-                Delete
-            </button>
-
-        `;
+            });
 
 
-        container.appendChild(
-            stickerElement
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to add the account.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "accountName"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "accountBalance"
+        )
+        .value = "";
+
+    closeAccountModal();
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   EDIT ACCOUNT
+===================================================== */
+
+async function editAccount(id){
+
+    const account =
+        accounts.find(
+            a =>
+                Number(a.id) ===
+                Number(id)
+        );
+
+    if(!account)
+        return;
+
+
+    const newBalance =
+        prompt(
+            "Enter the current balance:",
+            account.balance
+        );
+
+
+    if(newBalance === null)
+        return;
+
+
+    const balance =
+        parseFloat(newBalance);
+
+
+    if(!Number.isFinite(balance)){
+
+        alert(
+            "Please enter a valid number."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await db
+            .from("accounts")
+            .update({
+                balance
+            })
+            .eq(
+                "id",
+                id
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+    if(error){
+
+        alert(
+            "Unable to update the account.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   DELETE ACCOUNT
+===================================================== */
+
+async function deleteAccount(id){
+
+    const account =
+        accounts.find(
+            a =>
+                Number(a.id) ===
+                Number(id)
+        );
+
+    if(!account)
+        return;
+
+
+    if(
+        !confirm(
+            `Delete "${account.name}"?\n\nTransactions connected to this account will remain in your transaction history.`
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await db
+            .from("accounts")
+            .delete()
+            .eq(
+                "id",
+                id
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+    if(error){
+
+        alert(
+            "Unable to delete the account.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   TRANSACTION CATEGORIES
+===================================================== */
+
+function updateCategories(){
+
+    const type =
+        document
+            .getElementById(
+                "transactionType"
+            )
+            .value;
+
+    const category =
+        document.getElementById(
+            "category"
+        );
+
+    let list = [];
+
+
+    if(type === "income"){
+
+        list = [
+            "Salary",
+            "Tutoring",
+            "Allowance",
+            "Business",
+            "Gift",
+            "Other Income"
+        ];
+
+    }
+
+    else if(type === "expense"){
+
+        list = [
+            "Food",
+            "Housing",
+            "Transportation",
+            "Education",
+            "Bills",
+            "Shopping",
+            "Personal",
+            "Entertainment",
+            "Travel",
+            "Health",
+            "Work",
+            "Emergency",
+            "Other"
+        ];
+
+    }
+
+    else if(type === "saving"){
+
+        list = [
+            "Emergency Fund",
+            "New Zealand Trip",
+            "General Savings",
+            "Investment",
+            "Other Savings"
+        ];
+
+    }
+
+    else{
+
+        list = [
+            "Account Transfer"
+        ];
+
+    }
+
+
+    category.innerHTML = "";
+
+
+    list.forEach(item => {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value = item;
+
+        option.textContent = item;
+
+        category.appendChild(
+            option
         );
 
     });
@@ -1163,132 +3017,2188 @@ function renderStickers() {
 }
 
 
-function deleteSticker(id) {
+/* =====================================================
+   UPDATE ACCOUNT BALANCE
+===================================================== */
 
-    const confirmed =
-        confirm(
-            "Delete this sticker?"
+async function updateAccountBalance(
+    account,
+    change
+){
+
+    const newBalance =
+        Number(account.balance) +
+        Number(change);
+
+
+    return await db
+        .from("accounts")
+        .update({
+            balance:newBalance
+        })
+        .eq(
+            "id",
+            account.id
+        )
+        .eq(
+            "user_id",
+            currentUser.id
         );
 
-    if (!confirmed) {
+}
+
+
+/* =====================================================
+   ADD TRANSACTION
+===================================================== */
+
+async function addTransaction(){
+
+    if(!currentUser)
+        return;
+
+
+    const description =
+        document
+            .getElementById(
+                "description"
+            )
+            .value.trim();
+
+    const amount =
+        parseFloat(
+            document
+                .getElementById(
+                    "amount"
+                )
+                .value
+        );
+
+    const type =
+        document
+            .getElementById(
+                "transactionType"
+            )
+            .value;
+
+    const category =
+        document
+            .getElementById(
+                "category"
+            )
+            .value;
+
+    const date =
+        document
+            .getElementById(
+                "transactionDate"
+            )
+            .value || today();
+
+    const accountId =
+        Number(
+            document
+                .getElementById(
+                    "account"
+                )
+                .value
+        );
+
+    const currency =
+        document
+            .getElementById(
+                "transactionCurrency"
+            )
+            .value;
+
+
+    if(
+        !description ||
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ){
+
+        alert(
+            "Please enter a description and valid amount 🌷"
+        );
 
         return;
 
     }
 
 
-    stickers =
-        stickers.filter(function(sticker) {
-
-            return sticker.id !== id;
-
-        });
-
-
-    saveLocalStickers();
-
-    renderStickers();
-
-    updateDashboard();
-
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-function updateDashboard() {
-
-    const noteCount =
-        document.getElementById(
-            "noteCount"
-        );
-
-    const stickerCount =
-        document.getElementById(
-            "stickerCount"
-        );
-
-    const profileStatus =
-        document.getElementById(
-            "profileStatus"
+    const account =
+        accounts.find(
+            a =>
+                Number(a.id) ===
+                accountId
         );
 
 
-    if (noteCount) {
+    if(!account){
 
-        noteCount.textContent =
-            notes.length;
-
-    }
-
-
-    if (stickerCount) {
-
-        stickerCount.textContent =
-            stickers.length;
-
-    }
-
-
-    if (profileStatus) {
-
-        profileStatus.textContent =
-            profileData.username
-                ? "✓"
-                : "🌸";
-
-    }
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHTML(value) {
-
-    const div =
-        document.createElement("div");
-
-    div.textContent =
-        String(value);
-
-    return div.innerHTML;
-
-}
-
-
-/* =====================================================
-   SUPABASE STATUS
-===================================================== */
-
-function updateSupabaseStatus() {
-
-    const status =
-        document.getElementById(
-            "statusMessage"
+        alert(
+            "Please add an account first 🏦"
         );
-
-
-    if (!status) {
 
         return;
 
     }
 
 
-    if (supabaseClient) {
+    const converted =
+        convert(
+            amount,
+            currency,
+            account.currency
+        );
 
-        status.textContent =
-            "☁️ Supabase connected";
 
-    } else {
+    /* =====================
+       EXPENSE
+    ===================== */
 
-        status.textContent =
-            "🌸 Local mode";
+    if(type === "expense"){
+
+        if(
+            Number(account.balance) <
+            converted
+        ){
+
+            const proceed =
+                confirm(
+                    "This expense is greater than the account balance.\n\nDo you want to add it anyway?"
+                );
+
+            if(!proceed)
+                return;
+
+        }
+
+
+        const result =
+            await updateAccountBalance(
+                account,
+                -converted
+            );
+
+
+        if(result.error){
+
+            alert(
+                "Unable to update the account.\n\n" +
+                safeError(result.error)
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /* =====================
+       INCOME
+    ===================== */
+
+    if(type === "income"){
+
+        const result =
+            await updateAccountBalance(
+                account,
+                converted
+            );
+
+
+        if(result.error){
+
+            alert(
+                "Unable to update the account.\n\n" +
+                safeError(result.error)
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /* =====================
+       SAVING
+    ===================== */
+
+    if(type === "saving"){
+
+        if(
+            Number(account.balance) <
+            converted
+        ){
+
+            const proceed =
+                confirm(
+                    "This saving amount is greater than the account balance.\n\nDo you want to continue?"
+                );
+
+            if(!proceed)
+                return;
+
+        }
+
+
+        const result =
+            await updateAccountBalance(
+                account,
+                -converted
+            );
+
+
+        if(result.error){
+
+            alert(
+                "Unable to update the account.\n\n" +
+                safeError(result.error)
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Savings are tracked in the selected
+           savings category when it matches
+           a goal name.
+        */
+
+        const matchingGoal =
+            goals.find(
+                goal =>
+                    goal.name === category
+            );
+
+
+        if(matchingGoal){
+
+            const goalAmount =
+                convert(
+                    amount,
+                    currency,
+                    matchingGoal.currency ||
+                    currency
+                );
+
+
+            const goalResult =
+                await db
+                    .from("savings_goals")
+                    .update({
+
+                        saved:
+                            Number(
+                                matchingGoal.saved
+                            ) +
+                            goalAmount
+
+                    })
+                    .eq(
+                        "id",
+                        matchingGoal.id
+                    )
+                    .eq(
+                        "user_id",
+                        currentUser.id
+                    );
+
+
+            if(goalResult.error){
+
+                console.error(
+                    "Goal update error:",
+                    goalResult.error
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================
+       TRANSFER
+    ===================== */
+
+    if(type === "transfer"){
+
+        const destinations =
+            accounts.filter(
+                a =>
+                    Number(a.id) !==
+                    Number(account.id)
+            );
+
+
+        if(destinations.length === 0){
+
+            alert(
+                "You need at least two accounts to make a transfer."
+            );
+
+            return;
+
+        }
+
+
+        const destinationList =
+            destinations
+                .map(
+                    (a,index) =>
+                        `${index + 1}. ${a.name} (${a.currency})`
+                )
+                .join("\n");
+
+
+        const choice =
+            prompt(
+                "Choose destination account:\n\n" +
+                destinationList +
+                "\n\nEnter the number:"
+            );
+
+
+        if(choice === null)
+            return;
+
+
+        const index =
+            parseInt(
+                choice,
+                10
+            ) - 1;
+
+
+        if(
+            !Number.isInteger(index) ||
+            !destinations[index]
+        ){
+
+            alert(
+                "Invalid destination account."
+            );
+
+            return;
+
+        }
+
+
+        const destination =
+            destinations[index];
+
+
+        const sourceAmount =
+            convert(
+                amount,
+                currency,
+                account.currency
+            );
+
+        const destinationAmount =
+            convert(
+                amount,
+                currency,
+                destination.currency
+            );
+
+
+        if(
+            Number(account.balance) <
+            sourceAmount
+        ){
+
+            const proceed =
+                confirm(
+                    "The transfer is greater than the source account balance.\n\nContinue anyway?"
+                );
+
+            if(!proceed)
+                return;
+
+        }
+
+
+        const sourceResult =
+            await updateAccountBalance(
+                account,
+                -sourceAmount
+            );
+
+
+        if(sourceResult.error){
+
+            alert(
+                "Unable to transfer from the source account.\n\n" +
+                safeError(
+                    sourceResult.error
+                )
+            );
+
+            return;
+
+        }
+
+
+        const destinationResult =
+            await updateAccountBalance(
+                destination,
+                destinationAmount
+            );
+
+
+        if(destinationResult.error){
+
+            /*
+               Attempt to reverse the source
+               transaction if destination fails.
+            */
+
+            await updateAccountBalance(
+                account,
+                sourceAmount
+            );
+
+            alert(
+                "The transfer could not be completed. No balance was changed."
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Store transfer history against
+           the source account.
+        */
+
+    }
+
+
+    /* =====================
+       SAVE TRANSACTION
+    ===================== */
+
+    const {
+        error
+    } =
+        await db
+            .from("transactions")
+            .insert({
+
+                user_id:
+                    currentUser.id,
+
+                account_id:
+                    account.id,
+
+                description,
+
+                amount,
+
+                type,
+
+                category,
+
+                transaction_date:
+                    date,
+
+                currency
+
+            });
+
+
+    if(error){
+
+        console.error(error);
+
+        /*
+           Important:
+           The account balance has already changed.
+           Inform the user so the issue is visible.
+        */
+
+        alert(
+            "The balance was updated, but the transaction could not be saved.\n\n" +
+            safeError(error)
+        );
+
+        await loadUserData();
+
+        render();
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "description"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "amount"
+        )
+        .value = "";
+
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   DELETE TRANSACTION
+===================================================== */
+
+async function deleteTransaction(id){
+
+    const transaction =
+        transactions.find(
+            t =>
+                Number(t.id) ===
+                Number(id)
+        );
+
+
+    if(!transaction)
+        return;
+
+
+    /*
+       Transfers are not automatically reversed
+       because the current transactions table
+       does not store a destination account ID.
+    */
+
+    if(transaction.type === "transfer"){
+
+        const confirmDelete =
+            confirm(
+                "This is a transfer. Deleting the history will NOT automatically reverse the transfer between accounts.\n\nDelete the transaction history anyway?"
+            );
+
+        if(!confirmDelete)
+            return;
+
+    }
+    else{
+
+        if(
+            !confirm(
+                "Delete this transaction?"
+            )
+        ){
+
+            return;
+
+        }
+
+    }
+
+
+    const account =
+        accounts.find(
+            a =>
+                Number(a.id) ===
+                Number(
+                    transaction.account_id
+                )
+        );
+
+
+    /*
+       Restore balance for normal
+       income / expense / saving transactions.
+    */
+
+    if(
+        account &&
+        transaction.type !== "transfer"
+    ){
+
+        const converted =
+            convert(
+                Number(
+                    transaction.amount
+                ),
+                transaction.currency,
+                account.currency
+            );
+
+
+        let change = 0;
+
+
+        if(
+            transaction.type === "expense"
+        ){
+
+            change =
+                converted;
+
+        }
+
+
+        if(
+            transaction.type === "income"
+        ){
+
+            change =
+                -converted;
+
+        }
+
+
+        if(
+            transaction.type === "saving"
+        ){
+
+            change =
+                converted;
+
+        }
+
+
+        if(change !== 0){
+
+            const result =
+                await updateAccountBalance(
+                    account,
+                    change
+                );
+
+
+            if(result.error){
+
+                alert(
+                    "Unable to restore the account balance.\n\n" +
+                    safeError(
+                        result.error
+                    )
+                );
+
+                return;
+
+            }
+
+        }
+
+    }
+
+
+    const {
+        error
+    } =
+        await db
+            .from("transactions")
+            .delete()
+            .eq(
+                "id",
+                id
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+    if(error){
+
+        alert(
+            "Unable to delete the transaction.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   EDIT TRANSACTION
+===================================================== */
+
+async function editTransaction(id){
+
+    const transaction =
+        transactions.find(
+            t =>
+                Number(t.id) ===
+                Number(id)
+        );
+
+
+    if(!transaction)
+        return;
+
+
+    /*
+       To prevent incorrect account balances,
+       only description is safely editable here.
+       Amount changes require recalculating the
+       account balance.
+    */
+
+    const newDescription =
+        prompt(
+            "Description:",
+            transaction.description
+        );
+
+
+    if(newDescription === null)
+        return;
+
+
+    const cleanDescription =
+        newDescription.trim();
+
+
+    if(!cleanDescription){
+
+        alert(
+            "Description cannot be empty."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await db
+            .from("transactions")
+            .update({
+
+                description:
+                    cleanDescription
+
+            })
+            .eq(
+                "id",
+                id
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+    if(error){
+
+        alert(
+            "Unable to edit the transaction.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   GOAL MODALS
+===================================================== */
+
+function openGoalModal(){
+
+    document
+        .getElementById("goalModal")
+        .classList.add("show");
+
+}
+
+
+function closeGoalModal(){
+
+    document
+        .getElementById("goalModal")
+        .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   ADD GOAL
+===================================================== */
+
+async function addGoal(){
+
+    const name =
+        document
+            .getElementById(
+                "goalName"
+            )
+            .value.trim();
+
+    const target =
+        parseFloat(
+            document
+                .getElementById(
+                    "goalTarget"
+                )
+                .value
+        );
+
+    const savedInput =
+        parseFloat(
+            document
+                .getElementById(
+                    "goalSaved"
+                )
+                .value
+        );
+
+    const saved =
+        Number.isFinite(savedInput)
+        ? savedInput
+        : 0;
+
+    const currency =
+        document
+            .getElementById(
+                "goalCurrency"
+            )
+            .value;
+
+
+    if(
+        !name ||
+        !Number.isFinite(target) ||
+        target <= 0
+    ){
+
+        alert(
+            "Please enter a goal name and target 🌸"
+        );
+
+        return;
+
+    }
+
+
+    if(saved < 0){
+
+        alert(
+            "Already saved cannot be negative."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await db
+            .from("savings_goals")
+            .insert({
+
+                user_id:
+                    currentUser.id,
+
+                name,
+
+                target,
+
+                saved,
+
+                currency
+
+            });
+
+
+    if(error){
+
+        alert(
+            "Unable to create the savings goal.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "goalName"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "goalTarget"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "goalSaved"
+        )
+        .value = "";
+
+
+    closeGoalModal();
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   DELETE GOAL
+===================================================== */
+
+async function deleteGoal(id){
+
+    if(
+        !confirm(
+            "Delete this savings goal?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await db
+            .from("savings_goals")
+            .delete()
+            .eq(
+                "id",
+                id
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            );
+
+
+    if(error){
+
+        alert(
+            "Unable to delete this goal.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   BUDGET
+===================================================== */
+
+async function saveBudget(){
+
+    const value =
+        parseFloat(
+            document
+                .getElementById(
+                    "budgetInput"
+                )
+                .value
+        );
+
+
+    if(
+        !Number.isFinite(value) ||
+        value < 0
+    ){
+
+        alert(
+            "Please enter a valid budget."
+        );
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } =
+        await db
+            .from("budgets")
+            .upsert({
+
+                user_id:
+                    currentUser.id,
+
+                month:
+                    currentMonth(),
+
+                amount:value,
+
+                currency:
+                    settings.currency
+
+            },{
+                onConflict:
+                    "user_id,month"
+            });
+
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to save your budget.\n\n" +
+            safeError(error)
+        );
+
+        return;
+
+    }
+
+
+    settings.budget =
+        value;
+
+    settings.budgetCurrency =
+        settings.currency;
+
+
+    document
+        .getElementById(
+            "budgetInput"
+        )
+        .value = "";
+
+
+    await loadUserData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   TOTALS
+===================================================== */
+
+function calculateTotals(){
+
+    let totalMoney = 0;
+
+    accounts.forEach(
+        account => {
+
+            totalMoney +=
+                convert(
+                    Number(
+                        account.balance
+                    ),
+                    account.currency,
+                    settings.currency
+                );
+
+        }
+    );
+
+
+    let income = 0;
+    let expenses = 0;
+    let savings = 0;
+
+
+    const month =
+        currentMonth();
+
+
+    transactions.forEach(
+        transaction => {
+
+            const date =
+                String(
+                    transaction.transaction_date ||
+                    ""
+                );
+
+
+            if(
+                !date.startsWith(month)
+            ){
+
+                return;
+
+            }
+
+
+            const amount =
+                convert(
+                    Number(
+                        transaction.amount
+                    ),
+                    transaction.currency,
+                    settings.currency
+                );
+
+
+            if(
+                transaction.type ===
+                "income"
+            ){
+
+                income += amount;
+
+            }
+
+
+            if(
+                transaction.type ===
+                "expense"
+            ){
+
+                expenses += amount;
+
+            }
+
+
+            if(
+                transaction.type ===
+                "saving"
+            ){
+
+                savings += amount;
+
+            }
+
+        }
+    );
+
+
+    return {
+        totalMoney,
+        income,
+        expenses,
+        savings
+    };
+
+}
+
+
+/* =====================================================
+   RENDER ACCOUNTS
+===================================================== */
+
+function renderAccounts(){
+
+    const container =
+        document.getElementById(
+            "accountsList"
+        );
+
+
+    if(accounts.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty">
+                🏦 Add your first bank account,
+                e-wallet or cash wallet.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    accounts.forEach(
+        account => {
+
+            let icon = "🏦";
+
+
+            if(
+                account.type ===
+                "ewallet"
+            ){
+
+                icon = "💳";
+
+            }
+
+
+            if(
+                account.type ===
+                "cash"
+            ){
+
+                icon = "💵";
+
+            }
+
+
+            if(
+                account.type ===
+                "other"
+            ){
+
+                icon = "🌸";
+
+            }
+
+
+            const converted =
+                convert(
+                    Number(
+                        account.balance
+                    ),
+                    account.currency,
+                    settings.currency
+                );
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.className =
+                "account";
+
+
+            div.innerHTML = `
+
+                <div class="account-icon">
+                    ${icon}
+                </div>
+
+                <div class="account-name">
+                    ${escapeHTML(
+                        account.name
+                    )}
+                </div>
+
+                <div class="account-type">
+                    ${escapeHTML(
+                        String(
+                            account.type ||
+                            "other"
+                        ).toUpperCase()
+                    )}
+                    •
+                    ${escapeHTML(
+                        account.currency
+                    )}
+                </div>
+
+                <div class="account-balance">
+                    ${money(converted)}
+                </div>
+
+                <div class="account-actions">
+
+                    <button
+                        class="action-button"
+                        onclick="editAccount(${account.id})">
+
+                        Edit Balance
+
+                    </button>
+
+                    <button
+                        class="action-button"
+                        onclick="deleteAccount(${account.id})">
+
+                        Delete
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(div);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ACCOUNT SELECT
+===================================================== */
+
+function renderAccountSelect(){
+
+    const select =
+        document.getElementById(
+            "account"
+        );
+
+
+    select.innerHTML = "";
+
+
+    if(accounts.length === 0){
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value = "";
+
+        option.textContent =
+            "Add an account first";
+
+        select.appendChild(
+            option
+        );
+
+        return;
+
+    }
+
+
+    accounts.forEach(
+        account => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                account.id;
+
+            option.textContent =
+                `${account.name} (${account.currency})`;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   TRANSACTIONS
+===================================================== */
+
+function renderTransactions(){
+
+    const container =
+        document.getElementById(
+            "transactionsList"
+        );
+
+
+    if(transactions.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty">
+                No transactions yet 🌸
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    [...transactions]
+        .sort(
+            (a,b) => {
+
+                const dateA =
+                    new Date(
+                        a.transaction_date ||
+                        0
+                    );
+
+                const dateB =
+                    new Date(
+                        b.transaction_date ||
+                        0
+                    );
+
+                return dateB - dateA;
+
+            }
+        )
+        .slice(0,20)
+        .forEach(
+            t => {
+
+                let icon = "💰";
+                let sign = "+";
+                let color = "positive";
+
+
+                if(
+                    t.type ===
+                    "expense"
+                ){
+
+                    icon = "💸";
+                    sign = "-";
+                    color = "negative";
+
+                }
+
+
+                if(
+                    t.type ===
+                    "saving"
+                ){
+
+                    icon = "🐷";
+                    sign = "-";
+                    color = "negative";
+
+                }
+
+
+                if(
+                    t.type ===
+                    "transfer"
+                ){
+
+                    icon = "🔄";
+                    sign = "";
+                    color = "";
+
+                }
+
+
+                const account =
+                    accounts.find(
+                        a =>
+                            Number(a.id) ===
+                            Number(
+                                t.account_id
+                            )
+                    );
+
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+                div.className =
+                    "transaction";
+
+
+                div.innerHTML = `
+
+                    <div class="transaction-left">
+
+                        <div class="transaction-icon">
+                            ${icon}
+                        </div>
+
+                        <div>
+
+                            <div class="transaction-title">
+                                ${escapeHTML(
+                                    t.description
+                                )}
+                            </div>
+
+                            <div class="transaction-meta">
+
+                                ${escapeHTML(
+                                    t.category ||
+                                    "Other"
+                                )}
+
+                                •
+
+                                ${escapeHTML(
+                                    t.transaction_date ||
+                                    ""
+                                )}
+
+                                •
+
+                                ${
+                                    account
+                                    ? escapeHTML(
+                                        account.name
+                                      )
+                                    : "Unknown account"
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="transaction-right">
+
+                        <div class="transaction-amount ${color}">
+
+                            ${sign}${money(
+                                Number(
+                                    t.amount
+                                ),
+                                t.currency
+                            )}
+
+                        </div>
+
+
+                        <div class="transaction-actions">
+
+                            <button
+                                class="action-button"
+                                onclick="editTransaction(${t.id})">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="action-button"
+                                onclick="deleteTransaction(${t.id})">
+
+                                Delete
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    div
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   DAILY SPENDING
+===================================================== */
+
+function renderDailySpending(){
+
+    const todayDate =
+        today();
+
+    let total = 0;
+
+
+    transactions.forEach(
+        t => {
+
+            if(
+                t.type !==
+                "expense"
+            ){
+
+                return;
+
+            }
+
+
+            if(
+                t.transaction_date !==
+                todayDate
+            ){
+
+                return;
+
+            }
+
+
+            total +=
+                convert(
+                    Number(
+                        t.amount
+                    ),
+                    t.currency,
+                    settings.currency
+                );
+
+        }
+    );
+
+
+    document
+        .getElementById(
+            "todaySpending"
+        )
+        .textContent =
+            money(total);
+
+}
+
+
+/* =====================================================
+   CATEGORY BREAKDOWN
+===================================================== */
+
+function renderCategories(){
+
+    const container =
+        document.getElementById(
+            "categoryBreakdown"
+        );
+
+
+    const categories = {};
+
+
+    transactions.forEach(
+        t => {
+
+            if(
+                t.type !==
+                "expense"
+            ){
+
+                return;
+
+            }
+
+
+            const amount =
+                convert(
+                    Number(
+                        t.amount
+                    ),
+                    t.currency,
+                    settings.currency
+                );
+
+
+            const name =
+                t.category ||
+                "Other";
+
+
+            categories[name] =
+                (
+                    categories[name] ||
+                    0
+                ) + amount;
+
+        }
+    );
+
+
+    const values =
+        Object.values(
+            categories
+        );
+
+
+    if(values.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty">
+                No expenses recorded yet 🌷
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const max =
+        Math.max(
+            ...values
+        );
+
+
+    container.innerHTML = "";
+
+
+    Object.entries(categories)
+        .sort(
+            (a,b) =>
+                b[1] - a[1]
+        )
+        .forEach(
+            ([name,value]) => {
+
+                const percent =
+                    max > 0
+                    ? (
+                        value /
+                        max
+                      ) * 100
+                    : 0;
+
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+                row.className =
+                    "category-row";
+
+
+                row.innerHTML = `
+
+                    <div class="category-top">
+
+                        <span class="category-name">
+                            ${escapeHTML(name)}
+                        </span>
+
+                        <span class="category-value">
+                            ${money(value)}
+                        </span>
+
+                    </div>
+
+                    <div class="category-track">
+
+                        <div
+                            class="category-fill"
+                            style="width:${percent}%">
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    row
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   MONEY FLOW
+===================================================== */
+
+function renderMoneyFlow(){
+
+    const totals =
+        calculateTotals();
+
+    const container =
+        document.getElementById(
+            "moneyFlow"
+        );
+
+
+    const expensePercent =
+        totals.income > 0
+        ? Math.min(
+            (
+                totals.expenses /
+                totals.income
+            ) * 100,
+            100
+          )
+        : 0;
+
+
+    const savingPercent =
+        totals.income > 0
+        ? Math.min(
+            (
+                totals.savings /
+                totals.income
+            ) * 100,
+            100
+          )
+        : 0;
+
+
+    container.innerHTML = `
+
+        <div class="category-row">
+
+            <div class="category-top">
+
+                <span>
+                    💰 Income
+                </span>
+
+                <strong class="positive">
+                    ${money(totals.income)}
+                </strong>
+
+            </div>
+
+            <div class="category-track">
+
+                <div
+                    class="category-fill"
+                    style="width:100%">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="category-row">
+
+            <div class="category-top">
+
+                <span>
+                    💸 Expenses
+                </span>
+
+                <strong class="negative">
+                    ${money(totals.expenses)}
+                </strong>
+
+            </div>
+
+            <div class="category-track">
+
+                <div
+                    class="category-fill"
+                    style="width:${expensePercent}%">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="category-row">
+
+            <div class="category-top">
+
+                <span>
+                    🐷 Savings
+                </span>
+
+                <strong>
+                    ${money(totals.savings)}
+                </strong>
+
+            </div>
+
+            <div class="category-track">
+
+                <div
+                    class="category-fill"
+                    style="width:${savingPercent}%">
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   GOALS
+===================================================== */
+
+function renderGoals(){
+
+    const container =
+        document.getElementById(
+            "goalsList"
+        );
+
+
+    if(goals.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty">
+                Create your first savings goal 🌸
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    goals.forEach(
+        goal => {
+
+            const target =
+                Number(
+                    goal.target
+                ) || 0;
+
+            const saved =
+                Number(
+                    goal.saved
+                ) || 0;
+
+
+            const percent =
+                target > 0
+                ? Math.min(
+                    (
+                        saved /
+                        target
+                    ) * 100,
+                    100
+                  )
+                : 0;
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.className =
+                "goal";
+
+
+            div.innerHTML = `
+
+                <div class="goal-top">
+
+                    <div class="goal-name">
+                        🎯 ${escapeHTML(
+                            goal.name
+                        )}
+                    </div>
+
+                    <div class="goal-percent">
+                        ${percent.toFixed(1)}%
+                    </div>
+
+                </div>
+
+
+                <div class="goal-amount">
+
+                    ${money(
+                        saved,
+                        goal.currency ||
+                        settings.currency
+                    )}
+
+                    /
+
+                    ${money(
+                        target,
+                        goal.currency ||
+                        settings.currency
+                    )}
+
+                </div>
+
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-bar"
+                        style="width:${percent}%">
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="action-button"
+                    onclick="deleteGoal(${goal.id})">
+
+                    Delete
+
+                </button>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   BUDGET
+===================================================== */
+
+function renderBudget(){
+
+    const totals =
+        calculateTotals();
+
+
+    const budgetDisplay =
+        settings.budget > 0
+        ? convert(
+            settings.budget,
+            settings.budgetCurrency ||
+                settings.currency,
+            settings.currency
+          )
+        : 0;
+
+
+    document
+        .getElementById(
+            "budgetAmount"
+        )
+        .textContent =
+            money(
+                budgetDisplay
+            );
+
+
+    document
+        .getElementById(
+            "budgetSpent"
+        )
+        .textContent =
+            money(
+                totals.expenses
+            );
+
+
+    let percent = 0;
+
+
+    if(budgetDisplay > 0){
+
+        percent =
+            Math.min(
+                (
+                    totals.expenses /
+                    budgetDisplay
+                ) * 100,
+                100
+            );
+
+    }
+
+
+    document
+        .getElementById(
+            "budgetProgress"
+        )
+        .style.width =
+            percent + "%";
+
+
+    const message =
+        document.getElementById(
+            "budgetMessage"
+        );
+
+
+    if(
+        budgetDisplay === 0
+    ){
+
+        message.textContent =
+            "Set a monthly budget to begin 🌸";
+
+    }
+
+    else if(
+        totals.expenses >
+        budgetDisplay
+    ){
+
+        message.textContent =
+            "⚠️ You've gone over your budget.";
+
+    }
+
+    else{
+
+        message.textContent =
+            money(
+                budgetDisplay -
+                totals.expenses
+            ) +
+            " remaining this month 🌷";
 
     }
 
@@ -1296,30 +5206,315 @@ function updateSupabaseStatus() {
 
 
 /* =====================================================
-   INITIALIZE APP
+   SUMMARY
 ===================================================== */
 
-function initializeApp() {
+function renderSummary(){
 
-    loadLocalData();
+    const totals =
+        calculateTotals();
 
-    renderProfile();
 
-    renderNotes();
+    document
+        .getElementById(
+            "totalMoney"
+        )
+        .textContent =
+            money(
+                totals.totalMoney
+            );
 
-    renderStickers();
 
-    updateDashboard();
+    document
+        .getElementById(
+            "totalIncome"
+        )
+        .textContent =
+            money(
+                totals.income
+            );
 
-    updateSupabaseStatus();
+
+    document
+        .getElementById(
+            "totalExpenses"
+        )
+        .textContent =
+            money(
+                totals.expenses
+            );
+
+
+    document
+        .getElementById(
+            "totalSavings"
+        )
+        .textContent =
+            money(
+                totals.savings
+            );
 
 }
 
+
+/* =====================================================
+   RENDER EVERYTHING
+===================================================== */
+
+function render(){
+
+    document
+        .getElementById(
+            "displayCurrency"
+        )
+        .value =
+            settings.currency;
+
+
+    renderSummary();
+
+    renderAccounts();
+
+    renderAccountSelect();
+
+    renderTransactions();
+
+    renderDailySpending();
+
+    renderCategories();
+
+    renderMoneyFlow();
+
+    renderGoals();
+
+    renderBudget();
+
+}
+
+
+/* =====================================================
+   MODAL CLICK OUTSIDE
+===================================================== */
+
+document
+    .getElementById(
+        "accountModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target ===
+                this
+            ){
+
+                closeAccountModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "goalModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target ===
+                this
+            ){
+
+                closeGoalModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "themeModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target ===
+                this
+            ){
+
+                closeThemeModal();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   ESC KEY CLOSES MODALS
+===================================================== */
 
 document.addEventListener(
-    "DOMContentLoaded",
-    initializeApp
+    "keydown",
+    function(event){
+
+        if(event.key !== "Escape")
+            return;
+
+        closeAccountModal();
+        closeGoalModal();
+        closeThemeModal();
+
+    }
 );
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+db.auth.onAuthStateChange(
+    async (event,session) => {
+
+        if(
+            event === "SIGNED_IN" &&
+            session?.user
+        ){
+
+            await startApp(
+                session.user
+            );
+
+        }
+
+
+        if(
+            event === "SIGNED_OUT"
+        ){
+
+            currentUser = null;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+async function initialize(){
+
+    loadSavedTheme();
+
+    document
+        .getElementById(
+            "transactionDate"
+        )
+        .value =
+            today();
+
+    updateCategories();
+
+
+    /*
+       Default transaction currency
+       follows selected display currency.
+    */
+
+    const savedCurrency =
+        localStorage.getItem(
+            "petalflowDisplayCurrency"
+        ) || "PHP";
+
+
+    document
+        .getElementById(
+            "transactionCurrency"
+        )
+        .value =
+            savedCurrency;
+
+
+    document
+        .getElementById(
+            "goalCurrency"
+        )
+        .value =
+            savedCurrency;
+
+
+    document
+        .getElementById(
+            "accountCurrency"
+        )
+        .value =
+            savedCurrency;
+
+
+    const {
+        data,
+        error
+    } =
+        await db.auth.getSession();
+
+
+    if(error){
+
+        console.error(error);
+
+        document
+            .getElementById(
+                "authScreen"
+            )
+            .classList.remove(
+                "hidden"
+            );
+
+        return;
+
+    }
+
+
+    if(
+        data?.session?.user
+    ){
+
+        await startApp(
+            data.session.user
+        );
+
+    }
+    else{
+
+        document
+            .getElementById(
+                "authScreen"
+            )
+            .classList.remove(
+                "hidden"
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+initialize();
 
 </script>
 
