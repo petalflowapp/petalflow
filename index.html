@@ -3,643 +3,3134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>PetalFlow 🌸</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+
+:root {
+    --pink: #e89ab9;
+    --pink-dark: #c87599;
+    --pink-light: #fff0f6;
+    --lavender: #b9a3df;
+    --lavender-light: #f4effc;
+    --cream: #fffafd;
+    --text: #4d3947;
+    --muted: #9b8291;
+    --border: #eedce6;
+    --green: #72a883;
+    --red: #c97891;
+    --blue: #91a9d8;
+    --shadow: 0 8px 30px rgba(120,70,100,.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(180deg,#fff7fb,#faf5ff);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.header {
+    background: linear-gradient(135deg,#f8c9dc,#ddd0f5);
+    padding: 28px 20px 35px;
+    border-radius: 0 0 35px 35px;
+}
+
+.header-inner {
+    max-width: 1150px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo h1 {
+    font-size: 34px;
+    color: #623f54;
+}
+
+.logo p {
+    color: #76596b;
+    margin-top: 5px;
+}
+
+.header select {
+    padding: 11px 14px;
+    border: 1px solid white;
+    border-radius: 14px;
+    background: rgba(255,255,255,.75);
+}
+
+.container {
+    max-width: 1150px;
+    margin: auto;
+    padding: 28px 20px 50px;
+}
+
+.greeting {
+    margin-bottom: 20px;
+}
+
+.greeting h2 {
+    color: #633f55;
+}
+
+.greeting p {
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 21px;
+    box-shadow: var(--shadow);
+}
+
+.card-label {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 9px;
+}
+
+.card-value {
+    font-size: 25px;
+    font-weight: 750;
+    color: #633f55;
+}
+
+.card-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.positive {
+    color: var(--green) !important;
+}
+
+.negative {
+    color: var(--red) !important;
+}
+
+.section {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.section h3 {
+    color: #633f55;
+    font-size: 19px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.accounts {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 14px;
+}
+
+.account {
+    background: linear-gradient(145deg,#fff2f7,#f4effc);
+    border-radius: 18px;
+    padding: 17px;
+    position: relative;
+}
+
+.account-icon {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.account-name {
+    font-weight: 700;
+}
+
+.account-type {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+.account-balance {
+    font-size: 21px;
+    font-weight: 750;
+    color: #633f55;
+    margin-top: 12px;
+}
+
+.account-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.small-button {
+    border: none;
+    background: var(--pink-light);
+    color: var(--pink-dark);
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.action-button {
+    border: none;
+    background: #f7edf2;
+    color: #795d6e;
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-size: 11px;
+}
+
+.primary-button {
+    width: 100%;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#df8eaf,#b89bdc);
+    color: white;
+    font-weight: 750;
+}
+
+.secondary-button {
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    background: #f3e9ef;
+    color: #76596d;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: #fffafd;
+    color: var(--text);
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #d9a7bd;
+    box-shadow: 0 0 0 3px rgba(232,154,185,.12);
+}
+
+.form-note {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1e5eb;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.transaction-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.transaction-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: var(--pink-light);
+}
+
+.transaction-title {
+    font-weight: 650;
+    font-size: 14px;
+}
+
+.transaction-meta {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.transaction-right {
+    text-align: right;
+}
+
+.transaction-amount {
+    font-weight: 750;
+}
+
+.transaction-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.goal {
+    padding: 15px 0;
+    border-bottom: 1px solid #f1e5eb;
+}
+
+.goal:last-child {
+    border-bottom: none;
+}
+
+.goal-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.goal-name {
+    font-weight: 700;
+}
+
+.goal-percent {
+    color: var(--pink-dark);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.goal-amount {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 11px;
+    background: #f1e6ed;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#e89ab9,#b9a3df);
+    border-radius: 20px;
+    transition: width .4s ease;
+}
+
+.category-row {
+    margin-bottom: 15px;
+}
+
+.category-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.category-name {
+    font-weight: 600;
+}
+
+.category-value {
+    color: var(--muted);
+}
+
+.category-track {
+    height: 9px;
+    background: #f3eaf0;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.category-fill {
+    height: 100%;
+    background: linear-gradient(90deg,#e89ab9,#c7afe9);
+    border-radius: 20px;
+}
+
+.budget-box {
+    background: linear-gradient(145deg,#fff2f7,#f4effc);
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.budget-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.budget-label {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.budget-amount {
+    font-size: 21px;
+    font-weight: 750;
+    color: #633f55;
+    margin-top: 3px;
+}
+
+.budget-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.budget-form input {
+    flex: 1;
+}
+
+.daily-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(145deg,#fff2f7,#f4effc);
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.daily-number {
+    font-size: 26px;
+    font-weight: 750;
+    color: #633f55;
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 25px 10px;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(70,40,60,.35);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-card {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 0 20px 60px rgba(60,30,50,.2);
+}
+
+.modal-card h3 {
+    color: #633f55;
+    margin-bottom: 17px;
+}
+
+.modal-card input,
+.modal-card select {
+    margin-bottom: 10px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.modal-actions button {
+    flex: 1;
+}
+
+.footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 10px 20px 30px;
+}
+
+@media(max-width:900px) {
+
+    .cards {
+        grid-template-columns: repeat(2,1fr);
     }
 
-    body {
-        font-family: Arial, sans-serif;
-        background: #fff7fb;
-        color: #4b3945;
-        min-height: 100vh;
+    .accounts {
+        grid-template-columns: 1fr 1fr;
     }
 
-    header {
-        background: linear-gradient(135deg, #f7c8dc, #d9c7f7);
-        padding: 24px;
-        text-align: center;
-        border-bottom-left-radius: 30px;
-        border-bottom-right-radius: 30px;
+    .grid {
+        grid-template-columns: 1fr;
     }
 
-    header h1 {
-        font-size: 32px;
-        color: #633f55;
-        margin-bottom: 5px;
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
     }
 
-    header p {
-        color: #76596d;
+}
+
+@media(max-width:600px) {
+
+    .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header select {
+        width: 100%;
     }
 
     .container {
-        max-width: 1100px;
-        margin: auto;
-        padding: 25px;
-    }
-
-    .currency-row {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 20px;
-    }
-
-    select,
-    input,
-    button {
-        font: inherit;
-    }
-
-    select {
-        padding: 10px 14px;
-        border-radius: 12px;
-        border: 1px solid #e4c9d8;
-        background: white;
+        padding: 22px 14px 40px;
     }
 
     .cards {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        margin-bottom: 25px;
+        grid-template-columns: 1fr 1fr;
     }
 
-    .card {
-        background: white;
-        padding: 20px;
-        border-radius: 20px;
-        box-shadow: 0 5px 20px rgba(130, 80, 110, 0.08);
+    .accounts {
+        grid-template-columns: 1fr;
     }
 
-    .card h3 {
-        font-size: 14px;
-        color: #987287;
-        margin-bottom: 10px;
-    }
-
-    .amount {
-        font-size: 25px;
-        font-weight: bold;
-        color: #633f55;
-    }
-
-    .positive {
-        color: #6d9b7b;
-    }
-
-    .negative {
-        color: #c87992;
-    }
-
-    .section {
-        background: white;
-        padding: 25px;
-        border-radius: 22px;
-        margin-bottom: 25px;
-        box-shadow: 0 5px 20px rgba(130, 80, 110, 0.07);
-    }
-
-    .section h2 {
-        margin-bottom: 18px;
-        color: #633f55;
-    }
-
-    .flow {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-
-    .flow-box {
-        flex: 1;
-        min-width: 140px;
-        text-align: center;
-        padding: 20px;
-        border-radius: 18px;
-        background: #fff1f7;
-    }
-
-    .arrow {
-        font-size: 25px;
-        color: #c28ba8;
-    }
-
-    .progress-container {
-        background: #f1e6ed;
-        height: 18px;
-        border-radius: 20px;
-        overflow: hidden;
-        margin: 15px 0;
-    }
-
-    .progress {
-        height: 100%;
-        width: 0%;
-        background: linear-gradient(90deg, #e99abd, #b99ae5);
-        border-radius: 20px;
-        transition: width 0.4s ease;
-    }
-
-    .goal-info {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-    }
-
-    .form {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr auto;
-        gap: 10px;
-    }
-
-    input,
-    .form select {
-        padding: 12px;
-        border: 1px solid #e6cfdb;
-        border-radius: 12px;
-        outline: none;
-        background: #fffafd;
-    }
-
-    button {
-        border: none;
-        padding: 12px 18px;
-        border-radius: 12px;
-        cursor: pointer;
-        background: #d889aa;
-        color: white;
-        font-weight: bold;
-    }
-
-    button:hover {
-        background: #c67598;
-    }
-
-    .transactions {
-        margin-top: 20px;
+    .form-grid {
+        grid-template-columns: 1fr;
     }
 
     .transaction {
-        display: flex;
-        justify-content: space-between;
-        padding: 13px 0;
-        border-bottom: 1px solid #f1e5eb;
+        align-items: flex-start;
     }
 
-    .transaction:last-child {
-        border-bottom: none;
+}
+
+@media(max-width:420px) {
+
+    .cards {
+        grid-template-columns: 1fr;
     }
 
-    .category {
-        font-size: 13px;
-        color: #987287;
+    .logo h1 {
+        font-size: 29px;
     }
 
-    .empty {
-        text-align: center;
-        padding: 20px;
-        color: #aa91a0;
-    }
+}
 
-    .tip {
-        text-align: center;
-        background: #fdf0f7;
-        padding: 15px;
-        border-radius: 15px;
-        margin-top: 15px;
-        color: #76596d;
-    }
-
-    footer {
-        text-align: center;
-        padding: 25px;
-        color: #a58c9a;
-        font-size: 13px;
-    }
-
-    @media (max-width: 800px) {
-        .cards {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .form {
-            grid-template-columns: 1fr;
-        }
-
-        .flow {
-            flex-direction: column;
-        }
-
-        .arrow {
-            transform: rotate(90deg);
-        }
-
-        .flow-box {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 500px) {
-        .container {
-            padding: 15px;
-        }
-
-        .cards {
-            grid-template-columns: 1fr;
-        }
-
-        header h1 {
-            font-size: 27px;
-        }
-    }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>🌸 PetalFlow</h1>
-    <p>Grow your money, one petal at a time.</p>
-</header>
+<header class="header">
 
-<div class="container">
+<div class="header-inner">
 
-    <div class="currency-row">
-        <select id="currency" onchange="updateDashboard()">
-            <option value="₱">🇵🇭 PHP ₱</option>
-            <option value="$">🇺🇸 USD $</option>
-            <option value="NZ$">🇳🇿 NZD NZ$</option>
-        </select>
-    </div>
+<div class="logo">
 
-    <div class="cards">
+<h1>🌸 PetalFlow</h1>
 
-        <div class="card">
-            <h3>💰 Total Income</h3>
-            <div class="amount positive" id="income">₱0</div>
-        </div>
-
-        <div class="card">
-            <h3>💸 Total Expenses</h3>
-            <div class="amount negative" id="expenses">₱0</div>
-        </div>
-
-        <div class="card">
-            <h3>🐷 Total Savings</h3>
-            <div class="amount" id="savings">₱0</div>
-        </div>
-
-        <div class="card">
-            <h3>🌷 Available</h3>
-            <div class="amount" id="available">₱0</div>
-        </div>
-
-    </div>
-
-    <div class="section">
-        <h2>🌸 Your Money Flow</h2>
-
-        <div class="flow">
-
-            <div class="flow-box">
-                <div>💰</div>
-                <strong>Income</strong>
-                <p id="flowIncome">₱0</p>
-            </div>
-
-            <div class="arrow">→</div>
-
-            <div class="flow-box">
-                <div>💸</div>
-                <strong>Expenses</strong>
-                <p id="flowExpenses">₱0</p>
-            </div>
-
-            <div class="arrow">→</div>
-
-            <div class="flow-box">
-                <div>🐷</div>
-                <strong>Savings</strong>
-                <p id="flowSavings">₱0</p>
-            </div>
-
-            <div class="arrow">→</div>
-
-            <div class="flow-box">
-                <div>🌷</div>
-                <strong>Remaining</strong>
-                <p id="flowRemaining">₱0</p>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>🎯 NZ Savings Goal</h2>
-
-        <div class="goal-info">
-            <span id="goalCurrent">₱0 saved</span>
-            <strong>₱105,000</strong>
-        </div>
-
-        <div class="progress-container">
-            <div class="progress" id="progress"></div>
-        </div>
-
-        <p id="goalPercent">0% complete</p>
-
-        <div class="tip">
-            🌱 Every little amount helps your goal grow.
-        </div>
-    </div>
-
-    <div class="section">
-
-        <h2>➕ Add Transaction</h2>
-
-        <div class="form">
-
-            <input
-                type="text"
-                id="description"
-                placeholder="What was it?"
-            >
-
-            <input
-                type="number"
-                id="amount"
-                placeholder="Amount"
-                min="0"
-            >
-
-            <select id="type">
-                <option value="income">💰 Income</option>
-                <option value="expense">💸 Expense</option>
-                <option value="saving">🐷 Saving</option>
-            </select>
-
-            <button onclick="addTransaction()">
-                Add
-            </button>
-
-        </div>
-
-        <div class="transactions" id="transactions">
-            <div class="empty">
-                No transactions yet 🌸
-            </div>
-        </div>
-
-    </div>
+<p>Grow your money, one petal at a time.</p>
 
 </div>
 
-<footer>
-    🌸 PetalFlow — Your money, your growth.
-</footer>
+<select id="displayCurrency"
+onchange="changeCurrency()">
+
+<option value="PHP">🇵🇭 PHP — Philippine Peso</option>
+<option value="USD">🇺🇸 USD — US Dollar</option>
+<option value="NZD">🇳🇿 NZD — New Zealand Dollar</option>
+<option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+<option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+<option value="GBP">🇬🇧 GBP — British Pound</option>
+<option value="EUR">🇪🇺 EUR — Euro</option>
+<option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+<option value="KRW">🇰🇷 KRW — South Korean Won</option>
+<option value="SGD">🇸🇬 SGD — Singapore Dollar</option>
+<option value="HKD">🇭🇰 HKD — Hong Kong Dollar</option>
+<option value="CNY">🇨🇳 CNY — Chinese Yuan</option>
+<option value="THB">🇹🇭 THB — Thai Baht</option>
+<option value="MYR">🇲🇾 MYR — Malaysian Ringgit</option>
+<option value="INR">🇮🇳 INR — Indian Rupee</option>
+<option value="IDR">🇮🇩 IDR — Indonesian Rupiah</option>
+<option value="AED">🇦🇪 AED — UAE Dirham</option>
+<option value="CHF">🇨🇭 CHF — Swiss Franc</option>
+
+</select>
+
+</div>
+
+</header>
+
+
+<main class="container">
+
+<div class="greeting">
+
+<h2>Good day, Jhang 🌷</h2>
+
+<p>Here's a little look at your financial garden.</p>
+
+</div>
+
+
+<!-- SUMMARY -->
+
+<div class="cards">
+
+<div class="card">
+
+<div class="card-label">
+💰 Total Money
+</div>
+
+<div
+class="card-value"
+id="totalMoney">
+0
+</div>
+
+<div class="card-sub">
+Across all accounts
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-label">
+💵 This Month's Income
+</div>
+
+<div
+class="card-value positive"
+id="totalIncome">
+0
+</div>
+
+<div class="card-sub">
+Money coming in
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-label">
+💸 This Month's Expenses
+</div>
+
+<div
+class="card-value negative"
+id="totalExpenses">
+0
+</div>
+
+<div class="card-sub">
+Money going out
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-label">
+🐷 This Month's Savings
+</div>
+
+<div
+class="card-value"
+id="totalSavings">
+0
+</div>
+
+<div class="card-sub">
+Money you're keeping
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ACCOUNTS -->
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>🏦 My Accounts</h3>
+
+<button
+class="small-button"
+onclick="openAccountModal()">
+
++ Add Account
+
+</button>
+
+</div>
+
+
+<div
+class="accounts"
+id="accountsList">
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+
+<!-- DAILY SPENDING -->
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>🧾 Today's Spending</h3>
+
+</div>
+
+<div class="daily-summary">
+
+<div>
+
+<div class="budget-label">
+Spent today
+</div>
+
+<div
+class="daily-number"
+id="todaySpending">
+
+0
+
+</div>
+
+</div>
+
+<div style="font-size:32px;">
+🌷
+</div>
+
+</div>
+
+</div>
+
+
+<!-- MONTHLY BUDGET -->
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>💗 Monthly Budget</h3>
+
+</div>
+
+<div class="budget-box">
+
+<div class="budget-top">
+
+<div>
+
+<div class="budget-label">
+Budget
+</div>
+
+<div
+class="budget-amount"
+id="budgetAmount">
+
+0
+
+</div>
+
+</div>
+
+<div style="text-align:right;">
+
+<div class="budget-label">
+Spent
+</div>
+
+<div
+class="budget-amount"
+id="budgetSpent">
+
+0
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="progress-track">
+
+<div
+class="progress-bar"
+id="budgetProgress">
+</div>
+
+</div>
+
+
+<div
+class="budget-label"
+id="budgetMessage">
+
+Set a monthly budget to begin 🌸
+
+</div>
+
+
+<div class="budget-form">
+
+<input
+id="budgetInput"
+type="number"
+placeholder="Monthly budget">
+
+<button
+class="primary-button"
+onclick="saveBudget()">
+
+Save
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SAVINGS GOALS -->
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>🎯 Savings Goals</h3>
+
+<button
+class="small-button"
+onclick="openGoalModal()">
+
++ Add Goal
+
+</button>
+
+</div>
+
+
+<div id="goalsList">
+
+</div>
+
+</div>
+
+
+<!-- TRANSACTION FORM -->
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>➕ Add Transaction</h3>
+
+</div>
+
+
+<div class="form-grid">
+
+<input
+id="description"
+placeholder="Description">
+
+<input
+id="amount"
+type="number"
+placeholder="Amount">
+
+<select id="transactionType"
+onchange="updateCategories()">
+
+<option value="income">
+💰 Income
+</option>
+
+<option value="expense">
+💸 Expense
+</option>
+
+<option value="saving">
+🐷 Saving
+</option>
+
+<option value="transfer">
+🔄 Transfer
+</option>
+
+</select>
+
+<input
+id="transactionDate"
+type="date">
+
+</div>
+
+
+<div class="form-grid">
+
+<select id="category">
+
+</select>
+
+
+<select id="account">
+
+</select>
+
+
+<select id="transactionCurrency">
+
+<option value="PHP">PHP</option>
+<option value="USD">USD</option>
+<option value="NZD">NZD</option>
+<option value="AUD">AUD</option>
+<option value="CAD">CAD</option>
+<option value="GBP">GBP</option>
+<option value="EUR">EUR</option>
+<option value="JPY">JPY</option>
+<option value="KRW">KRW</option>
+<option value="SGD">SGD</option>
+<option value="HKD">HKD</option>
+<option value="CNY">CNY</option>
+<option value="THB">THB</option>
+<option value="MYR">MYR</option>
+<option value="INR">INR</option>
+<option value="IDR">IDR</option>
+<option value="AED">AED</option>
+<option value="CHF">CHF</option>
+
+</select>
+
+
+<button
+class="primary-button"
+onclick="addTransaction()">
+
+Add Transaction
+
+</button>
+
+</div>
+
+
+<div
+class="form-note">
+
+🌱 Transactions are currently saved locally in this browser.
+
+</div>
+
+</div>
+
+
+<!-- TRANSACTIONS -->
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>📜 Recent Transactions</h3>
+
+</div>
+
+<div id="transactionsList">
+
+</div>
+
+</div>
+
+
+<!-- SPENDING -->
+
+<div class="grid">
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>📊 Spending by Category</h3>
+
+</div>
+
+<div id="categoryBreakdown">
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>🌸 Money Flow</h3>
+
+</div>
+
+<div id="moneyFlow">
+
+</div>
+
+</div>
+
+</div>
+
+
+</main>
+
+
+<div class="footer">
+
+🌸 PetalFlow — Your money, your growth.
+
+</div>
+
+
+<!-- ACCOUNT MODAL -->
+
+<div
+class="modal"
+id="accountModal">
+
+<div class="modal-card">
+
+<h3>🏦 Add Account</h3>
+
+<input
+id="accountName"
+placeholder="Account name">
+
+<select id="accountType">
+
+<option value="bank">
+🏦 Bank Account
+</option>
+
+<option value="ewallet">
+💳 E-wallet
+</option>
+
+<option value="cash">
+💵 Cash
+</option>
+
+<option value="other">
+🌸 Other
+</option>
+
+</select>
+
+<input
+id="accountBalance"
+type="number"
+placeholder="Current balance">
+
+<select id="accountCurrency">
+
+<option value="PHP">🇵🇭 PHP</option>
+<option value="USD">🇺🇸 USD</option>
+<option value="NZD">🇳🇿 NZD</option>
+<option value="AUD">🇦🇺 AUD</option>
+<option value="CAD">🇨🇦 CAD</option>
+<option value="GBP">🇬🇧 GBP</option>
+<option value="EUR">🇪🇺 EUR</option>
+<option value="JPY">🇯🇵 JPY</option>
+<option value="KRW">🇰🇷 KRW</option>
+<option value="SGD">🇸🇬 SGD</option>
+<option value="HKD">🇭🇰 HKD</option>
+<option value="CNY">🇨🇳 CNY</option>
+<option value="THB">🇹🇭 THB</option>
+<option value="MYR">🇲🇾 MYR</option>
+<option value="INR">🇮🇳 INR</option>
+<option value="IDR">🇮🇩 IDR</option>
+<option value="AED">🇦🇪 AED</option>
+<option value="CHF">🇨🇭 CHF</option>
+
+</select>
+
+
+<div class="modal-actions">
+
+<button
+class="secondary-button"
+onclick="closeAccountModal()">
+
+Cancel
+
+</button>
+
+<button
+class="primary-button"
+onclick="addAccount()">
+
+Add Account
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- GOAL MODAL -->
+
+<div
+class="modal"
+id="goalModal">
+
+<div class="modal-card">
+
+<h3>🎯 New Savings Goal</h3>
+
+<input
+id="goalName"
+placeholder="Goal name">
+
+<input
+id="goalTarget"
+type="number"
+placeholder="Target amount">
+
+<input
+id="goalSaved"
+type="number"
+placeholder="Already saved">
+
+<div class="modal-actions">
+
+<button
+class="secondary-button"
+onclick="closeGoalModal()">
+
+Cancel
+
+</button>
+
+<button
+class="primary-button"
+onclick="addGoal()">
+
+Create Goal
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
 
 <script>
 
+/* -----------------------------
+   PETALFLOW DATA
+----------------------------- */
+
+
+let accounts =
+JSON.parse(
+localStorage.getItem("petalflowAccounts")
+) || [];
+
+
 let transactions =
-    JSON.parse(localStorage.getItem("petalflowTransactions")) || [];
+JSON.parse(
+localStorage.getItem("petalflowTransactions")
+) || [];
 
-function formatMoney(amount) {
 
-    const currency =
-        document.getElementById("currency").value;
+let goals =
+JSON.parse(
+localStorage.getItem("petalflowGoals")
+) || [
 
-    return currency +
-        Number(amount).toLocaleString(
-            undefined,
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        );
+{
+id: Date.now(),
+name: "New Zealand Trip",
+target: 105000,
+saved: 0,
+currency: "PHP"
 }
+
+];
+
+
+let settings =
+JSON.parse(
+localStorage.getItem("petalflowSettings")
+) || {
+
+currency: "PHP",
+budget: 0
+
+};
+
+
+/* -----------------------------
+   CURRENCIES
+----------------------------- */
+
+
+const symbols = {
+
+PHP: "₱",
+USD: "$",
+NZD: "NZ$",
+AUD: "A$",
+CAD: "C$",
+GBP: "£",
+EUR: "€",
+JPY: "¥",
+KRW: "₩",
+SGD: "S$",
+HKD: "HK$",
+CNY: "¥",
+THB: "฿",
+MYR: "RM",
+INR: "₹",
+IDR: "Rp",
+AED: "د.إ",
+CHF: "CHF "
+
+};
+
+
+/*
+These are starting conversion rates.
+
+They are NOT live exchange rates yet.
+A live currency API can be added later.
+*/
+
+const rates = {
+
+PHP: 1,
+USD: 58,
+NZD: 34,
+AUD: 38,
+CAD: 42,
+GBP: 74,
+EUR: 67,
+JPY: .39,
+KRW: .042,
+SGD: 45,
+HKD: 7.4,
+CNY: 8,
+THB: 1.7,
+MYR: 13,
+INR: .69,
+IDR: .0035,
+AED: 15.8,
+CHF: 71
+
+};
+
+
+/* -----------------------------
+   UTILITIES
+----------------------------- */
+
+
+function saveData() {
+
+localStorage.setItem(
+"petalflowAccounts",
+JSON.stringify(accounts)
+);
+
+localStorage.setItem(
+"petalflowTransactions",
+JSON.stringify(transactions)
+);
+
+localStorage.setItem(
+"petalflowGoals",
+JSON.stringify(goals)
+);
+
+localStorage.setItem(
+"petalflowSettings",
+JSON.stringify(settings)
+);
+
+}
+
+
+function convert(amount, from, to) {
+
+if(from === to)
+return Number(amount);
+
+const php =
+Number(amount) * rates[from];
+
+return php / rates[to];
+
+}
+
+
+function money(amount,currency=settings.currency) {
+
+return (
+symbols[currency] || ""
+) +
+Number(amount).toLocaleString(
+undefined,
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}
+);
+
+}
+
+
+function today() {
+
+const d = new Date();
+
+return d.toISOString().split("T")[0];
+
+}
+
+
+function escapeHTML(text) {
+
+const div =
+document.createElement("div");
+
+div.textContent = text;
+
+return div.innerHTML;
+
+}
+
+
+/* -----------------------------
+   CURRENCY
+----------------------------- */
+
+
+function changeCurrency() {
+
+settings.currency =
+document.getElementById(
+"displayCurrency"
+).value;
+
+saveData();
+
+render();
+
+}
+
+
+/* -----------------------------
+   ACCOUNTS
+----------------------------- */
+
+
+function openAccountModal() {
+
+document
+.getElementById("accountModal")
+.classList.add("show");
+
+}
+
+
+function closeAccountModal() {
+
+document
+.getElementById("accountModal")
+.classList.remove("show");
+
+}
+
+
+function addAccount() {
+
+const name =
+document
+.getElementById("accountName")
+.value
+.trim();
+
+const balance =
+parseFloat(
+document
+.getElementById("accountBalance")
+.value
+);
+
+const type =
+document
+.getElementById("accountType")
+.value;
+
+const currency =
+document
+.getElementById("accountCurrency")
+.value;
+
+
+if(!name || isNaN(balance)) {
+
+alert(
+"Please enter an account name and balance 🌸"
+);
+
+return;
+
+}
+
+
+accounts.push({
+
+id: Date.now(),
+
+name,
+
+type,
+
+balance,
+
+currency
+
+});
+
+
+saveData();
+
+document.getElementById("accountName").value="";
+document.getElementById("accountBalance").value="";
+
+closeAccountModal();
+
+render();
+
+}
+
+
+function deleteAccount(id) {
+
+if(
+!confirm(
+"Delete this account? Transactions will remain."
+)
+)
+return;
+
+
+accounts =
+accounts.filter(
+account =>
+account.id !== id
+);
+
+saveData();
+
+render();
+
+}
+
+
+function editAccount(id) {
+
+const account =
+accounts.find(
+a => a.id === id
+);
+
+if(!account)
+return;
+
+
+const newBalance =
+prompt(
+"Enter the current balance:",
+account.balance
+);
+
+
+if(newBalance === null)
+return;
+
+
+const balance =
+parseFloat(newBalance);
+
+
+if(isNaN(balance))
+return;
+
+
+account.balance =
+balance;
+
+saveData();
+
+render();
+
+}
+
+
+/* -----------------------------
+   TRANSACTIONS
+----------------------------- */
+
+
+function updateCategories() {
+
+const type =
+document
+.getElementById("transactionType")
+.value;
+
+const category =
+document
+.getElementById("category");
+
+
+let list=[];
+
+
+if(type==="income") {
+
+list=[
+"Salary",
+"Tutoring",
+"Allowance",
+"Business",
+"Gift",
+"Other Income"
+];
+
+}
+
+
+else if(type==="expense") {
+
+list=[
+"Food",
+"Housing",
+"Transportation",
+"Education",
+"Bills",
+"Shopping",
+"Personal",
+"Entertainment",
+"Travel",
+"Health",
+"Work",
+"Emergency",
+"Other"
+];
+
+}
+
+
+else if(type==="saving") {
+
+list=[
+"Emergency Fund",
+"New Zealand Trip",
+"General Savings",
+"Investment",
+"Other Savings"
+];
+
+}
+
+
+else {
+
+list=[
+"Account Transfer"
+];
+
+}
+
+
+category.innerHTML="";
+
+
+list.forEach(
+item => {
+
+const option =
+document.createElement("option");
+
+option.value=item;
+option.textContent=item;
+
+category.appendChild(option);
+
+}
+);
+
+}
+
 
 function addTransaction() {
 
-    const description =
-        document.getElementById("description").value.trim();
+const description =
+document
+.getElementById("description")
+.value
+.trim();
 
-    const amount =
-        parseFloat(document.getElementById("amount").value);
 
-    const type =
-        document.getElementById("type").value;
+const amount =
+parseFloat(
+document
+.getElementById("amount")
+.value
+);
 
-    if (!description || !amount || amount <= 0) {
 
-        alert("Please enter a description and a valid amount 🌸");
+const type =
+document
+.getElementById("transactionType")
+.value;
 
-        return;
-    }
 
-    transactions.push({
+const category =
+document
+.getElementById("category")
+.value;
 
-        id: Date.now(),
 
-        description: description,
+const date =
+document
+.getElementById("transactionDate")
+.value
+|| today();
 
-        amount: amount,
 
-        type: type
+const accountId =
+Number(
+document
+.getElementById("account")
+.value
+);
 
-    });
 
-    localStorage.setItem(
-        "petalflowTransactions",
-        JSON.stringify(transactions)
-    );
+const currency =
+document
+.getElementById("transactionCurrency")
+.value;
 
-    document.getElementById("description").value = "";
 
-    document.getElementById("amount").value = "";
+if(
+!description ||
+isNaN(amount) ||
+amount<=0
+) {
 
-    updateDashboard();
+alert(
+"Please enter a description and valid amount 🌷"
+);
+
+return;
 
 }
+
+
+const account =
+accounts.find(
+a=>a.id===accountId
+);
+
+
+if(!account) {
+
+alert(
+"Please add an account first 🏦"
+);
+
+return;
+
+}
+
+
+/*
+EXPENSE
+*/
+
+
+if(type==="expense") {
+
+const converted =
+convert(
+amount,
+currency,
+account.currency
+);
+
+
+if(account.balance < converted) {
+
+if(
+!confirm(
+"This expense is greater than the account balance. Add it anyway?"
+)
+)
+return;
+
+}
+
+
+account.balance -= converted;
+
+}
+
+
+/*
+INCOME
+*/
+
+
+if(type==="income") {
+
+const converted =
+convert(
+amount,
+currency,
+account.currency
+);
+
+account.balance += converted;
+
+}
+
+
+/*
+SAVING
+*/
+
+
+if(type==="saving") {
+
+const converted =
+convert(
+amount,
+currency,
+account.currency
+);
+
+account.balance -= converted;
+
+
+const matchingGoal =
+goals.find(
+g =>
+g.name === category
+);
+
+
+if(matchingGoal) {
+
+matchingGoal.saved +=
+amount;
+
+}
+
+}
+
+
+/*
+TRANSFER
+
+For now, transfer uses the
+selected account as source.
+The destination is chosen
+through the next prompt.
+*/
+
+
+if(type==="transfer") {
+
+const destinations =
+accounts.filter(
+a=>a.id!==account.id
+);
+
+
+if(destinations.length===0) {
+
+alert(
+"You need at least two accounts to make a transfer."
+);
+
+return;
+
+}
+
+
+const names =
+destinations
+.map(
+(a,i)=>
+`${i+1}. ${a.name}`
+)
+.join("\n");
+
+
+const choice =
+prompt(
+"Choose destination account:\n\n"+
+names
+);
+
+
+const index =
+parseInt(choice)-1;
+
+
+if(
+isNaN(index) ||
+!destinations[index]
+) {
+
+return;
+
+}
+
+
+const destination =
+destinations[index];
+
+
+const sourceAmount =
+convert(
+amount,
+currency,
+account.currency
+);
+
+
+const destinationAmount =
+convert(
+amount,
+currency,
+destination.currency
+);
+
+
+account.balance -=
+sourceAmount;
+
+
+destination.balance +=
+destinationAmount;
+
+}
+
+
+transactions.push({
+
+id: Date.now(),
+
+description,
+
+amount,
+
+type,
+
+category,
+
+date,
+
+accountId,
+
+currency
+
+});
+
+
+saveData();
+
+
+document
+.getElementById("description")
+.value="";
+
+
+document
+.getElementById("amount")
+.value="";
+
+
+render();
+
+}
+
+
+/* -----------------------------
+   DELETE / EDIT
+----------------------------- */
+
 
 function deleteTransaction(id) {
 
-    transactions =
-        transactions.filter(
-            transaction => transaction.id !== id
-        );
+if(
+!confirm(
+"Delete this transaction?"
+)
+)
+return;
 
-    localStorage.setItem(
-        "petalflowTransactions",
-        JSON.stringify(transactions)
-    );
 
-    updateDashboard();
+transactions =
+transactions.filter(
+t=>t.id!==id
+);
+
+
+saveData();
+
+render();
+
+}
+
+
+function editTransaction(id) {
+
+const transaction =
+transactions.find(
+t=>t.id===id
+);
+
+if(!transaction)
+return;
+
+
+const newDescription =
+prompt(
+"Description:",
+transaction.description
+);
+
+
+if(newDescription===null)
+return;
+
+
+const newAmount =
+prompt(
+"Amount:",
+transaction.amount
+);
+
+
+if(newAmount===null)
+return;
+
+
+const amount =
+parseFloat(newAmount);
+
+
+if(isNaN(amount)||amount<=0)
+return;
+
+
+transaction.description =
+newDescription;
+
+transaction.amount =
+amount;
+
+
+saveData();
+
+render();
 
 }
 
-function updateDashboard() {
 
-    let income = 0;
+/* -----------------------------
+   SAVINGS GOALS
+----------------------------- */
 
-    let expenses = 0;
 
-    let savings = 0;
+function openGoalModal() {
 
-    transactions.forEach(transaction => {
-
-        if (transaction.type === "income") {
-
-            income += transaction.amount;
-
-        }
-
-        if (transaction.type === "expense") {
-
-            expenses += transaction.amount;
-
-        }
-
-        if (transaction.type === "saving") {
-
-            savings += transaction.amount;
-
-        }
-
-    });
-
-    const available =
-        income - expenses - savings;
-
-    document.getElementById("income").textContent =
-        formatMoney(income);
-
-    document.getElementById("expenses").textContent =
-        formatMoney(expenses);
-
-    document.getElementById("savings").textContent =
-        formatMoney(savings);
-
-    document.getElementById("available").textContent =
-        formatMoney(available);
-
-    document.getElementById("flowIncome").textContent =
-        formatMoney(income);
-
-    document.getElementById("flowExpenses").textContent =
-        formatMoney(expenses);
-
-    document.getElementById("flowSavings").textContent =
-        formatMoney(savings);
-
-    document.getElementById("flowRemaining").textContent =
-        formatMoney(available);
-
-    const goal = 105000;
-
-    const percentage =
-        Math.min((savings / goal) * 100, 100);
-
-    document.getElementById("progress").style.width =
-        percentage + "%";
-
-    document.getElementById("goalCurrent").textContent =
-        formatMoney(savings) + " saved";
-
-    document.getElementById("goalPercent").textContent =
-        percentage.toFixed(1) + "% complete";
-
-    renderTransactions();
+document
+.getElementById("goalModal")
+.classList.add("show");
 
 }
+
+
+function closeGoalModal() {
+
+document
+.getElementById("goalModal")
+.classList.remove("show");
+
+}
+
+
+function addGoal() {
+
+const name =
+document
+.getElementById("goalName")
+.value
+.trim();
+
+
+const target =
+parseFloat(
+document
+.getElementById("goalTarget")
+.value
+);
+
+
+const saved =
+parseFloat(
+document
+.getElementById("goalSaved")
+.value
+) || 0;
+
+
+if(
+!name ||
+isNaN(target) ||
+target<=0
+) {
+
+alert(
+"Please enter a goal name and target 🌸"
+);
+
+return;
+
+}
+
+
+goals.push({
+
+id:Date.now(),
+
+name,
+
+target,
+
+saved,
+
+currency:settings.currency
+
+});
+
+
+saveData();
+
+document.getElementById("goalName").value="";
+document.getElementById("goalTarget").value="";
+document.getElementById("goalSaved").value="";
+
+closeGoalModal();
+
+render();
+
+}
+
+
+function deleteGoal(id) {
+
+if(
+!confirm(
+"Delete this savings goal?"
+)
+)
+return;
+
+
+goals =
+goals.filter(
+g=>g.id!==id
+);
+
+saveData();
+
+render();
+
+}
+
+
+/* -----------------------------
+   BUDGET
+----------------------------- */
+
+
+function saveBudget() {
+
+const value =
+parseFloat(
+document
+.getElementById("budgetInput")
+.value
+);
+
+
+if(isNaN(value)||value<0)
+return;
+
+
+settings.budget=value;
+
+saveData();
+
+document
+.getElementById("budgetInput")
+.value="";
+
+render();
+
+}
+
+
+/* -----------------------------
+   TOTALS
+----------------------------- */
+
+
+function calculateTotals() {
+
+let totalMoney=0;
+
+accounts.forEach(
+account => {
+
+totalMoney +=
+convert(
+account.balance,
+account.currency,
+settings.currency
+);
+
+});
+
+
+let income=0;
+let expenses=0;
+let savings=0;
+
+
+const currentMonth =
+new Date()
+.toISOString()
+.slice(0,7);
+
+
+transactions.forEach(
+transaction => {
+
+if(
+!transaction.date.startsWith(
+currentMonth
+)
+)
+return;
+
+
+const amount =
+convert(
+transaction.amount,
+transaction.currency,
+settings.currency
+);
+
+
+if(
+transaction.type==="income"
+)
+income+=amount;
+
+
+if(
+transaction.type==="expense"
+)
+expenses+=amount;
+
+
+if(
+transaction.type==="saving"
+)
+savings+=amount;
+
+});
+
+
+return {
+
+totalMoney,
+
+income,
+
+expenses,
+
+savings
+
+};
+
+}
+
+
+/* -----------------------------
+   RENDER ACCOUNTS
+----------------------------- */
+
+
+function renderAccounts() {
+
+const container =
+document.getElementById(
+"accountsList"
+);
+
+
+if(accounts.length===0) {
+
+container.innerHTML=
+`
+<div class="empty">
+🏦 Add your first bank account, e-wallet or cash wallet.
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML="";
+
+
+accounts.forEach(
+account=>{
+
+let icon="🏦";
+
+
+if(account.type==="ewallet")
+icon="💳";
+
+
+if(account.type==="cash")
+icon="💵";
+
+
+const converted =
+convert(
+account.balance,
+account.currency,
+settings.currency
+);
+
+
+const div =
+document.createElement("div");
+
+
+div.className="account";
+
+
+div.innerHTML=
+`
+
+<div class="account-icon">
+${icon}
+</div>
+
+<div class="account-name">
+${escapeHTML(account.name)}
+</div>
+
+<div class="account-type">
+${account.type.toUpperCase()} • ${account.currency}
+</div>
+
+<div class="account-balance">
+${money(converted)}
+</div>
+
+<div class="account-actions">
+
+<button
+class="action-button"
+onclick="editAccount(${account.id})">
+
+Edit Balance
+
+</button>
+
+<button
+class="action-button"
+onclick="deleteAccount(${account.id})">
+
+Delete
+
+</button>
+
+</div>
+
+`;
+
+
+container.appendChild(div);
+
+}
+);
+
+}
+
+
+/* -----------------------------
+   ACCOUNT DROPDOWN
+----------------------------- */
+
+
+function renderAccountSelect() {
+
+const select =
+document.getElementById(
+"account"
+);
+
+
+select.innerHTML="";
+
+
+accounts.forEach(
+account=>{
+
+const option =
+document.createElement("option");
+
+option.value=
+account.id;
+
+option.textContent=
+`${account.name} (${account.currency})`;
+
+select.appendChild(option);
+
+}
+);
+
+}
+
+
+/* -----------------------------
+   TRANSACTIONS
+----------------------------- */
+
 
 function renderTransactions() {
 
-    const container =
-        document.getElementById("transactions");
+const container =
+document.getElementById(
+"transactionsList"
+);
 
-    if (transactions.length === 0) {
 
-        container.innerHTML =
-            '<div class="empty">No transactions yet 🌸</div>';
+if(transactions.length===0) {
 
-        return;
+container.innerHTML=
+`
+<div class="empty">
+No transactions yet 🌸
+</div>
+`;
 
-    }
-
-    container.innerHTML = "";
-
-    [...transactions]
-        .reverse()
-        .forEach(transaction => {
-
-            const row =
-                document.createElement("div");
-
-            row.className = "transaction";
-
-            let icon = "💰";
-
-            if (transaction.type === "expense")
-                icon = "💸";
-
-            if (transaction.type === "saving")
-                icon = "🐷";
-
-            const sign =
-                transaction.type === "income"
-                    ? "+"
-                    : "-";
-
-            row.innerHTML = `
-
-                <div>
-
-                    <strong>
-                        ${icon} ${transaction.description}
-                    </strong>
-
-                    <div class="category">
-                        ${transaction.type}
-                    </div>
-
-                </div>
-
-                <div>
-
-                    <strong>
-                        ${sign}${formatMoney(transaction.amount)}
-                    </strong>
-
-                    <button
-                        onclick="deleteTransaction(${transaction.id})"
-                        style="
-                            margin-left:8px;
-                            padding:5px 8px;
-                            background:#edd3df;
-                            color:#633f55;
-                        "
-                    >
-                        ×
-                    </button>
-
-                </div>
-
-            `;
-
-            container.appendChild(row);
-
-        });
+return;
 
 }
 
-updateDashboard();
+
+container.innerHTML="";
+
+
+[...transactions]
+.sort(
+(a,b)=>
+new Date(b.date)-
+new Date(a.date)
+)
+.slice(0,20)
+.forEach(
+t=>{
+
+let icon="💰";
+let sign="+";
+let color="positive";
+
+
+if(t.type==="expense") {
+
+icon="💸";
+sign="-";
+color="negative";
+
+}
+
+
+if(t.type==="saving") {
+
+icon="🐷";
+sign="-";
+color="negative";
+
+}
+
+
+if(t.type==="transfer") {
+
+icon="🔄";
+sign="";
+color="";
+
+}
+
+
+const account =
+accounts.find(
+a=>a.id===t.accountId
+);
+
+
+const div =
+document.createElement("div");
+
+
+div.className="transaction";
+
+
+div.innerHTML=
+`
+
+<div class="transaction-left">
+
+<div class="transaction-icon">
+${icon}
+</div>
+
+<div>
+
+<div class="transaction-title">
+${escapeHTML(t.description)}
+</div>
+
+<div class="transaction-meta">
+
+${escapeHTML(t.category)}
+•
+${t.date}
+•
+${account
+?escapeHTML(account.name)
+:"Unknown account"}
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="transaction-right">
+
+<div
+class="transaction-amount ${color}"
+>
+
+${sign}${money(
+t.amount,
+t.currency
+)}
+
+</div>
+
+<div class="transaction-actions">
+
+<button
+class="action-button"
+onclick="editTransaction(${t.id})">
+
+Edit
+
+</button>
+
+<button
+class="action-button"
+onclick="deleteTransaction(${t.id})">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+
+container.appendChild(div);
+
+}
+);
+
+}
+
+
+/* -----------------------------
+   DAILY SPENDING
+----------------------------- */
+
+
+function renderDailySpending() {
+
+const todayDate=today();
+
+let total=0;
+
+
+transactions.forEach(
+t=>{
+
+if(
+t.type!=="expense"
+)
+return;
+
+
+if(
+t.date!==todayDate
+)
+return;
+
+
+total +=
+convert(
+t.amount,
+t.currency,
+settings.currency
+);
+
+});
+
+
+document
+.getElementById("todaySpending")
+.textContent=
+money(total);
+
+}
+
+
+/* -----------------------------
+   CATEGORY BREAKDOWN
+----------------------------- */
+
+
+function renderCategories() {
+
+const container =
+document.getElementById(
+"categoryBreakdown"
+);
+
+
+const categories={};
+
+
+transactions.forEach(
+t=>{
+
+if(t.type!=="expense")
+return;
+
+
+const amount=
+convert(
+t.amount,
+t.currency,
+settings.currency
+);
+
+
+categories[t.category] =
+(categories[t.category]||0)
++
+amount;
+
+});
+
+
+const values=
+Object.values(categories);
+
+
+if(values.length===0) {
+
+container.innerHTML=
+`
+<div class="empty">
+No expenses recorded yet 🌷
+</div>
+`;
+
+return;
+
+}
+
+
+const max=
+Math.max(...values);
+
+
+container.innerHTML="";
+
+
+Object.entries(categories)
+.sort(
+(a,b)=>b[1]-a[1]
+)
+.forEach(
+([name,value])=>{
+
+const percent=
+(value/max)*100;
+
+
+const row=
+document.createElement("div");
+
+
+row.className=
+"category-row";
+
+
+row.innerHTML=
+`
+
+<div class="category-top">
+
+<span class="category-name">
+${escapeHTML(name)}
+</span>
+
+<span class="category-value">
+${money(value)}
+</span>
+
+</div>
+
+<div class="category-track">
+
+<div
+class="category-fill"
+style="width:${percent}%"
+></div>
+
+</div>
+
+`;
+
+
+container.appendChild(row);
+
+}
+);
+
+}
+
+
+/* -----------------------------
+   MONEY FLOW
+----------------------------- */
+
+
+function renderMoneyFlow() {
+
+const totals=
+calculateTotals();
+
+
+const container=
+document.getElementById(
+"moneyFlow"
+);
+
+
+container.innerHTML=
+`
+
+<div class="category-row">
+
+<div class="category-top">
+
+<span>
+💰 Income
+</span>
+
+<strong class="positive">
+${money(totals.income)}
+</strong>
+
+</div>
+
+<div class="category-track">
+
+<div
+class="category-fill"
+style="width:100%"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="category-row">
+
+<div class="category-top">
+
+<span>
+💸 Expenses
+</span>
+
+<strong class="negative">
+${money(totals.expenses)}
+</strong>
+
+</div>
+
+<div class="category-track">
+
+<div
+class="category-fill"
+style="width:${
+totals.income
+?Math.min(
+(totals.expenses/
+totals.income)*100,
+100
+):0
+}%"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="category-row">
+
+<div class="category-top">
+
+<span>
+🐷 Savings
+</span>
+
+<strong>
+${money(totals.savings)}
+</strong>
+
+</div>
+
+<div class="category-track">
+
+<div
+class="category-fill"
+style="width:${
+totals.income
+?Math.min(
+(totals.savings/
+totals.income)*100,
+100
+):0
+}%"
+></div>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* -----------------------------
+   GOALS
+----------------------------- */
+
+
+function renderGoals() {
+
+const container =
+document.getElementById(
+"goalsList"
+);
+
+
+if(goals.length===0) {
+
+container.innerHTML=
+`
+<div class="empty">
+Create your first savings goal 🌸
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML="";
+
+
+goals.forEach(
+goal=>{
+
+const percent=
+Math.min(
+(goal.saved/
+goal.target)*100,
+100
+);
+
+
+const div=
+document.createElement("div");
+
+
+div.className="goal";
+
+
+div.innerHTML=
+`
+
+<div class="goal-top">
+
+<div class="goal-name">
+🎯 ${escapeHTML(goal.name)}
+</div>
+
+<div class="goal-percent">
+${percent.toFixed(1)}%
+</div>
+
+</div>
+
+<div class="goal-amount">
+
+${money(
+goal.saved,
+goal.currency
+)}
+/
+${money(
+goal.target,
+goal.currency
+)}
+
+</div>
+
+<div class="progress-track">
+
+<div
+class="progress-bar"
+style="width:${percent}%"
+></div>
+
+</div>
+
+<button
+class="action-button"
+onclick="deleteGoal(${goal.id})">
+
+Delete
+
+</button>
+
+`;
+
+
+container.appendChild(div);
+
+}
+);
+
+}
+
+
+/* -----------------------------
+   BUDGET
+----------------------------- */
+
+
+function renderBudget() {
+
+const totals=
+calculateTotals();
+
+
+document
+.getElementById("budgetAmount")
+.textContent=
+money(settings.budget);
+
+
+document
+.getElementById("budgetSpent")
+.textContent=
+money(totals.expenses);
+
+
+let percent=0;
+
+
+if(settings.budget>0) {
+
+percent=
+Math.min(
+(totals.expenses/
+settings.budget)*100,
+100
+);
+
+}
+
+
+document
+.getElementById("budgetProgress")
+.style.width=
+percent+"%";
+
+
+const message=
+document.getElementById(
+"budgetMessage"
+);
+
+
+if(settings.budget===0) {
+
+message.textContent=
+"Set a monthly budget to begin 🌸";
+
+}
+
+else if(
+totals.expenses>
+settings.budget
+) {
+
+message.textContent=
+"⚠️ You've gone over your budget.";
+
+}
+
+else {
+
+message.textContent=
+money(
+settings.budget-
+totals.expenses
+)
++
+" remaining this month 🌷";
+
+}
+
+}
+
+
+/* -----------------------------
+   SUMMARY
+----------------------------- */
+
+
+function renderSummary() {
+
+const totals=
+calculateTotals();
+
+
+document
+.getElementById("totalMoney")
+.textContent=
+money(totals.totalMoney);
+
+
+document
+.getElementById("totalIncome")
+.textContent=
+money(totals.income);
+
+
+document
+.getElementById("totalExpenses")
+.textContent=
+money(totals.expenses);
+
+
+document
+.getElementById("totalSavings")
+.textContent=
+money(totals.savings);
+
+}
+
+
+/* -----------------------------
+   MAIN RENDER
+----------------------------- */
+
+
+function render() {
+
+document
+.getElementById("displayCurrency")
+.value=
+settings.currency;
+
+
+renderSummary();
+
+renderAccounts();
+
+renderAccountSelect();
+
+renderTransactions();
+
+renderDailySpending();
+
+renderCategories();
+
+renderMoneyFlow();
+
+renderGoals();
+
+renderBudget();
+
+}
+
+
+/* -----------------------------
+   INITIALIZE
+----------------------------- */
+
+
+document
+.getElementById("transactionDate")
+.value=
+today();
+
+
+updateCategories();
+
+render();
+
 
 </script>
 
