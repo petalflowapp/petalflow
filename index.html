@@ -2704,6 +2704,7 @@ async function uploadProfilePicture(){
     if(!currentUser)
         return;
 
+
     const input =
         document.getElementById(
             "profilePictureInput"
@@ -2715,6 +2716,10 @@ async function uploadProfilePicture(){
     if(!file)
         return;
 
+
+    /* =================================================
+       CHECK FILE TYPE
+    ================================================= */
 
     if(!file.type.startsWith("image/")){
 
@@ -2729,14 +2734,14 @@ async function uploadProfilePicture(){
     }
 
 
-    /*
-       Limit image size to 5 MB.
-    */
+    /* =================================================
+       ALLOW IMAGES UP TO 10 MB
+    ================================================= */
 
-    if(file.size > 5 * 1024 * 1024){
+    if(file.size > 10 * 1024 * 1024){
 
         alert(
-            "Please choose an image smaller than 5 MB."
+            "Please choose an image smaller than 10 MB."
         );
 
         input.value = "";
@@ -2746,118 +2751,308 @@ async function uploadProfilePicture(){
     }
 
 
-    const extension =
-        file.name
-            .split(".")
-            .pop()
-            .toLowerCase();
+    try{
+
+        /* =============================================
+           CREATE IMAGE
+        ============================================= */
+
+        const image =
+            new Image();
+
+        const imageURL =
+            URL.createObjectURL(file);
 
 
-    const filePath =
-        `${currentUser.id}/profile.${extension}`;
+        await new Promise(
+            (resolve,reject)=>{
+
+                image.onload =
+                    resolve;
+
+                image.onerror =
+                    reject;
+
+                image.src =
+                    imageURL;
+
+            }
+        );
 
 
-    const {
-        error:uploadError
-    } =
-        await db.storage
-            .from("avatars")
-            .upload(
-                filePath,
-                file,
-                {
-                    upsert:true,
-                    contentType:file.type
+        URL.revokeObjectURL(
+            imageURL
+        );
+
+
+        /* =============================================
+           RESIZE IMAGE
+           
+           Maximum dimension:
+           1200 x 1200
+        ============================================= */
+
+        const MAX_SIZE = 1200;
+
+        let width =
+            image.width;
+
+        let height =
+            image.height;
+
+
+        if(width > MAX_SIZE ||
+           height > MAX_SIZE){
+
+            if(width > height){
+
+                height =
+                    Math.round(
+                        height *
+                        (MAX_SIZE / width)
+                    );
+
+                width =
+                    MAX_SIZE;
+
+            }
+            else{
+
+                width =
+                    Math.round(
+                        width *
+                        (MAX_SIZE / height)
+                    );
+
+                height =
+                    MAX_SIZE;
+
+            }
+
+        }
+
+
+        /* =============================================
+           CREATE CANVAS
+        ============================================= */
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+        canvas.width =
+            width;
+
+        canvas.height =
+            height;
+
+
+        const context =
+            canvas.getContext(
+                "2d"
+            );
+
+
+        context.drawImage(
+            image,
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        /* =============================================
+           COMPRESS IMAGE
+        ============================================= */
+
+        const compressedFile =
+            await new Promise(
+                (resolve,reject)=>{
+
+                    canvas.toBlob(
+                        blob=>{
+
+                            if(!blob){
+
+                                reject(
+                                    new Error(
+                                        "Unable to compress image."
+                                    )
+                                );
+
+                                return;
+
+                            }
+
+                            resolve(
+                                new File(
+                                    [blob],
+                                    "profile.jpg",
+                                    {
+                                        type:
+                                            "image/jpeg"
+                                    }
+                                )
+                            );
+
+                        },
+                        "image/jpeg",
+                        0.85
+                    );
+
                 }
             );
 
 
-    if(uploadError){
+        /* =============================================
+           CREATE UNIQUE FILE PATH
+        ============================================= */
 
-        console.error(
-            "Profile picture upload error:",
-            uploadError
-        );
-
-        alert(
-            "Unable to upload your profile picture.\n\n" +
-            safeError(uploadError)
-        );
-
-        return;
-
-    }
+        const filePath =
+            `${currentUser.id}/profile.jpg`;
 
 
-    const {
-        data
-    } =
-        db.storage
-            .from("avatars")
-            .getPublicUrl(
-                filePath
+        /* =============================================
+           UPLOAD TO SUPABASE STORAGE
+        ============================================= */
+
+        const {
+            error:uploadError
+        } =
+            await db.storage
+                .from("avatars")
+                .upload(
+                    filePath,
+                    compressedFile,
+                    {
+                        upsert:true,
+                        contentType:
+                            "image/jpeg"
+                    }
+                );
+
+
+        if(uploadError){
+
+            console.error(
+                "Profile picture upload error:",
+                uploadError
+            );
+
+            alert(
+                "Unable to upload your profile picture.\n\n" +
+                safeError(uploadError)
+            );
+
+            return;
+
+        }
+
+
+        /* =============================================
+           GET PUBLIC URL
+        ============================================= */
+
+        const {
+            data
+        } =
+            db.storage
+                .from("avatars")
+                .getPublicUrl(
+                    filePath
+                );
+
+
+        const pictureUrl =
+            data.publicUrl;
+
+
+        /* =============================================
+           SAVE URL TO PROFILE
+        ============================================= */
+
+        const {
+            error:updateError
+        } =
+            await db
+                .from("profiles")
+                .update({
+                    picture:
+                        pictureUrl
+                })
+                .eq(
+                    "id",
+                    currentUser.id
+                );
+
+
+        if(updateError){
+
+            console.error(
+                "Profile picture database error:",
+                updateError
+            );
+
+            alert(
+                "The picture uploaded, but we couldn't save the profile picture information.\n\n" +
+                safeError(updateError)
+            );
+
+            return;
+
+        }
+
+
+        /* =============================================
+           UPDATE PROFILE PREVIEW
+        ============================================= */
+
+        const preview =
+            document.getElementById(
+                "profilePicturePreview"
+            );
+
+        const placeholder =
+            document.getElementById(
+                "profilePicturePlaceholder"
             );
 
 
-    const pictureUrl =
-        data.publicUrl;
+        preview.src =
+            pictureUrl +
+            "?t=" +
+            Date.now();
+
+        preview.style.display =
+            "block";
+
+        placeholder.style.display =
+            "none";
 
 
-    const {
-        error:updateError
-    } =
-        await db
-            .from("profiles")
-            .update({
-                picture:pictureUrl
-            })
-            .eq(
-                "id",
-                currentUser.id
-            );
+        /* =============================================
+           SUCCESS MESSAGE
+        ============================================= */
 
+        alert(
+            "Profile picture updated! 🌸"
+        );
 
-    if(updateError){
+    }
+    catch(error){
 
         console.error(
-            "Profile picture database error:",
-            updateError
+            "Image processing error:",
+            error
         );
 
         alert(
-            "The picture uploaded, but we couldn't save the profile picture information.\n\n" +
-            safeError(updateError)
+            "Something went wrong while processing your image."
         );
-
-        return;
 
     }
-
-
-    const image =
-        document.getElementById(
-            "profilePicturePreview"
-        );
-
-    const placeholder =
-        document.getElementById(
-            "profilePicturePlaceholder"
-        );
-
-
-    image.src =
-        pictureUrl;
-
-    image.style.display =
-        "block";
-
-    placeholder.style.display =
-        "none";
-
-
-    alert(
-        "Profile picture updated! 🌸"
-    );
 
 }
 
