@@ -743,6 +743,301 @@ body.midnight-mode .header select {
 }
 
 /* =========================
+   PROFILE
+========================= */
+
+.profile-area {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:15px;
+}
+
+.profile-picture {
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid rgba(255,255,255,.8);
+    background:var(--pink-light);
+    box-shadow:0 5px 15px rgba(100,60,90,.12);
+}
+
+.profile-info {
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+.profile-username {
+    font-weight:750;
+    color:#623f54;
+    font-size:15px;
+}
+
+.profile-label {
+    color:#76596b;
+    font-size:11px;
+}
+
+.profile-edit-button {
+    border:none;
+    background:rgba(255,255,255,.75);
+    color:var(--pink-dark);
+    padding:6px 9px;
+    border-radius:9px;
+    font-size:11px;
+    font-weight:700;
+    margin-top:4px;
+}
+
+
+/* =========================
+   NOTES
+========================= */
+
+.notes-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.note-card {
+    background:linear-gradient(
+        145deg,
+        var(--pink-light),
+        var(--lavender-light)
+    );
+    border-radius:18px;
+    padding:17px;
+    min-height:150px;
+    position:relative;
+}
+
+.note-title {
+    font-weight:750;
+    color:var(--pink-dark);
+    margin-bottom:9px;
+    padding-right:25px;
+}
+
+.note-content {
+    color:var(--text);
+    font-size:13px;
+    line-height:1.6;
+    white-space:pre-wrap;
+}
+
+.note-date {
+    color:var(--muted);
+    font-size:10px;
+    margin-top:12px;
+}
+
+.note-delete {
+    position:absolute;
+    top:12px;
+    right:12px;
+    border:none;
+    background:rgba(255,255,255,.7);
+    color:var(--red);
+    border-radius:8px;
+    padding:5px 7px;
+    font-size:11px;
+}
+
+
+/* =========================
+   STICKERS
+========================= */
+
+.sticker-board {
+    position:relative;
+    min-height:300px;
+    border-radius:20px;
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(232,154,185,.12),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(185,163,223,.15),
+            transparent 25%
+        ),
+        var(--pink-light);
+    border:2px dashed var(--border);
+    overflow:hidden;
+}
+
+.sticker {
+    position:absolute;
+    font-size:38px;
+    cursor:grab;
+    user-select:none;
+    z-index:2;
+    transition:transform .15s ease;
+}
+
+.sticker:hover {
+    transform:scale(1.12);
+}
+
+.sticker:active {
+    cursor:grabbing;
+}
+
+.sticker-toolbar {
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-bottom:13px;
+}
+
+.sticker-button {
+    border:1px solid var(--border);
+    background:var(--pink-light);
+    border-radius:11px;
+    padding:8px 10px;
+    font-size:20px;
+}
+
+.sticker-button:hover {
+    transform:translateY(-2px);
+}
+
+.clear-stickers {
+    border:none;
+    background:#fff0f2;
+    color:var(--red);
+    border-radius:11px;
+    padding:8px 11px;
+    font-size:12px;
+    font-weight:700;
+}
+
+
+/* =========================
+   PROFILE MODAL
+========================= */
+
+.profile-preview {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.profile-preview img {
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid var(--pink-light);
+    margin-bottom:10px;
+}
+
+.profile-upload {
+    width:100%;
+    padding:10px;
+    border:1px dashed var(--border);
+    border-radius:12px;
+    background:var(--pink-light);
+}
+
+
+<!-- =========================
+     NOTE MODAL
+========================= -->
+
+<div class="modal" id="noteModal">
+
+    <div class="modal-card">
+
+        <h3>📝 New Note</h3>
+
+        <input
+            id="noteTitle"
+            type="text"
+            maxlength="60"
+            placeholder="Note title">
+
+        <textarea
+            id="noteContent"
+            class="note-textarea"
+            placeholder="Write something... 🌷"></textarea>
+
+        <div class="modal-actions">
+
+            <button
+                class="secondary-button"
+                onclick="closeNoteModal()">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="primary-button"
+                onclick="saveNote()">
+
+                Save Note
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+    
+/* =========================
+   NOTE FORM
+========================= */
+
+.note-textarea {
+    width:100%;
+    min-height:130px;
+    resize:vertical;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:var(--input);
+    color:var(--text);
+    outline:none;
+    margin-bottom:10px;
+    font-family:inherit;
+}
+
+.note-textarea:focus {
+    border-color:var(--pink);
+    box-shadow:0 0 0 3px rgba(232,154,185,.12);
+}
+
+
+@media(max-width:900px) {
+
+    .notes-grid {
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .notes-grid {
+        grid-template-columns:1fr;
+    }
+
+    .sticker-board {
+        min-height:250px;
+    }
+
+}
+    
+/* =========================
    RESPONSIVE
 ========================= */
 
@@ -956,10 +1251,45 @@ body.midnight-mode .header select {
 
     <div class="header-inner">
 
-        <div class="logo">
-            <h1>🌸 PetalFlow</h1>
-            <p>Grow your money, one petal at a time.</p>
+       <div class="logo">
+
+    <h1>🌸 PetalFlow</h1>
+
+    <p>Grow your money, one petal at a time.</p>
+
+    <div class="profile-area">
+
+        <img
+            id="profilePicture"
+            class="profile-picture"
+            src="https://ui-avatars.com/api/?name=Petal&background=f8c9dc&color=623f54"
+            alt="Profile picture">
+
+        <div class="profile-info">
+
+            <div
+                id="profileUsername"
+                class="profile-username">
+                @username
+            </div>
+
+            <div class="profile-label">
+                Your financial garden 🌷
+            </div>
+
+            <button
+                class="profile-edit-button"
+                onclick="openProfileModal()">
+
+                ✨ Edit Profile
+
+            </button>
+
         </div>
+
+    </div>
+
+</div>
 
         <div class="header-actions">
 
@@ -1364,6 +1694,144 @@ body.midnight-mode .header select {
 
     </div>
 
+<!-- =========================
+     NOTES
+========================= -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h3>📝 My Notes</h3>
+
+        <button
+            class="small-button"
+            onclick="openNoteModal()">
+
+            + New Note
+
+        </button>
+
+    </div>
+
+    <div
+        id="notesList"
+        class="notes-grid">
+    </div>
+
+</div>
+
+
+<!-- =========================
+     STICKERS
+========================= -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h3>🌸 My Sticker Garden</h3>
+
+        <button
+            class="clear-stickers"
+            onclick="clearStickers()">
+
+            Clear Stickers
+
+        </button>
+
+    </div>
+
+    <p
+        style="color:var(--muted);font-size:12px;margin-bottom:12px;">
+
+        Click a sticker to add it. Drag stickers around your garden! ✨
+
+    </p>
+
+    <div class="sticker-toolbar">
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('🌸')">
+            🌸
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('🌷')">
+            🌷
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('🦋')">
+            🦋
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('💗')">
+            💗
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('💕')">
+            💕
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('⭐')">
+            ⭐
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('✨')">
+            ✨
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('🐰')">
+            🐰
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('🐻')">
+            🐻
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('🌈')">
+            🌈
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('☁️')">
+            ☁️
+        </button>
+
+        <button
+            class="sticker-button"
+            onclick="addSticker('🍓')">
+            🍓
+        </button>
+
+    </div>
+
+    <div
+        id="stickerBoard"
+        class="sticker-board">
+    </div>
+
+</div>
+    
 </main>
 
 
@@ -1373,7 +1841,70 @@ body.midnight-mode .header select {
 
 </div>
 
+<!-- =========================
+     PROFILE MODAL
+========================= -->
 
+<div class="modal" id="profileModal">
+
+    <div class="modal-card">
+
+        <h3>✨ Edit Your Profile</h3>
+
+        <div class="profile-preview">
+
+            <img
+                id="profilePreview"
+                src="https://ui-avatars.com/api/?name=Petal&background=f8c9dc&color=623f54"
+                alt="Profile preview">
+
+        </div>
+
+        <input
+            id="usernameInput"
+            type="text"
+            maxlength="20"
+            placeholder="Username">
+
+        <input
+            id="profileImageInput"
+            class="profile-upload"
+            type="file"
+            accept="image/*"
+            onchange="previewProfileImage(event)">
+
+        <p
+            style="font-size:11px;color:var(--muted);margin:0 0 12px;">
+
+            Choose a profile picture from your device. 🌸
+
+        </p>
+
+        <div class="modal-actions">
+
+            <button
+                class="secondary-button"
+                onclick="closeProfileModal()">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="primary-button"
+                onclick="saveProfile()">
+
+                Save Profile
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+    
 <!-- =========================
      THEME MODAL
 ========================= -->
@@ -2421,6 +2952,8 @@ async function startApp(user){
         await ensureProfile(user);
 
         await loadUserData();
+
+        loadPersonalFeatures();
 
         const profile =
             await getProfileName();
@@ -5358,7 +5891,933 @@ document
         }
     );
 
+    
+document
+    .getElementById(
+        "profileModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
 
+            if(
+                event.target === this
+            ){
+
+                closeProfileModal();
+
+            }
+
+        }
+    );
+
+    
+document
+    .getElementById(
+        "noteModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
+            ){
+
+                closeNoteModal();
+
+            }
+
+        }
+    );
+/* =====================================================
+   PROFILE / NOTES / STICKERS
+===================================================== */
+
+let profileData = {
+    username:"username",
+    picture:""
+};
+
+let notes = [];
+let stickers = [];
+
+
+/* =====================================================
+   PROFILE STORAGE
+===================================================== */
+
+function profileStorageKey(){
+
+    return currentUser
+        ? `petalflowProfile_${currentUser.id}`
+        : "petalflowProfile";
+
+}
+
+
+function notesStorageKey(){
+
+    return currentUser
+        ? `petalflowNotes_${currentUser.id}`
+        : "petalflowNotes";
+
+}
+
+
+function stickersStorageKey(){
+
+    return currentUser
+        ? `petalflowStickers_${currentUser.id}`
+        : "petalflowStickers";
+
+}
+
+
+/* =====================================================
+   LOAD PERSONAL FEATURES
+===================================================== */
+
+function loadPersonalFeatures(){
+
+    if(!currentUser)
+        return;
+
+
+    const savedProfile =
+        localStorage.getItem(
+            profileStorageKey()
+        );
+
+
+    if(savedProfile){
+
+        try{
+
+            profileData =
+                JSON.parse(
+                    savedProfile
+                );
+
+        }
+        catch(error){
+
+            console.error(
+                "Profile storage error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    const savedNotes =
+        localStorage.getItem(
+            notesStorageKey()
+        );
+
+
+    if(savedNotes){
+
+        try{
+
+            notes =
+                JSON.parse(
+                    savedNotes
+                );
+
+        }
+        catch(error){
+
+            notes = [];
+
+        }
+
+    }
+
+
+    const savedStickers =
+        localStorage.getItem(
+            stickersStorageKey()
+        );
+
+
+    if(savedStickers){
+
+        try{
+
+            stickers =
+                JSON.parse(
+                    savedStickers
+                );
+
+        }
+        catch(error){
+
+            stickers = [];
+
+        }
+
+    }
+
+
+    renderProfile();
+
+    renderNotes();
+
+    renderStickers();
+
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function renderProfile(){
+
+    const picture =
+        document.getElementById(
+            "profilePicture"
+        );
+
+    const username =
+        document.getElementById(
+            "profileUsername"
+        );
+
+
+    if(!picture || !username)
+        return;
+
+
+    username.textContent =
+        "@" +
+        (
+            profileData.username ||
+            "username"
+        );
+
+
+    if(profileData.picture){
+
+        picture.src =
+            profileData.picture;
+
+    }
+
+}
+
+
+function openProfileModal(){
+
+    document
+        .getElementById(
+            "profileModal"
+        )
+        .classList.add("show");
+
+
+    document
+        .getElementById(
+            "usernameInput"
+        )
+        .value =
+            profileData.username ||
+            "username";
+
+
+    document
+        .getElementById(
+            "profilePreview"
+        )
+        .src =
+            profileData.picture ||
+            "https://ui-avatars.com/api/?name=Petal&background=f8c9dc&color=623f54";
+
+}
+
+
+function closeProfileModal(){
+
+    document
+        .getElementById(
+            "profileModal"
+        )
+        .classList.remove("show");
+
+}
+
+
+function previewProfileImage(event){
+
+    const file =
+        event.target.files?.[0];
+
+
+    if(!file)
+        return;
+
+
+    if(file.size > 2 * 1024 * 1024){
+
+        alert(
+            "Please choose an image smaller than 2 MB. 🌸"
+        );
+
+        event.target.value = "";
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(){
+
+            document
+                .getElementById(
+                    "profilePreview"
+                )
+                .src =
+                    reader.result;
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function saveProfile(){
+
+    const username =
+        document
+            .getElementById(
+                "usernameInput"
+            )
+            .value
+            .trim()
+            .replace(
+                /^@+/,
+                ""
+            );
+
+
+    if(!username){
+
+        alert(
+            "Please enter a username 🌷"
+        );
+
+        return;
+
+    }
+
+
+    if(username.length < 2){
+
+        alert(
+            "Your username should have at least 2 characters."
+        );
+
+        return;
+
+    }
+
+
+    const preview =
+        document
+            .getElementById(
+                "profilePreview"
+            );
+
+
+    profileData = {
+
+        username,
+
+        picture:
+            preview.src.includes(
+                "ui-avatars.com"
+            )
+            ? profileData.picture
+            : preview.src
+
+    };
+
+
+    localStorage.setItem(
+        profileStorageKey(),
+        JSON.stringify(
+            profileData
+        )
+    );
+
+
+    renderProfile();
+
+    closeProfileModal();
+
+}
+
+
+/* =====================================================
+   NOTES
+===================================================== */
+
+function openNoteModal(){
+
+    document
+        .getElementById(
+            "noteModal"
+        )
+        .classList.add("show");
+
+
+    document
+        .getElementById(
+            "noteTitle"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "noteContent"
+        )
+        .value = "";
+
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById(
+                    "noteTitle"
+                )
+                .focus();
+
+        },
+        100
+    );
+
+}
+
+
+function closeNoteModal(){
+
+    document
+        .getElementById(
+            "noteModal"
+        )
+        .classList.remove("show");
+
+}
+
+
+function saveNote(){
+
+    const title =
+        document
+            .getElementById(
+                "noteTitle"
+            )
+            .value
+            .trim();
+
+    const content =
+        document
+            .getElementById(
+                "noteContent"
+            )
+            .value
+            .trim();
+
+
+    if(!title){
+
+        alert(
+            "Please give your note a title 🌸"
+        );
+
+        return;
+
+    }
+
+
+    if(!content){
+
+        alert(
+            "Please write something in your note."
+        );
+
+        return;
+
+    }
+
+
+    notes.unshift({
+
+        id:
+            Date.now(),
+
+        title,
+
+        content,
+
+        date:
+            new Date()
+                .toLocaleDateString(
+                    undefined,
+                    {
+                        year:"numeric",
+                        month:"short",
+                        day:"numeric"
+                    }
+                )
+
+    });
+
+
+    localStorage.setItem(
+        notesStorageKey(),
+        JSON.stringify(notes)
+    );
+
+
+    renderNotes();
+
+    closeNoteModal();
+
+}
+
+
+function renderNotes(){
+
+    const container =
+        document.getElementById(
+            "notesList"
+        );
+
+
+    if(!container)
+        return;
+
+
+    if(notes.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty"
+                 style="grid-column:1/-1;">
+
+                📝 You don't have any notes yet.
+                Create your first one 🌷
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    notes.forEach(
+        note => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "note-card";
+
+
+            div.innerHTML = `
+
+                <button
+                    class="note-delete"
+                    onclick="deleteNote(${note.id})">
+
+                    ✕
+
+                </button>
+
+                <div class="note-title">
+
+                    ${escapeHTML(
+                        note.title
+                    )}
+
+                </div>
+
+                <div class="note-content">
+
+                    ${escapeHTML(
+                        note.content
+                    )}
+
+                </div>
+
+                <div class="note-date">
+
+                    ${escapeHTML(
+                        note.date
+                    )}
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+function deleteNote(id){
+
+    if(
+        !confirm(
+            "Delete this note? 📝"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    notes =
+        notes.filter(
+            note =>
+                Number(note.id) !==
+                Number(id)
+        );
+
+
+    localStorage.setItem(
+        notesStorageKey(),
+        JSON.stringify(notes)
+    );
+
+
+    renderNotes();
+
+}
+
+
+/* =====================================================
+   STICKERS
+===================================================== */
+
+function addSticker(emoji){
+
+    const board =
+        document.getElementById(
+            "stickerBoard"
+        );
+
+
+    if(!board)
+        return;
+
+
+    const id =
+        Date.now() +
+        Math.random();
+
+
+    const sticker = {
+
+        id,
+
+        emoji,
+
+        x:
+            Math.random() * 75 + 5,
+
+        y:
+            Math.random() * 65 + 5
+
+    };
+
+
+    stickers.push(
+        sticker
+    );
+
+
+    saveStickers();
+
+    renderStickers();
+
+}
+
+
+function saveStickers(){
+
+    localStorage.setItem(
+        stickersStorageKey(),
+        JSON.stringify(
+            stickers
+        )
+    );
+
+}
+
+
+function renderStickers(){
+
+    const board =
+        document.getElementById(
+            "stickerBoard"
+        );
+
+
+    if(!board)
+        return;
+
+
+    board.innerHTML = "";
+
+
+    stickers.forEach(
+        sticker => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "sticker";
+
+
+            element.textContent =
+                sticker.emoji;
+
+
+            element.style.left =
+                sticker.x + "%";
+
+
+            element.style.top =
+                sticker.y + "%";
+
+
+            element.dataset.id =
+                sticker.id;
+
+
+            makeStickerDraggable(
+                element,
+                sticker
+            );
+
+
+            board.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+function makeStickerDraggable(
+    element,
+    sticker
+){
+
+    let dragging = false;
+
+    let offsetX = 0;
+
+    let offsetY = 0;
+
+
+    element.addEventListener(
+        "pointerdown",
+        function(event){
+
+            dragging = true;
+
+            element.setPointerCapture(
+                event.pointerId
+            );
+
+
+            const rect =
+                element.getBoundingClientRect();
+
+
+            offsetX =
+                event.clientX -
+                rect.left;
+
+
+            offsetY =
+                event.clientY -
+                rect.top;
+
+
+            element.style.zIndex =
+                10;
+
+        }
+    );
+
+
+    element.addEventListener(
+        "pointermove",
+        function(event){
+
+            if(!dragging)
+                return;
+
+
+            const board =
+                document
+                    .getElementById(
+                        "stickerBoard"
+                    );
+
+
+            const boardRect =
+                board.getBoundingClientRect();
+
+
+            let x =
+                event.clientX -
+                boardRect.left -
+                offsetX;
+
+
+            let y =
+                event.clientY -
+                boardRect.top -
+                offsetY;
+
+
+            const maxX =
+                boardRect.width -
+                element.offsetWidth;
+
+
+            const maxY =
+                boardRect.height -
+                element.offsetHeight;
+
+
+            x =
+                Math.max(
+                    0,
+                    Math.min(
+                        x,
+                        maxX
+                    )
+                );
+
+
+            y =
+                Math.max(
+                    0,
+                    Math.min(
+                        y,
+                        maxY
+                    )
+                );
+
+
+            sticker.x =
+                (
+                    x /
+                    boardRect.width
+                ) * 100;
+
+
+            sticker.y =
+                (
+                    y /
+                    boardRect.height
+                ) * 100;
+
+
+            element.style.left =
+                sticker.x + "%";
+
+
+            element.style.top =
+                sticker.y + "%";
+
+        }
+    );
+
+
+    element.addEventListener(
+        "pointerup",
+        function(){
+
+            dragging = false;
+
+            element.style.zIndex =
+                2;
+
+            saveStickers();
+
+        }
+    );
+
+}
+
+
+function clearStickers(){
+
+    if(stickers.length === 0)
+        return;
+
+
+    if(
+        !confirm(
+            "Remove all stickers from your garden? 🌸"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    stickers = [];
+
+    saveStickers();
+
+    renderStickers();
+
+}
+
+    
 /* =====================================================
    ESC KEY CLOSES MODALS
 ===================================================== */
@@ -5373,6 +6832,8 @@ document.addEventListener(
         closeAccountModal();
         closeGoalModal();
         closeThemeModal();
+        closeProfileModal();
+        closeNoteModal();
 
     }
 );
