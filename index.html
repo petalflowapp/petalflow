@@ -1,1002 +1,939 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>PetalFlow 🌸</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>PetalFlow</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
-:root {
-    --pink:#e89ab9;
-    --pink-dark:#c87599;
-    --pink-light:#fff0f6;
-    --lavender:#b9a3df;
-    --lavender-light:#f4effc;
-    --cream:#fffafd;
-    --text:#4d3947;
-    --muted:#9b8291;
-    --border:#eedce6;
-    --green:#72a883;
-    --red:#c97891;
-    --page:#fff7fb;
+/* =====================================================
+   ROOT
+===================================================== */
+
+:root{
+
+    --pink:#f8c9dc;
+    --pink-light:#fdebf3;
+    --purple:#ddd0f5;
+    --background:#fff8fb;
     --card:#ffffff;
-    --input:#fffafd;
-    --shadow:0 8px 30px rgba(120,70,100,.08);
+    --text:#4d4050;
+    --muted:#8c7d89;
+    --border:#eadde5;
+    --shadow:0 8px 25px rgba(100,70,100,.08);
+    --danger:#d96b7c;
+
 }
 
-* {
+*{
     box-sizing:border-box;
+}
+
+body{
+
     margin:0;
-    padding:0;
-}
 
-body {
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-    background:linear-gradient(180deg,var(--page),var(--lavender-light));
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:var(--background);
+
     color:var(--text);
+
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
+
+.app{
+
     min-height:100vh;
-    transition:background .25s ease,color .25s ease;
+
 }
 
-button,
-input,
-select {
-    font:inherit;
-}
 
-button {
-    cursor:pointer;
-}
-
-.hidden {
-    display:none !important;
-}
-
-/* =========================
-   AUTH
-========================= */
-
-.auth-screen {
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:25px;
-}
-
-.auth-card {
-    width:100%;
-    max-width:430px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:30px;
-    padding:35px;
-    box-shadow:var(--shadow);
-}
-
-.auth-logo {
-    text-align:center;
-    margin-bottom:28px;
-}
-
-.auth-logo .flower {
-    font-size:48px;
-    margin-bottom:8px;
-}
-
-.auth-logo h1 {
-    color:var(--pink-dark);
-    font-size:32px;
-}
-
-.auth-logo p {
-    color:var(--muted);
-    margin-top:7px;
-    line-height:1.5;
-}
-
-.auth-card h2 {
-    color:var(--pink-dark);
-    margin-bottom:18px;
-    font-size:21px;
-}
-
-.auth-field {
-    margin-bottom:13px;
-}
-
-.auth-field label {
-    display:block;
-    font-size:12px;
-    color:var(--muted);
-    margin-bottom:6px;
-}
-
-.auth-message {
-    background:var(--pink-light);
-    color:var(--text);
-    border-radius:13px;
-    padding:11px;
-    font-size:13px;
-    margin-bottom:13px;
-    line-height:1.5;
-}
-
-.auth-error {
-    background:#fff0f2;
-    color:#a85d72;
-}
-
-.auth-success {
-    background:#f0f8f2;
-    color:#62876d;
-}
-
-.auth-switch {
-    text-align:center;
-    margin-top:18px;
-    color:var(--muted);
-    font-size:13px;
-}
-
-.link-button {
-    border:none;
-    background:none;
-    color:var(--pink-dark);
-    font-weight:700;
-    padding:0;
-}
-
-/* =========================
+/* =====================================================
    HEADER
-========================= */
+===================================================== */
 
-.header {
-    background:linear-gradient(135deg,#f8c9dc,#ddd0f5);
+.header{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            var(--purple)
+        );
+
     padding:28px 20px 35px;
-    border-radius:0 0 35px 35px;
+
+    border-radius:
+        0 0 35px 35px;
+
 }
 
-.header-inner {
+.header-inner{
+
     max-width:1150px;
+
     margin:auto;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     gap:20px;
+
 }
 
-.logo h1 {
-    font-size:34px;
-    color:#623f54;
-}
+.logo{
 
-.logo p {
-    color:#76596b;
-    margin-top:5px;
-}
+    font-size:28px;
 
-.header-actions {
-    display:flex;
-    gap:8px;
-    align-items:center;
-}
-
-.header select,
-.theme-button,
-.logout-button {
-    padding:11px 14px;
-    border:1px solid rgba(255,255,255,.7);
-    border-radius:14px;
-    background:rgba(255,255,255,.75);
-    color:#76596b;
-}
-
-.theme-button,
-.logout-button {
-    border:none;
-    font-weight:650;
-}
-
-.theme-button:hover,
-.logout-button:hover,
-.header select:hover {
-    background:white;
-}
-
-/* =========================
-   GENERAL
-========================= */
-
-.container {
-    max-width:1150px;
-    margin:auto;
-    padding:28px 20px 50px;
-}
-
-.greeting {
-    margin-bottom:20px;
-}
-
-.greeting h2 {
-    color:var(--pink-dark);
-}
-
-.greeting p {
-    color:var(--muted);
-    margin-top:4px;
-}
-
-.cards {
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:16px;
-    margin-bottom:22px;
-}
-
-.card,
-.section {
-    background:var(--card);
-    border:1px solid var(--border);
-    box-shadow:var(--shadow);
-}
-
-.card {
-    border-radius:22px;
-    padding:21px;
-}
-
-.card-label {
-    color:var(--muted);
-    font-size:13px;
-    margin-bottom:9px;
-}
-
-.card-value {
-    font-size:25px;
-    font-weight:750;
-    color:var(--pink-dark);
-}
-
-.card-sub {
-    color:var(--muted);
-    font-size:12px;
-    margin-top:6px;
-}
-
-.positive {
-    color:var(--green)!important;
-}
-
-.negative {
-    color:var(--red)!important;
-}
-
-.section {
-    border-radius:24px;
-    padding:24px;
-    margin-bottom:20px;
-}
-
-.section-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-bottom:18px;
-}
-
-.section h3 {
-    color:var(--pink-dark);
-    font-size:19px;
-}
-
-.grid {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-}
-
-/* =========================
-   BUTTONS / INPUTS
-========================= */
-
-.small-button {
-    border:none;
-    background:var(--pink-light);
-    color:var(--pink-dark);
-    padding:8px 12px;
-    border-radius:10px;
-    font-size:12px;
     font-weight:700;
+
 }
 
-.action-button {
-    border:none;
-    background:var(--pink-light);
-    color:var(--pink-dark);
-    border-radius:8px;
-    padding:5px 8px;
-    font-size:11px;
+.subtitle{
+
+    margin-top:5px;
+
+    font-size:13px;
+
+    color:#6f6170;
+
 }
 
-.primary-button {
-    width:100%;
-    padding:12px 18px;
+.header-buttons{
+
+    display:flex;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+button{
+
+    font-family:inherit;
+
+    cursor:pointer;
+
     border:none;
-    border-radius:13px;
-    background:linear-gradient(135deg,var(--pink),var(--lavender));
+
+}
+
+.primary-button{
+
+    background:
+        linear-gradient(
+            135deg,
+            #e99fbd,
+            #bca4e5
+        );
+
     color:white;
-    font-weight:750;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:11px 16px;
+
+    font-weight:600;
+
 }
 
-.secondary-button {
-    border:none;
-    padding:12px;
-    border-radius:12px;
+.secondary-button{
+
     background:var(--pink-light);
-    color:var(--pink-dark);
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:11px 16px;
+
+}
+
+.small-button{
+
+    background:var(--pink-light);
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    padding:8px 12px;
+
+    font-size:12px;
+
+}
+
+.delete-button{
+
+    background:#fff0f2;
+
+    color:var(--danger);
+
+    border:1px solid #f4d1d7;
+
+    border-radius:10px;
+
+    padding:7px 11px;
+
+    font-size:12px;
+
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+main{
+
+    max-width:1150px;
+
+    margin:25px auto;
+
+    padding:0 18px;
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+.dashboard{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0,1fr)
+        );
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+.stat-card{
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.stat-title{
+
+    font-size:13px;
+
+    color:var(--muted);
+
+}
+
+.stat-value{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    margin-top:8px;
+
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section{
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:15px;
+
+}
+
+.section-header h3{
+
+    margin:0;
+
+}
+
+
+/* =====================================================
+   FORMS
+===================================================== */
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0,1fr)
+        );
+
+    gap:10px;
+
+    margin-bottom:10px;
+
 }
 
 input,
-select {
+select,
+textarea{
+
     width:100%;
-    padding:12px 13px;
+
+    padding:11px 12px;
+
+    border-radius:11px;
+
     border:1px solid var(--border);
-    border-radius:13px;
-    background:var(--input);
+
+    background:white;
+
     color:var(--text);
+
+    font-family:inherit;
+
     outline:none;
+
+}
+
+textarea{
+
+    resize:vertical;
+
 }
 
 input:focus,
-select:focus {
-    border-color:var(--pink);
-    box-shadow:0 0 0 3px rgba(232,154,185,.12);
+select:focus,
+textarea:focus{
+
+    border-color:#cdaedc;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(205,174,220,.15);
+
 }
 
-.form-grid {
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-    margin-bottom:10px;
-}
+.form-note{
 
-.form-note {
     color:var(--muted);
-    font-size:12px;
+
+    font-size:11px;
+
     margin-top:8px;
+
 }
 
-/* =========================
-   ACCOUNTS
-========================= */
 
-.accounts {
+/* =====================================================
+   GRID
+===================================================== */
+
+.grid{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
+
+    gap:20px;
+
 }
 
-.account {
-    background:linear-gradient(145deg,var(--pink-light),var(--lavender-light));
-    border-radius:18px;
-    padding:17px;
+
+/* =====================================================
+   NOTES
+===================================================== */
+
+.note-card{
+
+    background:#fffafd;
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+
+    padding:15px;
+
+    margin-bottom:10px;
+
 }
 
-.account-icon {
-    font-size:27px;
-    margin-bottom:8px;
+.note-card:last-child{
+
+    margin-bottom:0;
+
 }
 
-.account-name {
-    font-weight:700;
+.note-card h4{
+
+    margin:
+        0 0 8px;
+
+    font-size:16px;
+
 }
 
-.account-type {
-    font-size:11px;
-    color:var(--muted);
-    margin-top:2px;
-}
+.note-card p{
 
-.account-balance {
-    font-size:21px;
-    font-weight:750;
-    color:var(--pink-dark);
-    margin-top:12px;
-}
+    margin:
+        0 0 12px;
 
-.account-actions {
-    display:flex;
-    gap:5px;
-    margin-top:10px;
-}
+    white-space:pre-wrap;
 
-/* =========================
-   DAILY / BUDGET
-========================= */
+    color:#665966;
 
-.daily-summary,
-.budget-box {
-    background:linear-gradient(145deg,var(--pink-light),var(--lavender-light));
-    border-radius:18px;
-    padding:18px;
-}
-
-.daily-summary {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.daily-number {
-    font-size:26px;
-    font-weight:750;
-    color:var(--pink-dark);
-}
-
-.budget-top {
-    display:flex;
-    justify-content:space-between;
-}
-
-.budget-label {
-    font-size:12px;
-    color:var(--muted);
-}
-
-.budget-amount {
-    font-size:21px;
-    font-weight:750;
-    color:var(--pink-dark);
-    margin-top:3px;
-}
-
-.budget-form {
-    display:flex;
-    gap:8px;
-    margin-top:12px;
-}
-
-.budget-form input {
-    flex:1;
-}
-
-.progress-track {
-    width:100%;
-    height:11px;
-    background:var(--border);
-    border-radius:20px;
-    overflow:hidden;
-    margin:10px 0;
-}
-
-.progress-bar {
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,var(--pink),var(--lavender));
-    border-radius:20px;
-    transition:width .3s ease;
-}
-
-/* =========================
-   GOALS
-========================= */
-
-.goal {
-    padding:15px 0;
-    border-bottom:1px solid var(--border);
-}
-
-.goal:last-child {
-    border-bottom:none;
-}
-
-.goal-top {
-    display:flex;
-    justify-content:space-between;
-}
-
-.goal-name {
-    font-weight:700;
-}
-
-.goal-percent {
-    color:var(--pink-dark);
-    font-size:13px;
-    font-weight:700;
-}
-
-.goal-amount {
-    color:var(--muted);
-    font-size:12px;
-    margin-top:3px;
-}
-
-/* =========================
-   TRANSACTIONS
-========================= */
-
-.transaction {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    padding:14px 0;
-    border-bottom:1px solid var(--border);
-}
-
-.transaction:last-child {
-    border-bottom:none;
-}
-
-.transaction-left {
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.transaction-icon {
-    width:42px;
-    height:42px;
-    display:grid;
-    place-items:center;
-    border-radius:13px;
-    background:var(--pink-light);
-}
-
-.transaction-title {
-    font-weight:650;
     font-size:14px;
+
+    line-height:1.5;
+
 }
 
-.transaction-meta {
-    color:var(--muted);
-    font-size:11px;
-    margin-top:3px;
-}
+.note-actions{
 
-.transaction-right {
-    text-align:right;
-}
-
-.transaction-amount {
-    font-weight:750;
-}
-
-.transaction-actions {
     display:flex;
-    justify-content:flex-end;
-    gap:5px;
-    margin-top:5px;
+
+    gap:7px;
+
 }
 
-/* =========================
-   CATEGORY / FLOW
-========================= */
 
-.category-row {
-    margin-bottom:15px;
+/* =====================================================
+   GOALS
+===================================================== */
+
+.goal-card{
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+
+    padding:15px;
+
+    margin-bottom:10px;
+
 }
 
-.category-top {
+.goal-card:last-child{
+
+    margin-bottom:0;
+
+}
+
+.goal-top{
+
     display:flex;
+
     justify-content:space-between;
+
+    gap:10px;
+
+}
+
+.goal-name{
+
+    font-weight:700;
+
+}
+
+.goal-amount{
+
     font-size:13px;
-    margin-bottom:6px;
-}
 
-.category-name {
-    font-weight:600;
-}
-
-.category-value {
     color:var(--muted);
+
 }
 
-.category-track {
+.progress{
+
     height:9px;
-    background:var(--border);
+
+    background:#f3e8ef;
+
     border-radius:20px;
+
     overflow:hidden;
+
+    margin:
+        12px 0 8px;
+
 }
 
-.category-fill {
+.progress-bar{
+
     height:100%;
-    background:linear-gradient(90deg,var(--pink),var(--lavender));
+
+    background:
+        linear-gradient(
+            90deg,
+            #e9a8c5,
+            #bca8e4
+        );
+
     border-radius:20px;
+
 }
 
-/* =========================
-   MODALS
-========================= */
+.goal-footer{
 
-.modal {
-    position:fixed;
-    inset:0;
-    background:rgba(70,40,60,.35);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:100;
-}
-
-.modal.show {
     display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:12px;
+
 }
 
-.modal-card {
+
+/* =====================================================
+   TRANSACTIONS
+===================================================== */
+
+.transaction-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:13px 0;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.transaction-card:last-child{
+
+    border-bottom:none;
+
+}
+
+.transaction-name{
+
+    font-weight:600;
+
+}
+
+.transaction-info{
+
+    font-size:11px;
+
+    color:var(--muted);
+
+    margin-top:3px;
+
+}
+
+.income{
+
+    color:#57966c;
+
+}
+
+.expense{
+
+    color:#c86a79;
+
+}
+
+.saving{
+
+    color:#8b70b5;
+
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty{
+
+    text-align:center;
+
+    padding:20px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(
+            50,
+            35,
+            50,
+            .35
+        );
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    z-index:1000;
+
+}
+
+.modal.active{
+
+    display:flex;
+
+}
+
+.modal-card{
+
     width:100%;
-    max-width:450px;
-    background:var(--card);
-    border-radius:25px;
-    padding:25px;
-    box-shadow:0 20px 60px rgba(60,30,50,.2);
+
+    max-width:480px;
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:22px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(40,20,40,.2);
+
 }
 
-.modal-card h3 {
-    color:var(--pink-dark);
-    margin-bottom:17px;
+.modal-card h3{
+
+    margin-top:0;
+
 }
 
 .modal-card input,
-.modal-card select {
+.modal-card select,
+.modal-card textarea{
+
     margin-bottom:10px;
+
 }
 
-.modal-actions {
+.modal-actions{
+
     display:flex;
+
+    justify-content:flex-end;
+
     gap:8px;
+
+    margin-top:8px;
+
 }
 
-.modal-actions button {
-    flex:1;
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profile-picture{
+
+    width:100px;
+
+    height:100px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid var(--pink-light);
+
+    margin:auto;
+
+    display:block;
+
 }
 
-/* =========================
-   THEMES
-========================= */
+.profile-placeholder{
 
-.theme-options {
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
+    width:100px;
 
-.theme-option {
-    border:1px solid var(--border);
+    height:100px;
+
+    border-radius:50%;
+
     background:var(--pink-light);
-    border-radius:16px;
-    padding:15px 8px;
-    color:var(--text);
+
     display:flex;
-    flex-direction:column;
+
     align-items:center;
-    gap:6px;
-}
 
-.theme-option:hover {
-    transform:translateY(-2px);
-}
-
-.theme-option span {
-    font-size:12px;
-    font-weight:650;
-}
-
-/* =========================
-   MISC
-========================= */
-
-.empty {
-    text-align:center;
-    color:var(--muted);
-    padding:25px 10px;
-}
-
-.footer {
-    text-align:center;
-    color:var(--muted);
-    font-size:12px;
-    padding:10px 20px 30px;
-}
-
-.loading {
-    min-height:100vh;
-    display:flex;
-    align-items:center;
     justify-content:center;
+
+    font-size:40px;
+
+    margin:auto;
+
+}
+
+
+/* =====================================================
+   THEMES
+===================================================== */
+
+.theme-options{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+
+    gap:10px;
+
+}
+
+.theme-option{
+
+    padding:15px;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    background:white;
+
+    color:var(--text);
+
+}
+
+.theme-option span{
+
+    display:block;
+
+    margin-top:5px;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+
+    text-align:center;
+
+    padding:25px;
+
     color:var(--muted);
+
+    font-size:12px;
+
 }
 
-/* =========================
-   MIDNIGHT
-========================= */
 
-body.midnight-mode {
-    --page:#121016;
-    --card:#19171d;
-    --input:#211e25;
-    background:linear-gradient(180deg,#121016,#1c1822);
-}
+/* =====================================================
+   MOBILE
+===================================================== */
 
-body.midnight-mode .header {
-    background:linear-gradient(135deg,#302430,#29243a);
-}
+@media(max-width:800px){
 
-body.midnight-mode .logo h1,
-body.midnight-mode .logo p {
-    color:#eee8ed;
-}
+    .dashboard{
 
-body.midnight-mode .theme-button,
-body.midnight-mode .logout-button,
-body.midnight-mode .header select {
-    background:rgba(30,25,34,.75);
-    color:#eee8ed;
-    border-color:#4a3f4d;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:900px) {
-
-    .cards {
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .accounts {
-        grid-template-columns:1fr 1fr;
-    }
-
-    .grid {
         grid-template-columns:1fr;
+
     }
 
-    .form-grid {
-        grid-template-columns:1fr 1fr;
+    .form-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
     }
+
+    .grid{
+
+        grid-template-columns:1fr;
+
+    }
+
 }
 
-@media(max-width:600px) {
+@media(max-width:550px){
 
-    .header-inner {
+    .header-inner{
+
         flex-direction:column;
+
         align-items:flex-start;
+
     }
 
-    .header-actions {
-        width:100%;
-        flex-direction:column;
-    }
+    .form-grid{
 
-    .header select,
-    .theme-button,
-    .logout-button {
-        width:100%;
-    }
-
-    .container {
-        padding:22px 14px 40px;
-    }
-
-    .cards {
-        grid-template-columns:1fr 1fr;
-    }
-
-    .accounts {
         grid-template-columns:1fr;
+
     }
 
-    .form-grid {
-        grid-template-columns:1fr;
+    .theme-options{
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+
     }
 
-    .transaction {
-        align-items:flex-start;
-    }
-
-    .transaction-right {
-        min-width:90px;
-    }
-}
-
-@media(max-width:420px) {
-
-    .cards {
-        grid-template-columns:1fr;
-    }
-
-    .logo h1 {
-        font-size:29px;
-    }
-
-    .auth-card {
-        padding:25px 20px;
-    }
-
-    .theme-options {
-        grid-template-columns:1fr 1fr;
-    }
 }
 
 </style>
+
 </head>
+
 
 <body>
 
-<!-- =========================
-     AUTHENTICATION
-========================= -->
-
-<div id="authScreen" class="auth-screen">
-
-    <div class="auth-card">
-
-        <div class="auth-logo">
-            <div class="flower">🌸</div>
-            <h1>PetalFlow</h1>
-            <p>Grow your money, one petal at a time.</p>
-        </div>
-
-        <div id="loginView">
-
-            <h2>Welcome back 🌷</h2>
-
-            <div id="loginMessage" class="auth-message hidden"></div>
-
-            <div class="auth-field">
-                <label>Email</label>
-                <input id="loginEmail"
-                       type="email"
-                       placeholder="you@example.com"
-                       autocomplete="email">
-            </div>
-
-            <div class="auth-field">
-                <label>Password</label>
-                <input id="loginPassword"
-                       type="password"
-                       placeholder="Your password"
-                       autocomplete="current-password">
-            </div>
-
-            <button class="primary-button" onclick="login()">
-                Log In
-            </button>
-
-            <div class="auth-switch">
-                Don't have an account?
-                <button class="link-button" onclick="showSignup()">
-                    Create one 🌸
-                </button>
-            </div>
-
-        </div>
-
-        <div id="signupView" class="hidden">
-
-            <h2>Create your PetalFlow 🌸</h2>
-
-            <div id="signupMessage" class="auth-message hidden"></div>
-
-            <div class="auth-field">
-                <label>Your name</label>
-                <input id="signupName"
-                       type="text"
-                       placeholder="Your name"
-                       autocomplete="name">
-            </div>
-
-            <div class="auth-field">
-                <label>Email</label>
-                <input id="signupEmail"
-                       type="email"
-                       placeholder="you@example.com"
-                       autocomplete="email">
-            </div>
-
-            <div class="auth-field">
-                <label>Password</label>
-                <input id="signupPassword"
-                       type="password"
-                       placeholder="At least 6 characters"
-                       autocomplete="new-password">
-            </div>
-
-            <div class="auth-field">
-                <label>Confirm password</label>
-                <input id="signupConfirm"
-                       type="password"
-                       placeholder="Repeat your password"
-                       autocomplete="new-password">
-            </div>
-
-            <button class="primary-button" onclick="signup()">
-                Create Account
-            </button>
-
-            <div class="auth-switch">
-                Already have an account?
-                <button class="link-button" onclick="showLogin()">
-                    Log in
-                </button>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
+<div class="app">
 
 
-<!-- =========================
-     LOADING
-========================= -->
-
-<div id="loadingScreen" class="loading hidden">
-    🌸 Loading your financial garden...
-</div>
-
-
-<!-- =========================
-     APPLICATION
-========================= -->
-
-<div id="app" class="hidden">
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
 <header class="header">
 
     <div class="header-inner">
 
-        <div class="logo">
-            <h1>🌸 PetalFlow</h1>
-            <p>Grow your money, one petal at a time.</p>
+        <div>
+
+            <div class="logo">
+                🌸 PetalFlow
+            </div>
+
+            <div class="subtitle">
+                Your money, your growth.
+            </div>
+
         </div>
 
-        <div class="header-actions">
 
-    <button class="theme-button" onclick="openProfileModal()">
-        👤 Profile
-    </button>
+        <div class="header-buttons">
 
-    <button class="theme-button" onclick="openThemeModal()">
+            <button
+                class="secondary-button"
+                type="button"
+                onclick="openProfileModal()">
+                🌸 Profile
+            </button>
+
+            <button
+                class="secondary-button"
+                type="button"
+                onclick="openThemeModal()">
                 🎨 Theme
             </button>
 
-            <select id="displayCurrency"
-                    onchange="changeCurrency()">
-
-                <option value="PHP">🇵🇭 PHP — Philippine Peso</option>
-                <option value="USD">🇺🇸 USD — US Dollar</option>
-                <option value="NZD">🇳🇿 NZD — New Zealand Dollar</option>
-                <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
-                <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
-                <option value="GBP">🇬🇧 GBP — British Pound</option>
-                <option value="EUR">🇪🇺 EUR — Euro</option>
-                <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
-                <option value="KRW">🇰🇷 KRW — South Korean Won</option>
-                <option value="SGD">🇸🇬 SGD — Singapore Dollar</option>
-                <option value="HKD">🇭🇰 HKD — Hong Kong Dollar</option>
-                <option value="CNY">🇨🇳 CNY — Chinese Yuan</option>
-                <option value="THB">🇹🇭 THB — Thai Baht</option>
-                <option value="MYR">🇲🇾 MYR — Malaysian Ringgit</option>
-                <option value="INR">🇮🇳 INR — Indian Rupee</option>
-                <option value="IDR">🇮🇩 IDR — Indonesian Rupiah</option>
-                <option value="AED">🇦🇪 AED — UAE Dirham</option>
-                <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
-
-            </select>
-
-            <button class="logout-button" onclick="logout()">
-                Log out
+            <button
+                class="secondary-button"
+                type="button"
+                onclick="openAccountModal()">
+                🏦 Account
             </button>
 
         </div>
@@ -1006,471 +943,249 @@ body.midnight-mode .header select {
 </header>
 
 
-<main class="container">
-
-    <div class="greeting">
-
-        <h2 id="greetingTitle">
-            Welcome 🌷
-        </h2>
-
-        <p>
-            Here's a little look at your financial garden.
-        </p>
-
-    </div>
+<main>
 
 
-    <!-- SUMMARY -->
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
 
-    <div class="cards">
+<div class="dashboard">
 
-        <div class="card">
+    <div class="stat-card">
 
-            <div class="card-label">💰 Total Money</div>
-
-            <div class="card-value" id="totalMoney">
-                ₱0.00
-            </div>
-
-            <div class="card-sub">
-                Across all accounts
-            </div>
-
+        <div class="stat-title">
+            Total Balance
         </div>
 
-
-        <div class="card">
-
-            <div class="card-label">💵 This Month's Income</div>
-
-            <div class="card-value positive" id="totalIncome">
-                ₱0.00
-            </div>
-
-            <div class="card-sub">
-                Money coming in
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-label">💸 This Month's Expenses</div>
-
-            <div class="card-value negative" id="totalExpenses">
-                ₱0.00
-            </div>
-
-            <div class="card-sub">
-                Money going out
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-label">🐷 This Month's Savings</div>
-
-            <div class="card-value" id="totalSavings">
-                ₱0.00
-            </div>
-
-            <div class="card-sub">
-                Money you're keeping
-            </div>
-
+        <div
+            class="stat-value"
+            id="totalBalance">
+            ₱0.00
         </div>
 
     </div>
 
 
-    <!-- ACCOUNTS -->
+    <div class="stat-card">
 
-    <div class="section">
-
-        <div class="section-header">
-
-            <h3>🏦 My Accounts</h3>
-
-            <button class="small-button"
-                    onclick="openAccountModal()">
-                + Add Account
-            </button>
-
+        <div class="stat-title">
+            Total Income
         </div>
 
-        <div class="accounts" id="accountsList"></div>
-
-    </div>
-
-
-    <!-- DAILY + BUDGET -->
-
-    <div class="grid">
-
-        <div class="section">
-
-            <div class="section-header">
-                <h3>🧾 Today's Spending</h3>
-            </div>
-
-            <div class="daily-summary">
-
-                <div>
-
-                    <div class="budget-label">
-                        Spent today
-                    </div>
-
-                    <div class="daily-number"
-                         id="todaySpending">
-                        ₱0.00
-                    </div>
-
-                </div>
-
-                <div style="font-size:32px;">
-                    🌷
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="section">
-
-            <div class="section-header">
-                <h3>💗 Monthly Budget</h3>
-            </div>
-
-            <div class="budget-box">
-
-                <div class="budget-top">
-
-                    <div>
-
-                        <div class="budget-label">
-                            Budget
-                        </div>
-
-                        <div class="budget-amount"
-                             id="budgetAmount">
-                            ₱0.00
-                        </div>
-
-                    </div>
-
-                    <div style="text-align:right;">
-
-                        <div class="budget-label">
-                            Spent
-                        </div>
-
-                        <div class="budget-amount"
-                             id="budgetSpent">
-                            ₱0.00
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="progress-track">
-
-                    <div class="progress-bar"
-                         id="budgetProgress">
-                    </div>
-
-                </div>
-
-
-                <div class="budget-label"
-                     id="budgetMessage">
-                    Set a monthly budget to begin 🌸
-                </div>
-
-
-                <div class="budget-form">
-
-                    <input id="budgetInput"
-                           type="number"
-                           min="0"
-                           step="0.01"
-                           placeholder="Monthly budget">
-
-                    <button class="primary-button"
-                            onclick="saveBudget()">
-                        Save
-                    </button>
-
-                </div>
-
-            </div>
-
+        <div
+            class="stat-value income"
+            id="totalIncome">
+            ₱0.00
         </div>
 
     </div>
 
 
-    <!-- GOALS -->
+    <div class="stat-card">
 
-    <div class="section">
-
-        <div class="section-header">
-
-            <h3>🎯 Savings Goals</h3>
-
-            <button class="small-button"
-                    onclick="openGoalModal()">
-                + Add Goal
-            </button>
-
+        <div class="stat-title">
+            Total Expenses
         </div>
 
-        <div id="goalsList"></div>
+        <div
+            class="stat-value expense"
+            id="totalExpenses">
+            ₱0.00
+        </div>
 
     </div>
 
-    
-<!-- =========================
-     PROFILE MODAL
-========================= -->
+</div>
 
-<div class="modal" id="profileModal">
 
-    <div class="modal-card">
+<!-- =====================================================
+     SAVINGS GOALS
+===================================================== -->
 
-        <h3>🌸 My Profile</h3>
+<div class="section">
 
-        <div style="text-align:center;margin-bottom:18px;">
+    <div class="section-header">
 
-            <img
-                id="profilePicturePreview"
-                src=""
-                alt="Profile picture"
-                style="
-                    width:110px;
-                    height:110px;
-                    border-radius:50%;
-                    object-fit:cover;
-                    border:4px solid var(--pink-light);
-                    display:none;
-                    margin:0 auto 12px;
-                "
-            >
+        <h3>🎯 Savings Goals</h3>
 
-            <div
-                id="profilePicturePlaceholder"
-                style="
-                    width:110px;
-                    height:110px;
-                    border-radius:50%;
-                    background:var(--pink-light);
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-size:45px;
-                    margin:0 auto 12px;
-                "
-            >
-                🌸
-            </div>
+        <button
+            class="small-button"
+            type="button"
+            onclick="openGoalModal()">
+            + Add Goal
+        </button>
 
-            <input
-                id="profilePictureInput"
-                type="file"
-                accept="image/*"
-                onchange="uploadProfilePicture()"
-            >
+    </div>
 
-            <div
-                style="
-                    color:var(--muted);
-                    font-size:11px;
-                    margin-top:7px;
-                "
-            >
-                Choose a profile picture
-            </div>
 
+    <div id="goalsList">
+
+        <div class="empty">
+            No savings goals yet 🌸
         </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     NOTES
+===================================================== -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h3>📝 My Notes</h3>
+
+        <button
+            class="small-button"
+            type="button"
+            onclick="openNoteModal()">
+            + Add Note
+        </button>
+
+    </div>
+
+
+    <div id="notesList">
+
+        <div class="empty">
+            No notes yet 🌸
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADD TRANSACTION
+===================================================== -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h3>➕ Add Transaction</h3>
+
+    </div>
+
+
+    <div class="form-grid">
 
         <input
-            id="profileDisplayName"
-            type="text"
-            placeholder="Your display name"
-        >
-
-        <div class="modal-actions">
-
-            <button
-                class="secondary-button"
-                onclick="closeProfileModal()"
-            >
-                Cancel
-            </button>
-
-            <button
-                class="primary-button"
-                onclick="saveProfile()"
-            >
-                Save Profile
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-    
-<!-- =========================
-     THEME MODAL
-========================= -->
-
-<div class="modal" id="themeModal">
-
-    <div class="modal-card">
-
-        <h3>🎨 Choose your theme</h3>
-
-        <p style="color:var(--muted);font-size:13px;margin-bottom:15px;">
-            Choose a gentle color palette for your PetalFlow.
-        </p>
-
-        <div class="theme-options">
-
-            <button class="theme-option"
-                    onclick="setTheme('petal')">
-                🌸
-                <span>Petal</span>
-            </button>
-
-            <button class="theme-option"
-                    onclick="setTheme('lavender')">
-                💜
-                <span>Lavender</span>
-            </button>
-
-            <button class="theme-option"
-                    onclick="setTheme('sage')">
-                🌿
-                <span>Sage</span>
-            </button>
-
-            <button class="theme-option"
-                    onclick="setTheme('sky')">
-                🩵
-                <span>Sky</span>
-            </button>
-
-            <button class="theme-option"
-                    onclick="setTheme('peach')">
-                🍑
-                <span>Peach</span>
-            </button>
-
-            <button class="theme-option"
-                    onclick="setTheme('midnight')">
-                🌙
-                <span>Midnight</span>
-            </button>
-
-        </div>
-
-        <div class="modal-actions"
-             style="margin-top:15px;">
-
-            <button class="secondary-button"
-                    onclick="closeThemeModal()">
-                Close
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
+            id="description"
+            placeholder="Description">
 
 
-<!-- =========================
-     ACCOUNT MODAL
-========================= -->
+        <input
+            id="amount"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Amount">
 
-<div class="modal" id="accountModal">
 
-    <div class="modal-card">
+        <select
+            id="transactionType"
+            onchange="updateCategories()">
 
-        <h3>🏦 Add Account</h3>
-
-        <input id="accountName"
-               placeholder="Account name">
-
-        <select id="accountType">
-
-            <option value="bank">
-                🏦 Bank Account
+            <option value="income">
+                💰 Income
             </option>
 
-            <option value="ewallet">
-                💳 E-wallet
+            <option value="expense">
+                💸 Expense
             </option>
 
-            <option value="cash">
-                💵 Cash
+            <option value="saving">
+                🐷 Saving
             </option>
 
-            <option value="other">
-                🌸 Other
+            <option value="transfer">
+                🔄 Transfer
             </option>
 
         </select>
 
-        <input id="accountBalance"
-               type="number"
-               step="0.01"
-               placeholder="Current balance">
 
-        <select id="accountCurrency">
+        <input
+            id="transactionDate"
+            type="date">
 
-            <option value="PHP">🇵🇭 PHP</option>
-            <option value="USD">🇺🇸 USD</option>
-            <option value="NZD">🇳🇿 NZD</option>
-            <option value="AUD">🇦🇺 AUD</option>
-            <option value="CAD">🇨🇦 CAD</option>
-            <option value="GBP">🇬🇧 GBP</option>
-            <option value="EUR">🇪🇺 EUR</option>
-            <option value="JPY">🇯🇵 JPY</option>
-            <option value="KRW">🇰🇷 KRW</option>
-            <option value="SGD">🇸🇬 SGD</option>
-            <option value="HKD">🇭🇰 HKD</option>
-            <option value="CNY">🇨🇳 CNY</option>
-            <option value="THB">🇹🇭 THB</option>
-            <option value="MYR">🇲🇾 MYR</option>
-            <option value="INR">🇮🇳 INR</option>
-            <option value="IDR">🇮🇩 IDR</option>
-            <option value="AED">🇦🇪 AED</option>
-            <option value="CHF">🇨🇭 CHF</option>
+    </div>
+
+
+    <div class="form-grid">
+
+        <select id="category"></select>
+
+        <select id="account"></select>
+
+
+        <select id="transactionCurrency">
+
+            <option value="PHP">PHP</option>
+            <option value="USD">USD</option>
+            <option value="NZD">NZD</option>
+            <option value="AUD">AUD</option>
+            <option value="CAD">CAD</option>
+            <option value="GBP">GBP</option>
+            <option value="EUR">EUR</option>
+            <option value="JPY">JPY</option>
+            <option value="KRW">KRW</option>
+            <option value="SGD">SGD</option>
+            <option value="HKD">HKD</option>
+            <option value="CNY">CNY</option>
+            <option value="THB">THB</option>
+            <option value="MYR">MYR</option>
+            <option value="INR">INR</option>
+            <option value="IDR">IDR</option>
+            <option value="AED">AED</option>
+            <option value="CHF">CHF</option>
 
         </select>
 
-        <div class="modal-actions">
 
-            <button class="secondary-button"
-                    onclick="closeAccountModal()">
-                Cancel
-            </button>
+        <button
+            class="primary-button"
+            type="button"
+            onclick="addTransaction()">
+            Add Transaction
+        </button>
 
-            <button class="primary-button"
-                    onclick="addAccount()">
-                Add Account
-            </button>
+    </div>
 
+
+    <div class="form-note">
+
+        ☁️ Your information is saved securely to your PetalFlow account.
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RECENT TRANSACTIONS
+===================================================== -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h3>📜 Recent Transactions</h3>
+
+    </div>
+
+
+    <div id="transactionsList">
+
+        <div class="empty">
+            No transactions yet.
         </div>
 
     </div>
@@ -1478,9 +1193,70 @@ body.midnight-mode .header select {
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
+     ANALYTICS
+===================================================== -->
+
+<div class="grid">
+
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h3>📊 Spending by Category</h3>
+
+        </div>
+
+        <div id="categoryBreakdown">
+
+            <div class="empty">
+                No spending data yet.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h3>🌸 Money Flow</h3>
+
+        </div>
+
+        <div id="moneyFlow">
+
+            <div class="empty">
+                No money flow yet.
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</main>
+
+
+<div class="footer">
+
+    🌸 PetalFlow — Your money, your growth.
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
      GOAL MODAL
-========================= -->
+===================================================== -->
 
 <div class="modal" id="goalModal">
 
@@ -1488,20 +1264,27 @@ body.midnight-mode .header select {
 
         <h3>🎯 New Savings Goal</h3>
 
-        <input id="goalName"
-               placeholder="Goal name">
 
-        <input id="goalTarget"
-               type="number"
-               min="0"
-               step="0.01"
-               placeholder="Target amount">
+        <input
+            id="goalName"
+            placeholder="Goal name">
 
-        <input id="goalSaved"
-               type="number"
-               min="0"
-               step="0.01"
-               placeholder="Already saved">
+
+        <input
+            id="goalTarget"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Target amount">
+
+
+        <input
+            id="goalSaved"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Already saved">
+
 
         <select id="goalCurrency">
 
@@ -1526,15 +1309,21 @@ body.midnight-mode .header select {
 
         </select>
 
+
         <div class="modal-actions">
 
-            <button class="secondary-button"
-                    onclick="closeGoalModal()">
+            <button
+                class="secondary-button"
+                type="button"
+                onclick="closeGoalModal()">
                 Cancel
             </button>
 
-            <button class="primary-button"
-                    onclick="addGoal()">
+
+            <button
+                class="primary-button"
+                type="button"
+                onclick="addGoal()">
                 Create Goal
             </button>
 
@@ -1544,38 +1333,10 @@ body.midnight-mode .header select {
 
 </div>
 
-    
-    <!-- =========================
-         NOTES
-    ========================= -->
 
-    <div class="section">
-
-        <div class="section-header">
-
-            <h3>📝 My Notes</h3>
-
-            <button class="small-button"
-                    onclick="openNoteModal()">
-                + Add Note
-            </button>
-
-        </div>
-
-        <div id="notesList">
-
-            <div class="empty">
-                No notes yet 🌸
-            </div>
-
-        </div>
-
-    </div>
-
-
-<!-- =========================
+<!-- =====================================================
      NOTE MODAL
-========================= -->
+===================================================== -->
 
 <div class="modal" id="noteModal">
 
@@ -1583,28 +1344,32 @@ body.midnight-mode .header select {
 
         <h3>📝 New Note</h3>
 
+
         <input
             id="noteTitle"
             type="text"
-            placeholder="Note title"
-        >
+            placeholder="Note title">
+
 
         <textarea
             id="noteContent"
             placeholder="Write your note..."
-            rows="7"
-        ></textarea>
+            rows="7"></textarea>
+
 
         <div class="modal-actions">
 
             <button
                 class="secondary-button"
+                type="button"
                 onclick="closeNoteModal()">
                 Cancel
             </button>
 
+
             <button
                 class="primary-button"
+                type="button"
                 onclick="saveNote()">
                 Save Note
             </button>
@@ -1615,7 +1380,275 @@ body.midnight-mode .header select {
 
 </div>
 
-    
+
+<!-- =====================================================
+     PROFILE MODAL
+===================================================== -->
+
+<div class="modal" id="profileModal">
+
+    <div class="modal-card">
+
+        <h3>🌸 My Profile</h3>
+
+
+        <div style="text-align:center;margin-bottom:18px;">
+
+            <img
+                id="profilePicturePreview"
+                class="profile-picture"
+                src=""
+                alt="Profile picture"
+                style="display:none;">
+
+
+            <div
+                id="profilePicturePlaceholder"
+                class="profile-placeholder">
+                🌸
+            </div>
+
+
+            <input
+                id="profilePictureInput"
+                type="file"
+                accept="image/*"
+                onchange="uploadProfilePicture()"
+                style="margin-top:12px;">
+
+
+            <div
+                style="
+                    color:var(--muted);
+                    font-size:11px;
+                    margin-top:7px;
+                ">
+                Choose a profile picture
+            </div>
+
+        </div>
+
+
+        <input
+            id="profileDisplayName"
+            type="text"
+            placeholder="Your display name">
+
+
+        <div class="modal-actions">
+
+            <button
+                class="secondary-button"
+                type="button"
+                onclick="closeProfileModal()">
+                Cancel
+            </button>
+
+
+            <button
+                class="primary-button"
+                type="button"
+                onclick="saveProfile()">
+                Save Profile
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     THEME MODAL
+===================================================== -->
+
+<div class="modal" id="themeModal">
+
+    <div class="modal-card">
+
+        <h3>🎨 Choose your theme</h3>
+
+
+        <p style="
+            color:var(--muted);
+            font-size:13px;
+            margin-bottom:15px;
+        ">
+
+            Choose a gentle color palette for your PetalFlow.
+
+        </p>
+
+
+        <div class="theme-options">
+
+            <button
+                class="theme-option"
+                type="button"
+                onclick="setTheme('petal')">
+                🌸
+                <span>Petal</span>
+            </button>
+
+
+            <button
+                class="theme-option"
+                type="button"
+                onclick="setTheme('lavender')">
+                💜
+                <span>Lavender</span>
+            </button>
+
+
+            <button
+                class="theme-option"
+                type="button"
+                onclick="setTheme('sage')">
+                🌿
+                <span>Sage</span>
+            </button>
+
+
+            <button
+                class="theme-option"
+                type="button"
+                onclick="setTheme('sky')">
+                🩵
+                <span>Sky</span>
+            </button>
+
+
+            <button
+                class="theme-option"
+                type="button"
+                onclick="setTheme('peach')">
+                🍑
+                <span>Peach</span>
+            </button>
+
+
+            <button
+                class="theme-option"
+                type="button"
+                onclick="setTheme('midnight')">
+                🌙
+                <span>Midnight</span>
+            </button>
+
+        </div>
+
+
+        <div
+            class="modal-actions"
+            style="margin-top:15px;">
+
+            <button
+                class="secondary-button"
+                type="button"
+                onclick="closeThemeModal()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ACCOUNT MODAL
+===================================================== -->
+
+<div class="modal" id="accountModal">
+
+    <div class="modal-card">
+
+        <h3>🏦 Add Account</h3>
+
+
+        <input
+            id="accountName"
+            placeholder="Account name">
+
+
+        <select id="accountType">
+
+            <option value="bank">
+                🏦 Bank Account
+            </option>
+
+            <option value="ewallet">
+                💳 E-wallet
+            </option>
+
+            <option value="cash">
+                💵 Cash
+            </option>
+
+            <option value="other">
+                🌸 Other
+            </option>
+
+        </select>
+
+
+        <input
+            id="accountBalance"
+            type="number"
+            step="0.01"
+            placeholder="Current balance">
+
+
+        <select id="accountCurrency">
+
+            <option value="PHP">PHP</option>
+            <option value="USD">USD</option>
+            <option value="NZD">NZD</option>
+            <option value="AUD">AUD</option>
+            <option value="CAD">CAD</option>
+            <option value="GBP">GBP</option>
+            <option value="EUR">EUR</option>
+            <option value="JPY">JPY</option>
+            <option value="KRW">KRW</option>
+            <option value="SGD">SGD</option>
+            <option value="HKD">HKD</option>
+            <option value="CNY">CNY</option>
+            <option value="THB">THB</option>
+            <option value="MYR">MYR</option>
+            <option value="INR">INR</option>
+            <option value="IDR">IDR</option>
+            <option value="AED">AED</option>
+            <option value="CHF">CHF</option>
+
+        </select>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="secondary-button"
+                type="button"
+                onclick="closeAccountModal()">
+                Cancel
+            </button>
+
+
+            <button
+                class="primary-button"
+                type="button"
+                onclick="addAccount()">
+                Add Account
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
 
 /* =====================================================
@@ -1640,543 +1673,33 @@ const db =
 
 
 /* =====================================================
-   NOTES
-===================================================== */
-
-function openNoteModal(){
-
-    document.getElementById("noteModal").classList.add("active");
-
-    document.getElementById("noteTitle").value = "";
-    document.getElementById("noteContent").value = "";
-
-}
-
-
-function closeNoteModal(){
-
-    document.getElementById("noteModal").classList.remove("active");
-    
-}
-
-
-async function saveNote(){
-
-    if(!currentUser){
-
-        alert("Please log in first.");
-
-        return;
-    }
-
-
-    const title =
-        document.getElementById("noteTitle").value.trim();
-
-    const content =
-        document.getElementById("noteContent").value.trim();
-
-
-    if(!title && !content){
-
-        alert("Please write something in your note.");
-
-        return;
-    }
-
-
-    const { data, error } = await db
-        .from("notes")
-        .insert([
-            {
-                user_id: currentUser.id,
-                title: title || "Untitled Note",
-                content: content
-            }
-        ])
-        .select();
-
-
-    if(error){
-
-        console.error("Error saving note:", error);
-
-        alert("Unable to save your note.");
-
-        return;
-    }
-
-
-    closeNoteModal();
-
-    loadNotes();
-}
-
-
-async function loadNotes(){
-
-    if(!currentUser)
-        return;
-
-
-    const { data, error } = await db
-        .from("notes")
-        .select("*")
-        .eq("user_id", currentUser.id)
-        .order("created_at", {
-            ascending: false
-        });
-
-
-    if(error){
-
-        console.error("Error loading notes:", error);
-
-        return;
-    }
-
-
-    const notesList =
-        document.getElementById("notesList");
-
-
-    if(!data || data.length === 0){
-
-        notesList.innerHTML = `
-            <div class="empty">
-                No notes yet 🌸
-            </div>
-        `;
-
-        return;
-    }
-
-
-    notesList.innerHTML = data.map(note => `
-
-        <div class="note-card">
-
-            <h4>
-                ${escapeHTML(note.title)}
-            </h4>
-
-            <p>
-                ${escapeHTML(note.content)}
-            </p>
-
-            <button
-                class="small-button"
-                onclick="deleteNote('${note.id}')">
-                Delete
-            </button>
-
-        </div>
-
-    `).join("");
-}
-
-
-async function deleteNote(noteId){
-
-    if(!currentUser)
-        return;
-
-
-    const confirmDelete =
-        confirm("Delete this note?");
-
-
-    if(!confirmDelete)
-        return;
-
-
-    const { error } = await db
-        .from("notes")
-        .delete()
-        .eq("id", noteId)
-        .eq("user_id", currentUser.id);
-
-
-    if(error){
-
-        console.error("Error deleting note:", error);
-
-        alert("Unable to delete note.");
-
-        return;
-    }
-
-
-    loadNotes();
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHTML(text){
-
-    const div =
-        document.createElement("div");
-
-    div.textContent = text;
-
-    return div.innerHTML;
-}
-
-
-/* =====================================================
    STATE
 ===================================================== */
 
 let currentUser = null;
 
 let accounts = [];
+
 let transactions = [];
+
 let goals = [];
 
+let notes = [];
+
 let settings = {
+
     currency:"PHP",
+
     budget:0,
+
     budgetCurrency:"PHP"
-};
-
-
-/* =====================================================
-   CURRENCY SYMBOLS
-===================================================== */
-
-const symbols = {
-
-    PHP:"₱",
-    USD:"$",
-    NZD:"NZ$",
-    AUD:"A$",
-    CAD:"C$",
-    GBP:"£",
-    EUR:"€",
-    JPY:"¥",
-    KRW:"₩",
-    SGD:"S$",
-    HKD:"HK$",
-    CNY:"¥",
-    THB:"฿",
-    MYR:"RM",
-    INR:"₹",
-    IDR:"Rp",
-    AED:"د.إ",
-    CHF:"CHF "
 
 };
 
 
 /* =====================================================
-   APPROXIMATE EXCHANGE RATES
-   PHP BASE
+   HELPERS
 ===================================================== */
-
-const rates = {
-
-    PHP:1,
-    USD:58,
-    NZD:34,
-    AUD:38,
-    CAD:42,
-    GBP:74,
-    EUR:67,
-    JPY:.39,
-    KRW:.042,
-    SGD:45,
-    HKD:7.4,
-    CNY:8,
-    THB:1.7,
-    MYR:13,
-    INR:.69,
-    IDR:.0035,
-    AED:15.8,
-    CHF:71
-
-};
-
-
-/* =====================================================
-   THEMES
-===================================================== */
-
-const themes = {
-
-    petal:{
-        pink:"#e89ab9",
-        pinkDark:"#c87599",
-        pinkLight:"#fff0f6",
-        lavender:"#b9a3df",
-        lavenderLight:"#f4effc",
-        cream:"#fffafd",
-        text:"#4d3947",
-        muted:"#9b8291",
-        border:"#eedce6",
-        green:"#72a883",
-        red:"#c97891",
-        page:"#fff7fb",
-        card:"#ffffff",
-        input:"#fffafd"
-    },
-
-    lavender:{
-        pink:"#b9a3df",
-        pinkDark:"#9277c5",
-        pinkLight:"#f4effc",
-        lavender:"#c7b8e8",
-        lavenderLight:"#f7f3fd",
-        cream:"#fcfaff",
-        text:"#493d57",
-        muted:"#8e829c",
-        border:"#e4dcef",
-        green:"#72a883",
-        red:"#c97891",
-        page:"#faf7ff",
-        card:"#ffffff",
-        input:"#fcfaff"
-    },
-
-    sage:{
-        pink:"#9db9a5",
-        pinkDark:"#718f7a",
-        pinkLight:"#eef6f0",
-        lavender:"#b4c7ba",
-        lavenderLight:"#f3f7f3",
-        cream:"#fbfdfb",
-        text:"#3f5045",
-        muted:"#849288",
-        border:"#dce8df",
-        green:"#679477",
-        red:"#b9787e",
-        page:"#f6faf7",
-        card:"#ffffff",
-        input:"#fbfdfb"
-    },
-
-    sky:{
-        pink:"#9fc9df",
-        pinkDark:"#6d9fb9",
-        pinkLight:"#edf7fb",
-        lavender:"#aec4df",
-        lavenderLight:"#f2f7fc",
-        cream:"#fbfdff",
-        text:"#40515c",
-        muted:"#81919b",
-        border:"#dceaf1",
-        green:"#6e9d82",
-        red:"#b97882",
-        page:"#f5fbfe",
-        card:"#ffffff",
-        input:"#fbfdff"
-    },
-
-    peach:{
-        pink:"#e8ad91",
-        pinkDark:"#c98468",
-        pinkLight:"#fff3ed",
-        lavender:"#e0b6a3",
-        lavenderLight:"#fff6f1",
-        cream:"#fffdfb",
-        text:"#55433d",
-        muted:"#9b8780",
-        border:"#f0dfd7",
-        green:"#739779",
-        red:"#c87d7d",
-        page:"#fffaf7",
-        card:"#ffffff",
-        input:"#fffdfb"
-    },
-
-    midnight:{
-        pink:"#d69ab8",
-        pinkDark:"#b87598",
-        pinkLight:"#3a2934",
-        lavender:"#a995ca",
-        lavenderLight:"#302b3d",
-        cream:"#19171d",
-        text:"#eee8ed",
-        muted:"#aaa0aa",
-        border:"#39323b",
-        green:"#83b58e",
-        red:"#d58b9c",
-        page:"#121016",
-        card:"#19171d",
-        input:"#211e25"
-    }
-
-};
-
-
-/* =====================================================
-   APPLY THEME
-===================================================== */
-
-function applyTheme(themeName){
-
-    const theme =
-        themes[themeName] || themes.petal;
-
-    const root =
-        document.documentElement;
-
-    Object.entries(theme).forEach(
-        ([key,value]) => {
-
-            const variable =
-                "--" +
-                key.replace(
-                    /[A-Z]/g,
-                    match => "-" + match.toLowerCase()
-                );
-
-            root.style.setProperty(
-                variable,
-                value
-            );
-
-        }
-    );
-
-    document.body.classList.toggle(
-        "midnight-mode",
-        themeName === "midnight"
-    );
-
-}
-
-
-/* =====================================================
-   THEME FUNCTIONS
-===================================================== */
-
-function setTheme(themeName){
-
-    if(!themes[themeName])
-        return;
-
-    applyTheme(themeName);
-
-    localStorage.setItem(
-        "petalflowTheme",
-        themeName
-    );
-
-    closeThemeModal();
-
-}
-
-
-function openThemeModal(){
-
-    document
-        .getElementById("themeModal")
-        .classList.add("show");
-
-}
-
-
-function closeThemeModal(){
-
-    document
-        .getElementById("themeModal")
-        .classList.remove("show");
-
-}
-
-
-function loadSavedTheme(){
-
-    const savedTheme =
-        localStorage.getItem(
-            "petalflowTheme"
-        ) || "petal";
-
-    applyTheme(savedTheme);
-
-}
-
-
-/* =====================================================
-   UTILITY
-===================================================== */
-
-function convert(amount,from,to){
-
-    amount =
-        Number(amount) || 0;
-
-    if(from === to)
-        return amount;
-
-    const fromRate =
-        rates[from] ?? 1;
-
-    const toRate =
-        rates[to] ?? 1;
-
-    const phpAmount =
-        amount * fromRate;
-
-    return phpAmount / toRate;
-
-}
-
-
-function money(
-    amount,
-    currency=settings.currency
-){
-
-    const value =
-        Number(amount) || 0;
-
-    return (
-        symbols[currency] || ""
-    ) +
-    value.toLocaleString(
-        undefined,
-        {
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        }
-    );
-
-}
-
-
-function today(){
-
-    const now =
-        new Date();
-
-    const year =
-        now.getFullYear();
-
-    const month =
-        String(
-            now.getMonth()+1
-        ).padStart(2,"0");
-
-    const day =
-        String(
-            now.getDate()
-        ).padStart(2,"0");
-
-    return `${year}-${month}-${day}`;
-
-}
-
-
-function currentMonth(){
-
-    return today().slice(0,7);
-
-}
-
 
 function escapeHTML(text){
 
@@ -2191,116 +1714,162 @@ function escapeHTML(text){
 }
 
 
-function showMessage(
-    elementId,
-    message,
-    type=""
+function formatMoney(
+    amount,
+    currency = "PHP"
 ){
 
-    const element =
-        document.getElementById(
-            elementId
+    const symbols = {
+
+        PHP:"₱",
+
+        USD:"$",
+
+        NZD:"NZ$",
+
+        AUD:"A$",
+
+        CAD:"C$",
+
+        GBP:"£",
+
+        EUR:"€",
+
+        JPY:"¥",
+
+        KRW:"₩",
+
+        SGD:"S$",
+
+        HKD:"HK$",
+
+        CNY:"¥",
+
+        THB:"฿",
+
+        MYR:"RM",
+
+        INR:"₹",
+
+        IDR:"Rp",
+
+        AED:"د.إ",
+
+        CHF:"CHF"
+
+    };
+
+    return (
+        symbols[currency] || currency
+    ) +
+    Number(amount || 0)
+        .toLocaleString(
+            undefined,
+            {
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            }
         );
 
-    element.textContent =
-        message;
+}
 
-    element.className =
-        "auth-message " + type;
 
-    element.classList.remove(
-        "hidden"
-    );
+/* =====================================================
+   MODAL HELPERS
+===================================================== */
+
+function openModal(id){
+
+    const modal =
+        document.getElementById(id);
+
+    if(modal)
+        modal.classList.add("active");
 
 }
 
 
-function hideMessage(elementId){
+function closeModal(id){
 
-    document
-        .getElementById(elementId)
-        .classList.add("hidden");
+    const modal =
+        document.getElementById(id);
 
-}
-
-
-function safeError(error){
-
-    console.error(error);
-
-    return error?.message ||
-        "Something went wrong. Please try again.";
+    if(modal)
+        modal.classList.remove("active");
 
 }
 
 
 /* =====================================================
-   AUTH VIEWS
+   GOAL MODAL
 ===================================================== */
 
-function showSignup(){
+function openGoalModal(){
 
     document
-        .getElementById("loginView")
-        .classList.add("hidden");
-
-    document
-        .getElementById("signupView")
-        .classList.remove("hidden");
-
-    hideMessage("loginMessage");
+        .getElementById("goalModal")
+        .classList.add("active");
 
 }
 
 
-function showLogin(){
+function closeGoalModal(){
 
     document
-        .getElementById("signupView")
-        .classList.add("hidden");
-
-    document
-        .getElementById("loginView")
-        .classList.remove("hidden");
-
-    hideMessage("signupMessage");
+        .getElementById("goalModal")
+        .classList.remove("active");
 
 }
 
 
 /* =====================================================
-   SIGN UP
+   ADD GOAL
 ===================================================== */
 
-async function signup(){
+async function addGoal(){
+
+    if(!currentUser){
+
+        alert("Please log in first.");
+
+        return;
+
+    }
+
 
     const name =
         document
-            .getElementById("signupName")
-            .value.trim();
+        .getElementById("goalName")
+        .value
+        .trim();
 
-    const email =
+
+    const target =
+        Number(
+            document
+            .getElementById("goalTarget")
+            .value
+        );
+
+
+    const saved =
+        Number(
+            document
+            .getElementById("goalSaved")
+            .value
+        ) || 0;
+
+
+    const currency =
         document
-            .getElementById("signupEmail")
-            .value.trim();
-
-    const password =
-        document
-            .getElementById("signupPassword")
-            .value;
-
-    const confirm =
-        document
-            .getElementById("signupConfirm")
-            .value;
+        .getElementById("goalCurrency")
+        .value;
 
 
-    if(!name || !email || !password){
+    if(!name || target <= 0){
 
-        showMessage(
-            "signupMessage",
-            "Please fill in all the fields 🌷",
-            "auth-error"
+        alert(
+            "Please enter a goal name and target amount."
         );
 
         return;
@@ -2308,203 +1877,86 @@ async function signup(){
     }
 
 
-    if(password.length < 6){
+    const { error } =
+        await db
+        .from("goals")
+        .insert({
 
-        showMessage(
-            "signupMessage",
-            "Your password should have at least 6 characters.",
-            "auth-error"
-        );
+            user_id:currentUser.id,
 
-        return;
+            name:name,
 
-    }
+            target_amount:target,
 
+            saved_amount:saved,
 
-    if(password !== confirm){
-
-        showMessage(
-            "signupMessage",
-            "Your passwords don't match.",
-            "auth-error"
-        );
-
-        return;
-
-    }
-
-
-    showMessage(
-        "signupMessage",
-        "Creating your PetalFlow account..."
-    );
-
-
-    const {
-        data,
-        error
-    } =
-        await db.auth.signUp({
-
-            email,
-            password,
-
-            options:{
-                emailRedirectTo:
-                    window.location.origin +
-                    window.location.pathname,
-
-                data:{
-                    display_name:name
-                }
-
-            }
+            currency:currency
 
         });
 
 
     if(error){
 
-        showMessage(
-            "signupMessage",
-            safeError(error),
-            "auth-error"
-        );
+        console.error(error);
+
+        alert("Unable to create goal.");
 
         return;
 
     }
 
 
-    /*
-       If email confirmation is disabled,
-       Supabase returns a session immediately.
-    */
+    document
+        .getElementById("goalName")
+        .value = "";
 
-    if(data.session){
+    document
+        .getElementById("goalTarget")
+        .value = "";
 
-        showMessage(
-            "signupMessage",
-            "Your account is ready 🌸",
-            "auth-success"
-        );
-
-        await ensureProfile(
-            data.user,
-            name
-        );
-
-        await startApp(
-            data.user
-        );
-
-        return;
-
-    }
+    document
+        .getElementById("goalSaved")
+        .value = "";
 
 
-    /*
-       If email confirmation is enabled.
-    */
+    closeGoalModal();
 
-    showMessage(
-        "signupMessage",
-        "Account created! Please check your email to confirm your account, then log in. 🌷",
-        "auth-success"
-    );
+    loadGoals();
 
 }
 
 
 /* =====================================================
-   PROFILE
+   LOAD GOALS
 ===================================================== */
 
-async function ensureProfile(
-    user,
-    displayName
-){
+async function loadGoals(){
 
-    if(!user)
+    if(!currentUser)
         return;
 
-    const {
-        data:existing,
-        error:selectError
-    } =
+
+    const { data,error } =
         await db
-            .from("profiles")
-            .select("id")
-            .eq("id",user.id)
-            .maybeSingle();
-
-    if(selectError){
-
-        console.error(
-            "Profile lookup error:",
-            selectError
+        .from("goals")
+        .select("*")
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
         );
-
-        return;
-
-    }
-
-
-    if(existing)
-        return;
-
-
-    const {
-        error
-    } =
-        await db
-            .from("profiles")
-            .insert({
-
-                id:user.id,
-                display_name:
-                    displayName ||
-                    user.user_metadata?.display_name ||
-                    ""
-
-            });
 
 
     if(error){
 
         console.error(
-            "Profile creation error:",
+            "Error loading goals:",
             error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-async function login(){
-
-    const email =
-        document
-            .getElementById("loginEmail")
-            .value.trim();
-
-    const password =
-        document
-            .getElementById("loginPassword")
-            .value;
-
-
-    if(!email || !password){
-
-        showMessage(
-            "loginMessage",
-            "Please enter your email and password.",
-            "auth-error"
         );
 
         return;
@@ -2512,257 +1964,308 @@ async function login(){
     }
 
 
-    showMessage(
-        "loginMessage",
-        "Logging you in..."
-    );
+    goals = data || [];
+
+    renderGoals();
+
+}
 
 
-    const {
-        data,
-        error
-    } =
-        await db.auth.signInWithPassword({
+function renderGoals(){
 
-            email,
-            password
+    const list =
+        document
+        .getElementById("goalsList");
+
+
+    if(!goals.length){
+
+        list.innerHTML = `
+            <div class="empty">
+                No savings goals yet 🌸
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        goals.map(goal => {
+
+            const target =
+                Number(
+                    goal.target_amount || 0
+                );
+
+            const saved =
+                Number(
+                    goal.saved_amount || 0
+                );
+
+            const percent =
+                target > 0
+                ? Math.min(
+                    100,
+                    (saved / target) * 100
+                )
+                : 0;
+
+
+            return `
+
+                <div class="goal-card">
+
+                    <div class="goal-top">
+
+                        <div class="goal-name">
+                            ${escapeHTML(goal.name)}
+                        </div>
+
+                        <div class="goal-amount">
+                            ${formatMoney(
+                                saved,
+                                goal.currency
+                            )}
+                            /
+                            ${formatMoney(
+                                target,
+                                goal.currency
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            style="width:${percent}%">
+                        </div>
+
+                    </div>
+
+
+                    <div class="goal-footer">
+
+                        <span>
+                            ${percent.toFixed(0)}% saved
+                        </span>
+
+                        <button
+                            class="delete-button"
+                            type="button"
+                            onclick="deleteGoal('${goal.id}')">
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+async function deleteGoal(id){
+
+    if(!currentUser)
+        return;
+
+
+    if(!confirm("Delete this savings goal?"))
+        return;
+
+
+    const { error } =
+        await db
+        .from("goals")
+        .delete()
+        .eq(
+            "id",
+            id
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        );
+
+
+    if(error){
+
+        alert("Unable to delete goal.");
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    loadGoals();
+
+}
+
+
+/* =====================================================
+   NOTES
+===================================================== */
+
+function openNoteModal(){
+
+    const modal =
+        document
+        .getElementById("noteModal");
+
+
+    if(!modal){
+
+        console.error(
+            "noteModal was not found."
+        );
+
+        return;
+
+    }
+
+
+    modal.classList.add("active");
+
+
+    document
+        .getElementById("noteTitle")
+        .value = "";
+
+
+    document
+        .getElementById("noteContent")
+        .value = "";
+
+}
+
+
+function closeNoteModal(){
+
+    const modal =
+        document
+        .getElementById("noteModal");
+
+
+    if(modal){
+
+        modal.classList.remove("active");
+
+    }
+
+}
+
+
+async function saveNote(){
+
+    if(!currentUser){
+
+        alert("Please log in first.");
+
+        return;
+
+    }
+
+
+    const title =
+        document
+        .getElementById("noteTitle")
+        .value
+        .trim();
+
+
+    const content =
+        document
+        .getElementById("noteContent")
+        .value
+        .trim();
+
+
+    if(!title && !content){
+
+        alert(
+            "Please write something in your note."
+        );
+
+        return;
+
+    }
+
+
+    const { error } =
+        await db
+        .from("notes")
+        .insert({
+
+            user_id:currentUser.id,
+
+            title:
+                title ||
+                "Untitled Note",
+
+            content:content
 
         });
 
 
     if(error){
 
-        showMessage(
-            "loginMessage",
-            safeError(error),
-            "auth-error"
+        console.error(
+            "Error saving note:",
+            error
         );
-
-        return;
-
-    }
-
-
-    await startApp(
-        data.user
-    );
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-async function logout(){
-
-    const {
-        error
-    } =
-        await db.auth.signOut();
-
-    if(error){
 
         alert(
-            "Unable to log out. Please try again."
+            "Unable to save your note."
         );
 
         return;
 
     }
 
-    currentUser = null;
 
-    accounts = [];
-    transactions = [];
-    goals = [];
+    closeNoteModal();
 
-    document
-        .getElementById("app")
-        .classList.add("hidden");
-
-    document
-        .getElementById("loadingScreen")
-        .classList.add("hidden");
-
-    document
-        .getElementById("authScreen")
-        .classList.remove("hidden");
-
-    showLogin();
+    loadNotes();
 
 }
 
 
-/* =====================================================
-   START APP
-===================================================== */
-
-async function startApp(user){
-
-    if(!user)
-        return;
-
-    /*
-       Prevent duplicate initialization.
-    */
-
-    if(
-        currentUser?.id === user.id &&
-        !document
-            .getElementById("app")
-            .classList.contains("hidden")
-    ){
-
-        return;
-
-    }
-
-
-    currentUser = user;
-
-    document
-        .getElementById("authScreen")
-        .classList.add("hidden");
-
-    document
-        .getElementById("loadingScreen")
-        .classList.remove("hidden");
-
-    try{
-
-        await ensureProfile(user);
-
-        await loadUserData();
-
-        const profile =
-            await getProfileName();
-
-        document
-            .getElementById("greetingTitle")
-            .textContent =
-                profile
-                ? `Good day, ${profile} 🌷`
-                : "Good day 🌷";
-
-        document
-            .getElementById("loadingScreen")
-            .classList.add("hidden");
-
-        document
-            .getElementById("app")
-            .classList.remove("hidden");
-
-        render();
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        document
-            .getElementById("loadingScreen")
-            .classList.add("hidden");
-
-        alert(
-            "Something went wrong while loading your PetalFlow data.\n\n" +
-            safeError(error)
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   GET PROFILE NAME
-===================================================== */
-
-async function getProfileName(){
-
-    if(!currentUser)
-        return "";
-
-    const {
-        data,
-        error
-    } =
-        await db
-            .from("profiles")
-            .select("display_name")
-            .eq("id",currentUser.id)
-            .maybeSingle();
-
-    if(error){
-
-        console.error(error);
-
-        return (
-            currentUser
-                .user_metadata
-                ?.display_name || ""
-        );
-
-    }
-
-    return (
-        data?.display_name ||
-        currentUser
-            .user_metadata
-            ?.display_name ||
-        ""
-    );
-
-}
-
-
-/* =====================================================
-   PROFILE MODAL
-===================================================== */
-
-function openProfileModal(){
-
-    document
-        .getElementById("profileModal")
-        .classList.add("show");
-
-    loadProfile();
-
-}
-
-
-function closeProfileModal(){
-
-    document
-        .getElementById("profileModal")
-        .classList.remove("show");
-
-}
-
-
-/* =====================================================
-   LOAD PROFILE
-===================================================== */
-
-async function loadProfile(){
+async function loadNotes(){
 
     if(!currentUser)
         return;
 
-    const {
-        data,
-        error
-    } =
+
+    const { data,error } =
         await db
-            .from("profiles")
-            .select("display_name,picture")
-            .eq("id",currentUser.id)
-            .maybeSingle();
+        .from("notes")
+        .select("*")
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
 
     if(error){
 
         console.error(
-            "Unable to load profile:",
+            "Error loading notes:",
             error
         );
 
@@ -2770,463 +2273,107 @@ async function loadProfile(){
 
     }
 
-    document
-        .getElementById("profileDisplayName")
-        .value =
-            data?.display_name ||
-            currentUser.user_metadata?.display_name ||
-            "";
 
-    const image =
-        document.getElementById(
-            "profilePicturePreview"
-        );
+    notes = data || [];
 
-    const placeholder =
-        document.getElementById(
-            "profilePicturePlaceholder"
-        );
-
-    if(data?.picture){
-
-        image.src =
-            data.picture;
-
-        image.style.display =
-            "block";
-
-        placeholder.style.display =
-            "none";
-
-    }
-    else{
-
-        image.style.display =
-            "none";
-
-        placeholder.style.display =
-            "flex";
-
-    }
+    renderNotes();
 
 }
 
 
-/* =====================================================
-   UPLOAD PROFILE PICTURE
-===================================================== */
+function renderNotes(){
 
-async function uploadProfilePicture(){
-
-    if(!currentUser)
-        return;
-
-
-    const input =
-        document.getElementById(
-            "profilePictureInput"
-        );
-
-    const file =
-        input.files?.[0];
-
-    if(!file)
-        return;
-
-
-    /* =================================================
-       CHECK FILE TYPE
-    ================================================= */
-
-    if(!file.type.startsWith("image/")){
-
-        alert(
-            "Please choose an image file."
-        );
-
-        input.value = "";
-
-        return;
-
-    }
-
-
-    /* =================================================
-       ALLOW IMAGES UP TO 10 MB
-    ================================================= */
-
-    if(file.size > 10 * 1024 * 1024){
-
-        alert(
-            "Please choose an image smaller than 10 MB."
-        );
-
-        input.value = "";
-
-        return;
-
-    }
-
-
-    try{
-
-        /* =============================================
-           CREATE IMAGE
-        ============================================= */
-
-        const image =
-            new Image();
-
-        const imageURL =
-            URL.createObjectURL(file);
-
-
-        await new Promise(
-            (resolve,reject)=>{
-
-                image.onload =
-                    resolve;
-
-                image.onerror =
-                    reject;
-
-                image.src =
-                    imageURL;
-
-            }
-        );
-
-
-        URL.revokeObjectURL(
-            imageURL
-        );
-
-
-        /* =============================================
-           RESIZE IMAGE
-           
-           Maximum dimension:
-           1200 x 1200
-        ============================================= */
-
-        const MAX_SIZE = 1200;
-
-        let width =
-            image.width;
-
-        let height =
-            image.height;
-
-
-        if(width > MAX_SIZE ||
-           height > MAX_SIZE){
-
-            if(width > height){
-
-                height =
-                    Math.round(
-                        height *
-                        (MAX_SIZE / width)
-                    );
-
-                width =
-                    MAX_SIZE;
-
-            }
-            else{
-
-                width =
-                    Math.round(
-                        width *
-                        (MAX_SIZE / height)
-                    );
-
-                height =
-                    MAX_SIZE;
-
-            }
-
-        }
-
-
-        /* =============================================
-           CREATE CANVAS
-        ============================================= */
-
-        const canvas =
-            document.createElement(
-                "canvas"
-            );
-
-        canvas.width =
-            width;
-
-        canvas.height =
-            height;
-
-
-        const context =
-            canvas.getContext(
-                "2d"
-            );
-
-
-        context.drawImage(
-            image,
-            0,
-            0,
-            width,
-            height
-        );
-
-
-        /* =============================================
-           COMPRESS IMAGE
-        ============================================= */
-
-        const compressedFile =
-            await new Promise(
-                (resolve,reject)=>{
-
-                    canvas.toBlob(
-                        blob=>{
-
-                            if(!blob){
-
-                                reject(
-                                    new Error(
-                                        "Unable to compress image."
-                                    )
-                                );
-
-                                return;
-
-                            }
-
-                            resolve(
-                                new File(
-                                    [blob],
-                                    "profile.jpg",
-                                    {
-                                        type:
-                                            "image/jpeg"
-                                    }
-                                )
-                            );
-
-                        },
-                        "image/jpeg",
-                        0.85
-                    );
-
-                }
-            );
-
-
-        /* =============================================
-           CREATE UNIQUE FILE PATH
-        ============================================= */
-
-        const filePath =
-            `${currentUser.id}/profile.jpg`;
-
-
-        /* =============================================
-           UPLOAD TO SUPABASE STORAGE
-        ============================================= */
-
-        const {
-            error:uploadError
-        } =
-            await db.storage
-                .from("avatars")
-                .upload(
-                    filePath,
-                    compressedFile,
-                    {
-                        upsert:true,
-                        contentType:
-                            "image/jpeg"
-                    }
-                );
-
-
-        if(uploadError){
-
-            console.error(
-                "Profile picture upload error:",
-                uploadError
-            );
-
-            alert(
-                "Unable to upload your profile picture.\n\n" +
-                safeError(uploadError)
-            );
-
-            return;
-
-        }
-
-
-        /* =============================================
-           GET PUBLIC URL
-        ============================================= */
-
-        const {
-            data
-        } =
-            db.storage
-                .from("avatars")
-                .getPublicUrl(
-                    filePath
-                );
-
-
-        const pictureUrl =
-            data.publicUrl;
-
-
-        /* =============================================
-           SAVE URL TO PROFILE
-        ============================================= */
-
-        const {
-            error:updateError
-        } =
-            await db
-                .from("profiles")
-                .update({
-                    picture:
-                        pictureUrl
-                })
-                .eq(
-                    "id",
-                    currentUser.id
-                );
-
-
-        if(updateError){
-
-            console.error(
-                "Profile picture database error:",
-                updateError
-            );
-
-            alert(
-                "The picture uploaded, but we couldn't save the profile picture information.\n\n" +
-                safeError(updateError)
-            );
-
-            return;
-
-        }
-
-
-        /* =============================================
-           UPDATE PROFILE PREVIEW
-        ============================================= */
-
-        const preview =
-            document.getElementById(
-                "profilePicturePreview"
-            );
-
-        const placeholder =
-            document.getElementById(
-                "profilePicturePlaceholder"
-            );
-
-
-        preview.src =
-            pictureUrl +
-            "?t=" +
-            Date.now();
-
-        preview.style.display =
-            "block";
-
-        placeholder.style.display =
-            "none";
-
-
-        /* =============================================
-           SUCCESS MESSAGE
-        ============================================= */
-
-        alert(
-            "Profile picture updated! 🌸"
-        );
-
-    }
-    catch(error){
-
-        console.error(
-            "Image processing error:",
-            error
-        );
-
-        alert(
-            "Something went wrong while processing your image."
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   SAVE PROFILE
-===================================================== */
-
-async function saveProfile(){
-
-    if(!currentUser)
-        return;
-
-
-    const displayName =
+    const list =
         document
-            .getElementById(
-                "profileDisplayName"
-            )
-            .value.trim();
+        .getElementById("notesList");
 
 
-    if(!displayName){
+    if(!list)
+        return;
 
-        alert(
-            "Please enter a display name."
-        );
+
+    if(!notes.length){
+
+        list.innerHTML = `
+            <div class="empty">
+                No notes yet 🌸
+            </div>
+        `;
 
         return;
 
     }
 
 
-    const {
-        error
-    } =
+    list.innerHTML =
+        notes.map(note => `
+
+            <div class="note-card">
+
+                <h4>
+                    ${escapeHTML(
+                        note.title ||
+                        "Untitled Note"
+                    )}
+                </h4>
+
+                <p>
+                    ${escapeHTML(
+                        note.content || ""
+                    )}
+                </p>
+
+                <div class="note-actions">
+
+                    <button
+                        class="delete-button"
+                        type="button"
+                        onclick="deleteNote('${note.id}')">
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+async function deleteNote(noteId){
+
+    if(!currentUser)
+        return;
+
+
+    if(!confirm("Delete this note?"))
+        return;
+
+
+    const { error } =
         await db
-            .from("profiles")
-            .update({
-
-                display_name:
-                    displayName
-
-            })
-            .eq(
-                "id",
-                currentUser.id
-            );
+        .from("notes")
+        .delete()
+        .eq(
+            "id",
+            noteId
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        );
 
 
     if(error){
 
-        console.error(error);
+        console.error(
+            "Error deleting note:",
+            error
+        );
 
         alert(
-            "Unable to save your profile.\n\n" +
-            safeError(error)
+            "Unable to delete note."
         );
 
         return;
@@ -3234,200 +2381,20 @@ async function saveProfile(){
     }
 
 
-    document
-        .getElementById(
-            "greetingTitle"
-        )
-        .textContent =
-            `Good day, ${displayName} 🌷`;
-
-
-    closeProfileModal();
+    loadNotes();
 
 }
 
 
 /* =====================================================
-   PROFILE MODAL CLICK OUTSIDE
-===================================================== */
-
-document
-    .getElementById(
-        "profileModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(
-                event.target === this
-            ){
-
-                closeProfileModal();
-
-            }
-
-        }
-    );
-
-    
-/* =====================================================
-   LOAD USER DATA
-===================================================== */
-
-async function loadUserData(){
-
-    if(!currentUser)
-        return;
-
-
-    const [
-        accountsResult,
-        transactionsResult,
-        goalsResult,
-        budgetResult
-    ] =
-        await Promise.all([
-
-            db
-                .from("accounts")
-                .select("*")
-                .eq(
-                    "user_id",
-                    currentUser.id
-                )
-                .order(
-                    "created_at",
-                    {
-                        ascending:true
-                    }
-                ),
-
-            db
-                .from("transactions")
-                .select("*")
-                .eq(
-                    "user_id",
-                    currentUser.id
-                )
-                .order(
-                    "transaction_date",
-                    {
-                        ascending:false
-                    }
-                )
-                .order(
-                    "created_at",
-                    {
-                        ascending:false
-                    }
-                ),
-
-            db
-                .from("savings_goals")
-                .select("*")
-                .eq(
-                    "user_id",
-                    currentUser.id
-                )
-                .order(
-                    "created_at",
-                    {
-                        ascending:true
-                    }
-                ),
-
-            db
-                .from("budgets")
-                .select("*")
-                .eq(
-                    "user_id",
-                    currentUser.id
-                )
-                .eq(
-                    "month",
-                    currentMonth()
-                )
-                .maybeSingle()
-
-        ]);
-
-
-    if(accountsResult.error)
-        throw accountsResult.error;
-
-    if(transactionsResult.error)
-        throw transactionsResult.error;
-
-    if(goalsResult.error)
-        throw goalsResult.error;
-
-    if(budgetResult.error)
-        throw budgetResult.error;
-
-
-    accounts =
-        accountsResult.data || [];
-
-    transactions =
-        transactionsResult.data || [];
-
-    goals =
-        goalsResult.data || [];
-
-
-    settings.budget =
-        budgetResult.data
-        ? Number(
-            budgetResult.data.amount
-        )
-        : 0;
-
-    settings.budgetCurrency =
-        budgetResult.data?.currency ||
-        settings.currency;
-
-
-    settings.currency =
-        localStorage.getItem(
-            "petalflowDisplayCurrency"
-        ) || "PHP";
-
-}
-
-
-/* =====================================================
-   CURRENCY
-===================================================== */
-
-function changeCurrency(){
-
-    settings.currency =
-        document
-            .getElementById(
-                "displayCurrency"
-            )
-            .value;
-
-    localStorage.setItem(
-        "petalflowDisplayCurrency",
-        settings.currency
-    );
-
-    render();
-
-}
-
-
-/* =====================================================
-   ACCOUNT MODALS
+   ACCOUNTS
 ===================================================== */
 
 function openAccountModal(){
 
     document
         .getElementById("accountModal")
-        .classList.add("show");
+        .classList.add("active");
 
 }
 
@@ -3436,56 +2403,53 @@ function closeAccountModal(){
 
     document
         .getElementById("accountModal")
-        .classList.remove("show");
+        .classList.remove("active");
 
 }
 
 
-/* =====================================================
-   ADD ACCOUNT
-===================================================== */
-
 async function addAccount(){
 
-    if(!currentUser)
+    if(!currentUser){
+
+        alert("Please log in first.");
+
         return;
+
+    }
+
 
     const name =
         document
-            .getElementById("accountName")
-            .value.trim();
+        .getElementById("accountName")
+        .value
+        .trim();
 
-    const balance =
-        parseFloat(
-            document
-                .getElementById(
-                    "accountBalance"
-                )
-                .value
-        );
 
     const type =
         document
-            .getElementById(
-                "accountType"
-            )
-            .value;
+        .getElementById("accountType")
+        .value;
+
+
+    const balance =
+        Number(
+            document
+            .getElementById("accountBalance")
+            .value
+        ) || 0;
+
 
     const currency =
         document
-            .getElementById(
-                "accountCurrency"
-            )
-            .value;
+        .getElementById("accountCurrency")
+        .value;
 
 
-    if(
-        !name ||
-        !Number.isFinite(balance)
-    ){
+    if(!name){
 
         alert(
-            "Please enter an account name and balance 🌸"
+            "Please enter an account name."
         );
 
         return;
@@ -3493,20 +2457,22 @@ async function addAccount(){
     }
 
 
-    const {
-        error
-    } =
+    const { error } =
         await db
-            .from("accounts")
-            .insert({
+        .from("accounts")
+        .insert({
 
-                user_id:currentUser.id,
-                name,
-                type,
-                balance,
-                currency
+            user_id:currentUser.id,
 
-            });
+            name:name,
+
+            type:type,
+
+            balance:balance,
+
+            currency:currency
+
+        });
 
 
     if(error){
@@ -3514,175 +2480,94 @@ async function addAccount(){
         console.error(error);
 
         alert(
-            "Unable to add the account.\n\n" +
-            safeError(error)
+            "Unable to add account."
         );
 
         return;
 
     }
 
-
-    document
-        .getElementById(
-            "accountName"
-        )
-        .value = "";
-
-    document
-        .getElementById(
-            "accountBalance"
-        )
-        .value = "";
 
     closeAccountModal();
 
-    await loadUserData();
-
-    render();
+    loadAccounts();
 
 }
 
 
-/* =====================================================
-   EDIT ACCOUNT
-===================================================== */
+async function loadAccounts(){
 
-async function editAccount(id){
-
-    const account =
-        accounts.find(
-            a =>
-                Number(a.id) ===
-                Number(id)
-        );
-
-    if(!account)
+    if(!currentUser)
         return;
 
 
-    const newBalance =
-        prompt(
-            "Enter the current balance:",
-            account.balance
-        );
-
-
-    if(newBalance === null)
-        return;
-
-
-    const balance =
-        parseFloat(newBalance);
-
-
-    if(!Number.isFinite(balance)){
-
-        alert(
-            "Please enter a valid number."
-        );
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
+    const { data,error } =
         await db
-            .from("accounts")
-            .update({
-                balance
-            })
-            .eq(
-                "id",
-                id
-            )
-            .eq(
-                "user_id",
-                currentUser.id
-            );
-
-
-    if(error){
-
-        alert(
-            "Unable to update the account.\n\n" +
-            safeError(error)
-        );
-
-        return;
-
-    }
-
-
-    await loadUserData();
-
-    render();
-
-}
-
-
-/* =====================================================
-   DELETE ACCOUNT
-===================================================== */
-
-async function deleteAccount(id){
-
-    const account =
-        accounts.find(
-            a =>
-                Number(a.id) ===
-                Number(id)
-        );
-
-    if(!account)
-        return;
-
-
-    if(
-        !confirm(
-            `Delete "${account.name}"?\n\nTransactions connected to this account will remain in your transaction history.`
+        .from("accounts")
+        .select("*")
+        .eq(
+            "user_id",
+            currentUser.id
         )
-    ){
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
-        await db
-            .from("accounts")
-            .delete()
-            .eq(
-                "id",
-                id
-            )
-            .eq(
-                "user_id",
-                currentUser.id
-            );
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
 
 
     if(error){
 
-        alert(
-            "Unable to delete the account.\n\n" +
-            safeError(error)
-        );
+        console.error(error);
 
         return;
 
     }
 
 
-    await loadUserData();
+    accounts = data || [];
 
-    render();
+    updateAccountSelect();
+
+    updateDashboard();
+
+}
+
+
+function updateAccountSelect(){
+
+    const select =
+        document
+        .getElementById("account");
+
+
+    if(!select)
+        return;
+
+
+    if(!accounts.length){
+
+        select.innerHTML =
+            `<option value="">
+                Add an account first
+            </option>`;
+
+        return;
+
+    }
+
+
+    select.innerHTML =
+        accounts.map(account => `
+
+            <option value="${account.id}">
+
+                ${escapeHTML(account.name)}
+
+            </option>
+
+        `).join("");
 
 }
 
@@ -3695,123 +2580,66 @@ function updateCategories(){
 
     const type =
         document
-            .getElementById(
-                "transactionType"
-            )
-            .value;
+        .getElementById(
+            "transactionType"
+        )
+        .value;
 
-    const category =
-        document.getElementById(
+
+    const categories = {
+
+        income:[
+            "Salary",
+            "Allowance",
+            "Freelance",
+            "Gift",
+            "Other Income"
+        ],
+
+        expense:[
+            "Food",
+            "Transport",
+            "Shopping",
+            "Bills",
+            "Education",
+            "Entertainment",
+            "Health",
+            "Other Expense"
+        ],
+
+        saving:[
+            "Savings",
+            "Emergency Fund",
+            "Travel Fund",
+            "Goal"
+        ],
+
+        transfer:[
+            "Bank Transfer",
+            "E-wallet Transfer",
+            "Other Transfer"
+        ]
+
+    };
+
+
+    const select =
+        document
+        .getElementById(
             "category"
         );
 
-    let list = [];
 
+    select.innerHTML =
+        categories[type]
+        .map(category => `
 
-    if(type === "income"){
+            <option value="${category}">
+                ${category}
+            </option>
 
-        list = [
-            "Salary",
-            "Tutoring",
-            "Allowance",
-            "Business",
-            "Gift",
-            "Other Income"
-        ];
-
-    }
-
-    else if(type === "expense"){
-
-        list = [
-            "Food",
-            "Housing",
-            "Transportation",
-            "Education",
-            "Bills",
-            "Shopping",
-            "Personal",
-            "Entertainment",
-            "Travel",
-            "Health",
-            "Work",
-            "Emergency",
-            "Other"
-        ];
-
-    }
-
-    else if(type === "saving"){
-
-        list = [
-            "Emergency Fund",
-            "New Zealand Trip",
-            "General Savings",
-            "Investment",
-            "Other Savings"
-        ];
-
-    }
-
-    else{
-
-        list = [
-            "Account Transfer"
-        ];
-
-    }
-
-
-    category.innerHTML = "";
-
-
-    list.forEach(item => {
-
-        const option =
-            document.createElement(
-                "option"
-            );
-
-        option.value = item;
-
-        option.textContent = item;
-
-        category.appendChild(
-            option
-        );
-
-    });
-
-}
-
-
-/* =====================================================
-   UPDATE ACCOUNT BALANCE
-===================================================== */
-
-async function updateAccountBalance(
-    account,
-    change
-){
-
-    const newBalance =
-        Number(account.balance) +
-        Number(change);
-
-
-    return await db
-        .from("accounts")
-        .update({
-            balance:newBalance
-        })
-        .eq(
-            "id",
-            account.id
-        )
-        .eq(
-            "user_id",
-            currentUser.id
-        );
+        `)
+        .join("");
 
 }
 
@@ -3822,72 +2650,78 @@ async function updateAccountBalance(
 
 async function addTransaction(){
 
-    if(!currentUser)
+    if(!currentUser){
+
+        alert("Please log in first.");
+
         return;
+
+    }
 
 
     const description =
         document
-            .getElementById(
-                "description"
-            )
-            .value.trim();
+        .getElementById(
+            "description"
+        )
+        .value
+        .trim();
+
 
     const amount =
-        parseFloat(
+        Number(
             document
-                .getElementById(
-                    "amount"
-                )
-                .value
+            .getElementById(
+                "amount"
+            )
+            .value
         );
+
 
     const type =
         document
-            .getElementById(
-                "transactionType"
-            )
-            .value;
+        .getElementById(
+            "transactionType"
+        )
+        .value;
+
 
     const category =
         document
-            .getElementById(
-                "category"
-            )
-            .value;
+        .getElementById(
+            "category"
+        )
+        .value;
 
-    const date =
-        document
-            .getElementById(
-                "transactionDate"
-            )
-            .value || today();
 
     const accountId =
-        Number(
-            document
-                .getElementById(
-                    "account"
-                )
-                .value
-        );
+        document
+        .getElementById(
+            "account"
+        )
+        .value;
+
 
     const currency =
         document
-            .getElementById(
-                "transactionCurrency"
-            )
-            .value;
+        .getElementById(
+            "transactionCurrency"
+        )
+        .value;
 
 
-    if(
-        !description ||
-        !Number.isFinite(amount) ||
-        amount <= 0
-    ){
+    const date =
+        document
+        .getElementById(
+            "transactionDate"
+        )
+        .value;
+
+
+    if(!description || amount <= 0){
 
         alert(
-            "Please enter a description and valid amount 🌷"
+            "Please enter a description and amount."
         );
 
         return;
@@ -3895,414 +2729,42 @@ async function addTransaction(){
     }
 
 
-    const account =
-        accounts.find(
-            a =>
-                Number(a.id) ===
-                accountId
-        );
-
-
-    if(!account){
-
-        alert(
-            "Please add an account first 🏦"
-        );
-
-        return;
-
-    }
-
-
-    const converted =
-        convert(
-            amount,
-            currency,
-            account.currency
-        );
-
-
-    /* =====================
-       EXPENSE
-    ===================== */
-
-    if(type === "expense"){
-
-        if(
-            Number(account.balance) <
-            converted
-        ){
-
-            const proceed =
-                confirm(
-                    "This expense is greater than the account balance.\n\nDo you want to add it anyway?"
-                );
-
-            if(!proceed)
-                return;
-
-        }
-
-
-        const result =
-            await updateAccountBalance(
-                account,
-                -converted
-            );
-
-
-        if(result.error){
-
-            alert(
-                "Unable to update the account.\n\n" +
-                safeError(result.error)
-            );
-
-            return;
-
-        }
-
-    }
-
-
-    /* =====================
-       INCOME
-    ===================== */
-
-    if(type === "income"){
-
-        const result =
-            await updateAccountBalance(
-                account,
-                converted
-            );
-
-
-        if(result.error){
-
-            alert(
-                "Unable to update the account.\n\n" +
-                safeError(result.error)
-            );
-
-            return;
-
-        }
-
-    }
-
-
-    /* =====================
-       SAVING
-    ===================== */
-
-    if(type === "saving"){
-
-        if(
-            Number(account.balance) <
-            converted
-        ){
-
-            const proceed =
-                confirm(
-                    "This saving amount is greater than the account balance.\n\nDo you want to continue?"
-                );
-
-            if(!proceed)
-                return;
-
-        }
-
-
-        const result =
-            await updateAccountBalance(
-                account,
-                -converted
-            );
-
-
-        if(result.error){
-
-            alert(
-                "Unable to update the account.\n\n" +
-                safeError(result.error)
-            );
-
-            return;
-
-        }
-
-
-        /*
-           Savings are tracked in the selected
-           savings category when it matches
-           a goal name.
-        */
-
-        const matchingGoal =
-            goals.find(
-                goal =>
-                    goal.name === category
-            );
-
-
-        if(matchingGoal){
-
-            const goalAmount =
-                convert(
-                    amount,
-                    currency,
-                    matchingGoal.currency ||
-                    currency
-                );
-
-
-            const goalResult =
-                await db
-                    .from("savings_goals")
-                    .update({
-
-                        saved:
-                            Number(
-                                matchingGoal.saved
-                            ) +
-                            goalAmount
-
-                    })
-                    .eq(
-                        "id",
-                        matchingGoal.id
-                    )
-                    .eq(
-                        "user_id",
-                        currentUser.id
-                    );
-
-
-            if(goalResult.error){
-
-                console.error(
-                    "Goal update error:",
-                    goalResult.error
-                );
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================
-       TRANSFER
-    ===================== */
-
-    if(type === "transfer"){
-
-        const destinations =
-            accounts.filter(
-                a =>
-                    Number(a.id) !==
-                    Number(account.id)
-            );
-
-
-        if(destinations.length === 0){
-
-            alert(
-                "You need at least two accounts to make a transfer."
-            );
-
-            return;
-
-        }
-
-
-        const destinationList =
-            destinations
-                .map(
-                    (a,index) =>
-                        `${index + 1}. ${a.name} (${a.currency})`
-                )
-                .join("\n");
-
-
-        const choice =
-            prompt(
-                "Choose destination account:\n\n" +
-                destinationList +
-                "\n\nEnter the number:"
-            );
-
-
-        if(choice === null)
-            return;
-
-
-        const index =
-            parseInt(
-                choice,
-                10
-            ) - 1;
-
-
-        if(
-            !Number.isInteger(index) ||
-            !destinations[index]
-        ){
-
-            alert(
-                "Invalid destination account."
-            );
-
-            return;
-
-        }
-
-
-        const destination =
-            destinations[index];
-
-
-        const sourceAmount =
-            convert(
-                amount,
-                currency,
-                account.currency
-            );
-
-        const destinationAmount =
-            convert(
-                amount,
-                currency,
-                destination.currency
-            );
-
-
-        if(
-            Number(account.balance) <
-            sourceAmount
-        ){
-
-            const proceed =
-                confirm(
-                    "The transfer is greater than the source account balance.\n\nContinue anyway?"
-                );
-
-            if(!proceed)
-                return;
-
-        }
-
-
-        const sourceResult =
-            await updateAccountBalance(
-                account,
-                -sourceAmount
-            );
-
-
-        if(sourceResult.error){
-
-            alert(
-                "Unable to transfer from the source account.\n\n" +
-                safeError(
-                    sourceResult.error
-                )
-            );
-
-            return;
-
-        }
-
-
-        const destinationResult =
-            await updateAccountBalance(
-                destination,
-                destinationAmount
-            );
-
-
-        if(destinationResult.error){
-
-            /*
-               Attempt to reverse the source
-               transaction if destination fails.
-            */
-
-            await updateAccountBalance(
-                account,
-                sourceAmount
-            );
-
-            alert(
-                "The transfer could not be completed. No balance was changed."
-            );
-
-            return;
-
-        }
-
-
-        /*
-           Store transfer history against
-           the source account.
-        */
-
-    }
-
-
-    /* =====================
-       SAVE TRANSACTION
-    ===================== */
-
-    const {
-        error
-    } =
+    const { error } =
         await db
-            .from("transactions")
-            .insert({
+        .from("transactions")
+        .insert({
 
-                user_id:
-                    currentUser.id,
+            user_id:currentUser.id,
 
-                account_id:
-                    account.id,
+            description:description,
 
-                description,
+            amount:amount,
 
-                amount,
+            type:type,
 
-                type,
+            category:category,
 
-                category,
+            account_id:
+                accountId || null,
 
-                transaction_date:
-                    date,
+            currency:currency,
 
-                currency
+            date:
+                date ||
+                new Date()
+                .toISOString()
+                .split("T")[0]
 
-            });
+        });
 
 
     if(error){
 
         console.error(error);
 
-        /*
-           Important:
-           The account balance has already changed.
-           Inform the user so the issue is visible.
-        */
-
         alert(
-            "The balance was updated, but the transaction could not be saved.\n\n" +
-            safeError(error)
+            "Unable to save transaction."
         );
-
-        await loadUserData();
-
-        render();
 
         return;
 
@@ -4315,6 +2777,7 @@ async function addTransaction(){
         )
         .value = "";
 
+
     document
         .getElementById(
             "amount"
@@ -4322,545 +2785,182 @@ async function addTransaction(){
         .value = "";
 
 
-    await loadUserData();
+    loadTransactions();
 
-    render();
+    loadAccounts();
 
 }
 
 
 /* =====================================================
-   DELETE TRANSACTION
+   LOAD TRANSACTIONS
 ===================================================== */
 
-async function deleteTransaction(id){
+async function loadTransactions(){
 
-    const transaction =
-        transactions.find(
-            t =>
-                Number(t.id) ===
-                Number(id)
-        );
-
-
-    if(!transaction)
+    if(!currentUser)
         return;
 
 
-    /*
-       Transfers are not automatically reversed
-       because the current transactions table
-       does not store a destination account ID.
-    */
-
-    if(transaction.type === "transfer"){
-
-        const confirmDelete =
-            confirm(
-                "This is a transfer. Deleting the history will NOT automatically reverse the transfer between accounts.\n\nDelete the transaction history anyway?"
-            );
-
-        if(!confirmDelete)
-            return;
-
-    }
-    else{
-
-        if(
-            !confirm(
-                "Delete this transaction?"
-            )
-        ){
-
-            return;
-
-        }
-
-    }
-
-
-    const account =
-        accounts.find(
-            a =>
-                Number(a.id) ===
-                Number(
-                    transaction.account_id
-                )
-        );
-
-
-    /*
-       Restore balance for normal
-       income / expense / saving transactions.
-    */
-
-    if(
-        account &&
-        transaction.type !== "transfer"
-    ){
-
-        const converted =
-            convert(
-                Number(
-                    transaction.amount
-                ),
-                transaction.currency,
-                account.currency
-            );
-
-
-        let change = 0;
-
-
-        if(
-            transaction.type === "expense"
-        ){
-
-            change =
-                converted;
-
-        }
-
-
-        if(
-            transaction.type === "income"
-        ){
-
-            change =
-                -converted;
-
-        }
-
-
-        if(
-            transaction.type === "saving"
-        ){
-
-            change =
-                converted;
-
-        }
-
-
-        if(change !== 0){
-
-            const result =
-                await updateAccountBalance(
-                    account,
-                    change
-                );
-
-
-            if(result.error){
-
-                alert(
-                    "Unable to restore the account balance.\n\n" +
-                    safeError(
-                        result.error
-                    )
-                );
-
-                return;
-
+    const { data,error } =
+        await db
+        .from("transactions")
+        .select("*")
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .order(
+            "date",
+            {
+                ascending:false
             }
-
-        }
-
-    }
-
-
-    const {
-        error
-    } =
-        await db
-            .from("transactions")
-            .delete()
-            .eq(
-                "id",
-                id
-            )
-            .eq(
-                "user_id",
-                currentUser.id
-            );
-
-
-    if(error){
-
-        alert(
-            "Unable to delete the transaction.\n\n" +
-            safeError(error)
         );
-
-        return;
-
-    }
-
-
-    await loadUserData();
-
-    render();
-
-}
-
-
-/* =====================================================
-   EDIT TRANSACTION
-===================================================== */
-
-async function editTransaction(id){
-
-    const transaction =
-        transactions.find(
-            t =>
-                Number(t.id) ===
-                Number(id)
-        );
-
-
-    if(!transaction)
-        return;
-
-
-    /*
-       To prevent incorrect account balances,
-       only description is safely editable here.
-       Amount changes require recalculating the
-       account balance.
-    */
-
-    const newDescription =
-        prompt(
-            "Description:",
-            transaction.description
-        );
-
-
-    if(newDescription === null)
-        return;
-
-
-    const cleanDescription =
-        newDescription.trim();
-
-
-    if(!cleanDescription){
-
-        alert(
-            "Description cannot be empty."
-        );
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
-        await db
-            .from("transactions")
-            .update({
-
-                description:
-                    cleanDescription
-
-            })
-            .eq(
-                "id",
-                id
-            )
-            .eq(
-                "user_id",
-                currentUser.id
-            );
-
-
-    if(error){
-
-        alert(
-            "Unable to edit the transaction.\n\n" +
-            safeError(error)
-        );
-
-        return;
-
-    }
-
-
-    await loadUserData();
-
-    render();
-
-}
-
-
-/* =====================================================
-   GOAL MODALS
-===================================================== */
-
-function openGoalModal(){
-
-    document
-        .getElementById("goalModal")
-        .classList.add("show");
-
-}
-
-
-function closeGoalModal(){
-
-    document
-        .getElementById("goalModal")
-        .classList.remove("show");
-
-}
-
-
-/* =====================================================
-   ADD GOAL
-===================================================== */
-
-async function addGoal(){
-
-    const name =
-        document
-            .getElementById(
-                "goalName"
-            )
-            .value.trim();
-
-    const target =
-        parseFloat(
-            document
-                .getElementById(
-                    "goalTarget"
-                )
-                .value
-        );
-
-    const savedInput =
-        parseFloat(
-            document
-                .getElementById(
-                    "goalSaved"
-                )
-                .value
-        );
-
-    const saved =
-        Number.isFinite(savedInput)
-        ? savedInput
-        : 0;
-
-    const currency =
-        document
-            .getElementById(
-                "goalCurrency"
-            )
-            .value;
-
-
-    if(
-        !name ||
-        !Number.isFinite(target) ||
-        target <= 0
-    ){
-
-        alert(
-            "Please enter a goal name and target 🌸"
-        );
-
-        return;
-
-    }
-
-
-    if(saved < 0){
-
-        alert(
-            "Already saved cannot be negative."
-        );
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
-        await db
-            .from("savings_goals")
-            .insert({
-
-                user_id:
-                    currentUser.id,
-
-                name,
-
-                target,
-
-                saved,
-
-                currency
-
-            });
-
-
-    if(error){
-
-        alert(
-            "Unable to create the savings goal.\n\n" +
-            safeError(error)
-        );
-
-        return;
-
-    }
-
-
-    document
-        .getElementById(
-            "goalName"
-        )
-        .value = "";
-
-    document
-        .getElementById(
-            "goalTarget"
-        )
-        .value = "";
-
-    document
-        .getElementById(
-            "goalSaved"
-        )
-        .value = "";
-
-
-    closeGoalModal();
-
-    await loadUserData();
-
-    render();
-
-}
-
-
-/* =====================================================
-   DELETE GOAL
-===================================================== */
-
-async function deleteGoal(id){
-
-    if(
-        !confirm(
-            "Delete this savings goal?"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
-        await db
-            .from("savings_goals")
-            .delete()
-            .eq(
-                "id",
-                id
-            )
-            .eq(
-                "user_id",
-                currentUser.id
-            );
-
-
-    if(error){
-
-        alert(
-            "Unable to delete this goal.\n\n" +
-            safeError(error)
-        );
-
-        return;
-
-    }
-
-
-    await loadUserData();
-
-    render();
-
-}
-
-
-/* =====================================================
-   BUDGET
-===================================================== */
-
-async function saveBudget(){
-
-    const value =
-        parseFloat(
-            document
-                .getElementById(
-                    "budgetInput"
-                )
-                .value
-        );
-
-
-    if(
-        !Number.isFinite(value) ||
-        value < 0
-    ){
-
-        alert(
-            "Please enter a valid budget."
-        );
-
-        return;
-
-    }
-
-
-    const {
-        error
-    } =
-        await db
-            .from("budgets")
-            .upsert({
-
-                user_id:
-                    currentUser.id,
-
-                month:
-                    currentMonth(),
-
-                amount:value,
-
-                currency:
-                    settings.currency
-
-            },{
-                onConflict:
-                    "user_id,month"
-            });
 
 
     if(error){
 
         console.error(error);
 
+        return;
+
+    }
+
+
+    transactions =
+        data || [];
+
+    renderTransactions();
+
+    updateDashboard();
+
+    renderAnalytics();
+
+}
+
+
+function renderTransactions(){
+
+    const list =
+        document
+        .getElementById(
+            "transactionsList"
+        );
+
+
+    if(!transactions.length){
+
+        list.innerHTML = `
+            <div class="empty">
+                No transactions yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        transactions
+        .slice(0,20)
+        .map(transaction => `
+
+            <div class="transaction-card">
+
+                <div>
+
+                    <div class="transaction-name">
+
+                        ${escapeHTML(
+                            transaction.description
+                        )}
+
+                    </div>
+
+                    <div class="transaction-info">
+
+                        ${escapeHTML(
+                            transaction.category || ""
+                        )}
+
+                        ·
+
+                        ${escapeHTML(
+                            transaction.date || ""
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <strong
+                        class="${transaction.type}">
+
+                        ${
+                            transaction.type === "expense"
+                            ? "-"
+                            : "+"
+                        }
+
+                        ${formatMoney(
+                            transaction.amount,
+                            transaction.currency
+                        )}
+
+                    </strong>
+
+                    <br>
+
+                    <button
+                        class="delete-button"
+                        type="button"
+                        onclick="deleteTransaction('${transaction.id}')">
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+async function deleteTransaction(id){
+
+    if(!currentUser)
+        return;
+
+
+    if(!confirm(
+        "Delete this transaction?"
+    ))
+        return;
+
+
+    const { error } =
+        await db
+        .from("transactions")
+        .delete()
+        .eq(
+            "id",
+            id
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        );
+
+
+    if(error){
+
         alert(
-            "Unable to save your budget.\n\n" +
-            safeError(error)
+            "Unable to delete transaction."
         );
 
         return;
@@ -4868,86 +2968,30 @@ async function saveBudget(){
     }
 
 
-    settings.budget =
-        value;
-
-    settings.budgetCurrency =
-        settings.currency;
-
-
-    document
-        .getElementById(
-            "budgetInput"
-        )
-        .value = "";
-
-
-    await loadUserData();
-
-    render();
+    loadTransactions();
 
 }
 
 
 /* =====================================================
-   TOTALS
+   DASHBOARD
 ===================================================== */
 
-function calculateTotals(){
-
-    let totalMoney = 0;
-
-    accounts.forEach(
-        account => {
-
-            totalMoney +=
-                convert(
-                    Number(
-                        account.balance
-                    ),
-                    account.currency,
-                    settings.currency
-                );
-
-        }
-    );
-
+function updateDashboard(){
 
     let income = 0;
+
     let expenses = 0;
+
     let savings = 0;
-
-
-    const month =
-        currentMonth();
 
 
     transactions.forEach(
         transaction => {
 
-            const date =
-                String(
-                    transaction.transaction_date ||
-                    ""
-                );
-
-
-            if(
-                !date.startsWith(month)
-            ){
-
-                return;
-
-            }
-
-
             const amount =
-                convert(
-                    Number(
-                        transaction.amount
-                    ),
-                    transaction.currency,
-                    settings.currency
+                Number(
+                    transaction.amount || 0
                 );
 
 
@@ -4984,749 +3028,213 @@ function calculateTotals(){
     );
 
 
-    return {
-        totalMoney,
-        income,
-        expenses,
-        savings
-    };
-
-}
-
-
-/* =====================================================
-   RENDER ACCOUNTS
-===================================================== */
-
-function renderAccounts(){
-
-    const container =
-        document.getElementById(
-            "accountsList"
-        );
-
-
-    if(accounts.length === 0){
-
-        container.innerHTML = `
-
-            <div class="empty">
-                🏦 Add your first bank account,
-                e-wallet or cash wallet.
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    accounts.forEach(
-        account => {
-
-            let icon = "🏦";
-
-
-            if(
-                account.type ===
-                "ewallet"
-            ){
-
-                icon = "💳";
-
-            }
-
-
-            if(
-                account.type ===
-                "cash"
-            ){
-
-                icon = "💵";
-
-            }
-
-
-            if(
-                account.type ===
-                "other"
-            ){
-
-                icon = "🌸";
-
-            }
-
-
-            const converted =
-                convert(
-                    Number(
-                        account.balance
-                    ),
-                    account.currency,
-                    settings.currency
-                );
-
-
-            const div =
-                document.createElement(
-                    "div"
-                );
-
-            div.className =
-                "account";
-
-
-            div.innerHTML = `
-
-                <div class="account-icon">
-                    ${icon}
-                </div>
-
-                <div class="account-name">
-                    ${escapeHTML(
-                        account.name
-                    )}
-                </div>
-
-                <div class="account-type">
-                    ${escapeHTML(
-                        String(
-                            account.type ||
-                            "other"
-                        ).toUpperCase()
-                    )}
-                    •
-                    ${escapeHTML(
-                        account.currency
-                    )}
-                </div>
-
-                <div class="account-balance">
-                    ${money(converted)}
-                </div>
-
-                <div class="account-actions">
-
-                    <button
-                        class="action-button"
-                        onclick="editAccount(${account.id})">
-
-                        Edit Balance
-
-                    </button>
-
-                    <button
-                        class="action-button"
-                        onclick="deleteAccount(${account.id})">
-
-                        Delete
-
-                    </button>
-
-                </div>
-
-            `;
-
-
-            container.appendChild(div);
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   ACCOUNT SELECT
-===================================================== */
-
-function renderAccountSelect(){
-
-    const select =
-        document.getElementById(
-            "account"
-        );
-
-
-    select.innerHTML = "";
-
-
-    if(accounts.length === 0){
-
-        const option =
-            document.createElement(
-                "option"
-            );
-
-        option.value = "";
-
-        option.textContent =
-            "Add an account first";
-
-        select.appendChild(
-            option
-        );
-
-        return;
-
-    }
-
-
-    accounts.forEach(
-        account => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                account.id;
-
-            option.textContent =
-                `${account.name} (${account.currency})`;
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   TRANSACTIONS
-===================================================== */
-
-function renderTransactions(){
-
-    const container =
-        document.getElementById(
-            "transactionsList"
-        );
-
-
-    if(transactions.length === 0){
-
-        container.innerHTML = `
-
-            <div class="empty">
-                No transactions yet 🌸
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    [...transactions]
-        .sort(
-            (a,b) => {
-
-                const dateA =
-                    new Date(
-                        a.transaction_date ||
-                        0
-                    );
-
-                const dateB =
-                    new Date(
-                        b.transaction_date ||
-                        0
-                    );
-
-                return dateB - dateA;
-
-            }
-        )
-        .slice(0,20)
-        .forEach(
-            t => {
-
-                let icon = "💰";
-                let sign = "+";
-                let color = "positive";
-
-
-                if(
-                    t.type ===
-                    "expense"
-                ){
-
-                    icon = "💸";
-                    sign = "-";
-                    color = "negative";
-
-                }
-
-
-                if(
-                    t.type ===
-                    "saving"
-                ){
-
-                    icon = "🐷";
-                    sign = "-";
-                    color = "negative";
-
-                }
-
-
-                if(
-                    t.type ===
-                    "transfer"
-                ){
-
-                    icon = "🔄";
-                    sign = "";
-                    color = "";
-
-                }
-
-
-                const account =
-                    accounts.find(
-                        a =>
-                            Number(a.id) ===
-                            Number(
-                                t.account_id
-                            )
-                    );
-
-
-                const div =
-                    document.createElement(
-                        "div"
-                    );
-
-                div.className =
-                    "transaction";
-
-
-                div.innerHTML = `
-
-                    <div class="transaction-left">
-
-                        <div class="transaction-icon">
-                            ${icon}
-                        </div>
-
-                        <div>
-
-                            <div class="transaction-title">
-                                ${escapeHTML(
-                                    t.description
-                                )}
-                            </div>
-
-                            <div class="transaction-meta">
-
-                                ${escapeHTML(
-                                    t.category ||
-                                    "Other"
-                                )}
-
-                                •
-
-                                ${escapeHTML(
-                                    t.transaction_date ||
-                                    ""
-                                )}
-
-                                •
-
-                                ${
-                                    account
-                                    ? escapeHTML(
-                                        account.name
-                                      )
-                                    : "Unknown account"
-                                }
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="transaction-right">
-
-                        <div class="transaction-amount ${color}">
-
-                            ${sign}${money(
-                                Number(
-                                    t.amount
-                                ),
-                                t.currency
-                            )}
-
-                        </div>
-
-
-                        <div class="transaction-actions">
-
-                            <button
-                                class="action-button"
-                                onclick="editTransaction(${t.id})">
-
-                                Edit
-
-                            </button>
-
-                            <button
-                                class="action-button"
-                                onclick="deleteTransaction(${t.id})">
-
-                                Delete
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-
-                container.appendChild(
-                    div
-                );
-
-            }
-        );
-
-}
-
-
-/* =====================================================
-   DAILY SPENDING
-===================================================== */
-
-function renderDailySpending(){
-
-    const todayDate =
-        today();
-
-    let total = 0;
-
-
-    transactions.forEach(
-        t => {
-
-            if(
-                t.type !==
-                "expense"
-            ){
-
-                return;
-
-            }
-
-
-            if(
-                t.transaction_date !==
-                todayDate
-            ){
-
-                return;
-
-            }
-
-
-            total +=
-                convert(
-                    Number(
-                        t.amount
-                    ),
-                    t.currency,
-                    settings.currency
-                );
-
-        }
-    );
+    const balance =
+        income -
+        expenses -
+        savings;
 
 
     document
         .getElementById(
-            "todaySpending"
+            "totalBalance"
         )
         .textContent =
-            money(total);
+        formatMoney(
+            balance,
+            "PHP"
+        );
+
+
+    document
+        .getElementById(
+            "totalIncome"
+        )
+        .textContent =
+        formatMoney(
+            income,
+            "PHP"
+        );
+
+
+    document
+        .getElementById(
+            "totalExpenses"
+        )
+        .textContent =
+        formatMoney(
+            expenses,
+            "PHP"
+        );
 
 }
 
 
 /* =====================================================
-   CATEGORY BREAKDOWN
+   ANALYTICS
 ===================================================== */
 
-function renderCategories(){
-
-    const container =
-        document.getElementById(
-            "categoryBreakdown"
-        );
-
+function renderAnalytics(){
 
     const categories = {};
 
+    let income = 0;
+
+    let expenses = 0;
+
+    let savings = 0;
+
 
     transactions.forEach(
-        t => {
+        transaction => {
+
+            const amount =
+                Number(
+                    transaction.amount || 0
+                );
+
 
             if(
-                t.type !==
+                transaction.type ===
                 "expense"
             ){
 
-                return;
+                const category =
+                    transaction.category ||
+                    "Other";
+
+                categories[category] =
+                    (
+                        categories[category] ||
+                        0
+                    ) + amount;
+
+                expenses += amount;
 
             }
 
 
-            const amount =
-                convert(
-                    Number(
-                        t.amount
-                    ),
-                    t.currency,
-                    settings.currency
-                );
+            if(
+                transaction.type ===
+                "income"
+            ){
+
+                income += amount;
+
+            }
 
 
-            const name =
-                t.category ||
-                "Other";
+            if(
+                transaction.type ===
+                "saving"
+            ){
 
+                savings += amount;
 
-            categories[name] =
-                (
-                    categories[name] ||
-                    0
-                ) + amount;
+            }
 
         }
     );
 
 
-    const values =
-        Object.values(
-            categories
+    const categoryList =
+        document
+        .getElementById(
+            "categoryBreakdown"
         );
 
 
-    if(values.length === 0){
+    const categoryNames =
+        Object.keys(categories);
 
-        container.innerHTML = `
 
+    if(!categoryNames.length){
+
+        categoryList.innerHTML = `
             <div class="empty">
-                No expenses recorded yet 🌷
+                No spending data yet.
             </div>
-
         `;
 
-        return;
+    }else{
+
+        categoryList.innerHTML =
+            categoryNames
+            .sort(
+                (a,b) =>
+                    categories[b] -
+                    categories[a]
+            )
+            .map(category => `
+
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        padding:9px 0;
+                        border-bottom:1px solid var(--border);
+                    ">
+
+                    <span>
+                        ${escapeHTML(category)}
+                    </span>
+
+                    <strong>
+                        ${formatMoney(
+                            categories[category],
+                            "PHP"
+                        )}
+                    </strong>
+
+                </div>
+
+            `).join("");
 
     }
 
 
-    const max =
-        Math.max(
-            ...values
-        );
-
-
-    container.innerHTML = "";
-
-
-    Object.entries(categories)
-        .sort(
-            (a,b) =>
-                b[1] - a[1]
-        )
-        .forEach(
-            ([name,value]) => {
-
-                const percent =
-                    max > 0
-                    ? (
-                        value /
-                        max
-                      ) * 100
-                    : 0;
-
-
-                const row =
-                    document.createElement(
-                        "div"
-                    );
-
-                row.className =
-                    "category-row";
-
-
-                row.innerHTML = `
-
-                    <div class="category-top">
-
-                        <span class="category-name">
-                            ${escapeHTML(name)}
-                        </span>
-
-                        <span class="category-value">
-                            ${money(value)}
-                        </span>
-
-                    </div>
-
-                    <div class="category-track">
-
-                        <div
-                            class="category-fill"
-                            style="width:${percent}%">
-                        </div>
-
-                    </div>
-
-                `;
-
-
-                container.appendChild(
-                    row
-                );
-
-            }
-        );
-
-}
-
-
-/* =====================================================
-   MONEY FLOW
-===================================================== */
-
-function renderMoneyFlow(){
-
-    const totals =
-        calculateTotals();
-
-    const container =
-        document.getElementById(
+    const moneyFlow =
+        document
+        .getElementById(
             "moneyFlow"
         );
 
 
-    const expensePercent =
-        totals.income > 0
-        ? Math.min(
-            (
-                totals.expenses /
-                totals.income
-            ) * 100,
-            100
-          )
-        : 0;
+    moneyFlow.innerHTML = `
 
+        <div
+            style="
+                display:grid;
+                gap:10px;
+            ">
 
-    const savingPercent =
-        totals.income > 0
-        ? Math.min(
-            (
-                totals.savings /
-                totals.income
-            ) * 100,
-            100
-          )
-        : 0;
-
-
-    container.innerHTML = `
-
-        <div class="category-row">
-
-            <div class="category-top">
-
-                <span>
-                    💰 Income
-                </span>
-
-                <strong class="positive">
-                    ${money(totals.income)}
-                </strong>
-
-            </div>
-
-            <div class="category-track">
-
-                <div
-                    class="category-fill"
-                    style="width:100%">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="category-row">
-
-            <div class="category-top">
-
-                <span>
-                    💸 Expenses
-                </span>
-
-                <strong class="negative">
-                    ${money(totals.expenses)}
-                </strong>
-
-            </div>
-
-            <div class="category-track">
-
-                <div
-                    class="category-fill"
-                    style="width:${expensePercent}%">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="category-row">
-
-            <div class="category-top">
-
-                <span>
-                    🐷 Savings
-                </span>
-
+            <div>
+                💰 Income:
                 <strong>
-                    ${money(totals.savings)}
+                    ${formatMoney(
+                        income,
+                        "PHP"
+                    )}
                 </strong>
-
             </div>
 
-            <div class="category-track">
+            <div>
+                💸 Expenses:
+                <strong>
+                    ${formatMoney(
+                        expenses,
+                        "PHP"
+                    )}
+                </strong>
+            </div>
 
-                <div
-                    class="category-fill"
-                    style="width:${savingPercent}%">
-                </div>
-
+            <div>
+                🐷 Savings:
+                <strong>
+                    ${formatMoney(
+                        savings,
+                        "PHP"
+                    )}
+                </strong>
             </div>
 
         </div>
@@ -5737,236 +3245,327 @@ function renderMoneyFlow(){
 
 
 /* =====================================================
-   GOALS
+   PROFILE
 ===================================================== */
 
-function renderGoals(){
+function openProfileModal(){
 
-    const container =
-        document.getElementById(
-            "goalsList"
+    document
+        .getElementById(
+            "profileModal"
+        )
+        .classList.add("active");
+
+
+    if(currentUser){
+
+        document
+            .getElementById(
+                "profileDisplayName"
+            )
+            .value =
+            localStorage.getItem(
+                "petalflow_display_name"
+            ) || "";
+
+    }
+
+}
+
+
+function closeProfileModal(){
+
+    document
+        .getElementById(
+            "profileModal"
+        )
+        .classList.remove("active");
+
+}
+
+
+function saveProfile(){
+
+    const name =
+        document
+        .getElementById(
+            "profileDisplayName"
+        )
+        .value
+        .trim();
+
+
+    localStorage.setItem(
+        "petalflow_display_name",
+        name
+    );
+
+
+    closeProfileModal();
+
+}
+
+
+function uploadProfilePicture(){
+
+    const input =
+        document
+        .getElementById(
+            "profilePictureInput"
         );
 
 
-    if(goals.length === 0){
+    const file =
+        input.files?.[0];
 
-        container.innerHTML = `
 
-            <div class="empty">
-                Create your first savings goal 🌸
-            </div>
+    if(!file)
+        return;
 
-        `;
+
+    if(
+        !file.type.startsWith(
+            "image/"
+        )
+    ){
+
+        alert(
+            "Please choose an image."
+        );
 
         return;
 
     }
 
 
-    container.innerHTML = "";
+    if(
+        file.size >
+        5 * 1024 * 1024
+    ){
+
+        alert(
+            "Image must be smaller than 5MB."
+        );
+
+        input.value = "";
+
+        return;
+
+    }
 
 
-    goals.forEach(
-        goal => {
-
-            const target =
-                Number(
-                    goal.target
-                ) || 0;
-
-            const saved =
-                Number(
-                    goal.saved
-                ) || 0;
+    const reader =
+        new FileReader();
 
 
-            const percent =
-                target > 0
-                ? Math.min(
-                    (
-                        saved /
-                        target
-                    ) * 100,
-                    100
-                  )
-                : 0;
+    reader.onload =
+        function(event){
 
-
-            const div =
-                document.createElement(
-                    "div"
+            const image =
+                document
+                .getElementById(
+                    "profilePicturePreview"
                 );
 
-            div.className =
-                "goal";
+
+            image.src =
+                event.target.result;
+
+            image.style.display =
+                "block";
 
 
-            div.innerHTML = `
-
-                <div class="goal-top">
-
-                    <div class="goal-name">
-                        🎯 ${escapeHTML(
-                            goal.name
-                        )}
-                    </div>
-
-                    <div class="goal-percent">
-                        ${percent.toFixed(1)}%
-                    </div>
-
-                </div>
+            document
+                .getElementById(
+                    "profilePicturePlaceholder"
+                )
+                .style.display =
+                "none";
 
 
-                <div class="goal-amount">
-
-                    ${money(
-                        saved,
-                        goal.currency ||
-                        settings.currency
-                    )}
-
-                    /
-
-                    ${money(
-                        target,
-                        goal.currency ||
-                        settings.currency
-                    )}
-
-                </div>
-
-
-                <div class="progress-track">
-
-                    <div
-                        class="progress-bar"
-                        style="width:${percent}%">
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="action-button"
-                    onclick="deleteGoal(${goal.id})">
-
-                    Delete
-
-                </button>
-
-            `;
-
-
-            container.appendChild(
-                div
+            localStorage.setItem(
+                "petalflow_profile_picture",
+                event.target.result
             );
 
-        }
-    );
+        };
+
+
+    reader.readAsDataURL(file);
 
 }
 
 
 /* =====================================================
-   BUDGET
+   LOAD PROFILE PICTURE
 ===================================================== */
 
-function renderBudget(){
+function loadProfilePicture(){
 
-    const totals =
-        calculateTotals();
-
-
-    const budgetDisplay =
-        settings.budget > 0
-        ? convert(
-            settings.budget,
-            settings.budgetCurrency ||
-                settings.currency,
-            settings.currency
-          )
-        : 0;
-
-
-    document
-        .getElementById(
-            "budgetAmount"
-        )
-        .textContent =
-            money(
-                budgetDisplay
-            );
-
-
-    document
-        .getElementById(
-            "budgetSpent"
-        )
-        .textContent =
-            money(
-                totals.expenses
-            );
-
-
-    let percent = 0;
-
-
-    if(budgetDisplay > 0){
-
-        percent =
-            Math.min(
-                (
-                    totals.expenses /
-                    budgetDisplay
-                ) * 100,
-                100
-            );
-
-    }
-
-
-    document
-        .getElementById(
-            "budgetProgress"
-        )
-        .style.width =
-            percent + "%";
-
-
-    const message =
-        document.getElementById(
-            "budgetMessage"
+    const saved =
+        localStorage.getItem(
+            "petalflow_profile_picture"
         );
 
 
-    if(
-        budgetDisplay === 0
-    ){
+    if(!saved)
+        return;
 
-        message.textContent =
-            "Set a monthly budget to begin 🌸";
 
-    }
+    const image =
+        document
+        .getElementById(
+            "profilePicturePreview"
+        );
 
-    else if(
-        totals.expenses >
-        budgetDisplay
-    ){
 
-        message.textContent =
-            "⚠️ You've gone over your budget.";
+    image.src = saved;
 
-    }
+    image.style.display =
+        "block";
 
-    else{
 
-        message.textContent =
-            money(
-                budgetDisplay -
-                totals.expenses
-            ) +
-            " remaining this month 🌷";
+    document
+        .getElementById(
+            "profilePicturePlaceholder"
+        )
+        .style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   THEME
+===================================================== */
+
+function openThemeModal(){
+
+    document
+        .getElementById(
+            "themeModal"
+        )
+        .classList.add("active");
+
+}
+
+
+function closeThemeModal(){
+
+    document
+        .getElementById(
+            "themeModal"
+        )
+        .classList.remove("active");
+
+}
+
+
+function setTheme(theme){
+
+    const root =
+        document.documentElement;
+
+
+    const themes = {
+
+        petal:{
+            pink:"#f8c9dc",
+            pinkLight:"#fdebf3",
+            purple:"#ddd0f5",
+            background:"#fff8fb"
+        },
+
+        lavender:{
+            pink:"#d9c8f0",
+            pinkLight:"#f1eafb",
+            purple:"#c8b7e6",
+            background:"#fbf9ff"
+        },
+
+        sage:{
+            pink:"#cfe2d1",
+            pinkLight:"#edf5ee",
+            purple:"#c7d9ca",
+            background:"#f9fcf9"
+        },
+
+        sky:{
+            pink:"#c9e6f5",
+            pinkLight:"#eaf7fc",
+            purple:"#c9d9ef",
+            background:"#f8fcff"
+        },
+
+        peach:{
+            pink:"#f6cbb5",
+            pinkLight:"#fff0e9",
+            purple:"#efd0c3",
+            background:"#fffaf7"
+        },
+
+        midnight:{
+            pink:"#705d80",
+            pinkLight:"#342d3c",
+            purple:"#55466b",
+            background:"#1e1b23"
+        }
+
+    };
+
+
+    const selected =
+        themes[theme] ||
+        themes.petal;
+
+
+    root.style.setProperty(
+        "--pink",
+        selected.pink
+    );
+
+    root.style.setProperty(
+        "--pink-light",
+        selected.pinkLight
+    );
+
+    root.style.setProperty(
+        "--purple",
+        selected.purple
+    );
+
+    root.style.setProperty(
+        "--background",
+        selected.background
+    );
+
+
+    localStorage.setItem(
+        "petalflow_theme",
+        theme
+    );
+
+
+    closeThemeModal();
+
+}
+
+
+/* =====================================================
+   LOAD THEME
+===================================================== */
+
+function loadTheme(){
+
+    const theme =
+        localStorage.getItem(
+            "petalflow_theme"
+        );
+
+
+    if(theme){
+
+        setTheme(theme);
 
     }
 
@@ -5974,174 +3573,88 @@ function renderBudget(){
 
 
 /* =====================================================
-   SUMMARY
-===================================================== */
-
-function renderSummary(){
-
-    const totals =
-        calculateTotals();
-
-
-    document
-        .getElementById(
-            "totalMoney"
-        )
-        .textContent =
-            money(
-                totals.totalMoney
-            );
-
-
-    document
-        .getElementById(
-            "totalIncome"
-        )
-        .textContent =
-            money(
-                totals.income
-            );
-
-
-    document
-        .getElementById(
-            "totalExpenses"
-        )
-        .textContent =
-            money(
-                totals.expenses
-            );
-
-
-    document
-        .getElementById(
-            "totalSavings"
-        )
-        .textContent =
-            money(
-                totals.savings
-            );
-
-}
-
-
-/* =====================================================
-   RENDER EVERYTHING
-===================================================== */
-
-function render(){
-
-    document
-        .getElementById(
-            "displayCurrency"
-        )
-        .value =
-            settings.currency;
-
-
-    renderSummary();
-
-    renderAccounts();
-
-    renderAccountSelect();
-
-    renderTransactions();
-
-    renderDailySpending();
-
-    renderCategories();
-
-    renderMoneyFlow();
-
-    renderGoals();
-
-    renderBudget();
-
-}
-
-
-/* =====================================================
-   MODAL CLICK OUTSIDE
-===================================================== */
-
-document
-    .getElementById(
-        "accountModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(
-                event.target ===
-                this
-            ){
-
-                closeAccountModal();
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "goalModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(
-                event.target ===
-                this
-            ){
-
-                closeGoalModal();
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "themeModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(
-                event.target ===
-                this
-            ){
-
-                closeThemeModal();
-
-            }
-
-        }
-    );
-
-
-/* =====================================================
-   ESC KEY CLOSES MODALS
+   CLOSE MODALS WHEN CLICKING OUTSIDE
 ===================================================== */
 
 document.addEventListener(
-    "keydown",
+    "click",
     function(event){
 
-        if(event.key !== "Escape")
-            return;
+        if(
+            event.target.classList
+            .contains("modal")
+        ){
 
-        closeAccountModal();
-        closeGoalModal();
-        closeThemeModal();
-        closeProfileModal();
+            event.target
+                .classList
+                .remove("active");
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+async function loadCurrentUser(){
+
+    const {
+        data
+    } =
+        await db.auth.getUser();
+
+
+    currentUser =
+        data?.user || null;
+
+
+    if(currentUser){
+
+        await Promise.all([
+
+            loadNotes(),
+
+            loadGoals(),
+
+            loadAccounts(),
+
+            loadTransactions()
+
+        ]);
+
+    }
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
+
+        updateCategories();
+
+        document
+            .getElementById(
+                "transactionDate"
+            )
+            .value =
+            new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+        loadTheme();
+
+        loadProfilePicture();
+
+        await loadCurrentUser();
 
     }
 );
@@ -6152,140 +3665,32 @@ document.addEventListener(
 ===================================================== */
 
 db.auth.onAuthStateChange(
-    async (event,session) => {
+    async function(
+        event,
+        session
+    ){
 
-        if(
-            event === "SIGNED_IN" &&
-            session?.user
-        ){
-
-            await startApp(
-                session.user
-            );
-
-        }
+        currentUser =
+            session?.user || null;
 
 
-        if(
-            event === "SIGNED_OUT"
-        ){
+        if(currentUser){
 
-            currentUser = null;
+            await loadNotes();
+
+            await loadGoals();
+
+            await loadAccounts();
+
+            await loadTransactions();
 
         }
 
     }
 );
 
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
-
-async function initialize(){
-
-    loadSavedTheme();
-
-    document
-        .getElementById(
-            "transactionDate"
-        )
-        .value =
-            today();
-
-    updateCategories();
-
-
-    /*
-       Default transaction currency
-       follows selected display currency.
-    */
-
-    const savedCurrency =
-        localStorage.getItem(
-            "petalflowDisplayCurrency"
-        ) || "PHP";
-
-
-    document
-        .getElementById(
-            "transactionCurrency"
-        )
-        .value =
-            savedCurrency;
-
-
-    document
-        .getElementById(
-            "goalCurrency"
-        )
-        .value =
-            savedCurrency;
-
-
-    document
-        .getElementById(
-            "accountCurrency"
-        )
-        .value =
-            savedCurrency;
-
-
-    const {
-        data,
-        error
-    } =
-        await db.auth.getSession();
-
-
-    if(error){
-
-        console.error(error);
-
-        document
-            .getElementById(
-                "authScreen"
-            )
-            .classList.remove(
-                "hidden"
-            );
-
-        return;
-
-    }
-
-
-    if(
-        data?.session?.user
-    ){
-
-        await startApp(
-            data.session.user
-        );
-
-    }
-    else{
-
-        document
-            .getElementById(
-                "authScreen"
-            )
-            .classList.remove(
-                "hidden"
-            );
-
-    }
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-initialize();
-
 </script>
 
 </body>
+
 </html>
